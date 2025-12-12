@@ -1,4 +1,4 @@
-const fetch = require('node-fetch'); // FIX 1: Corrected 'Const' to 'const'
+const fetch = require('node-fetch'); 
 
 // The function will securely access the key stored in Netlify's Environment Variables
 const PRINTFUL_API_KEY = process.env.PRINTFUL_API_KEY; 
@@ -15,9 +15,11 @@ exports.handler = async (event, context) => {
     }
     
     // 2. Authorization Header for Printful API
-    // FIX 2: Changed from retired 'Basic' token to modern 'Bearer' token authentication
+    // Using modern 'Bearer' token authentication
     const authHeader = `Bearer ${PRINTFUL_API_KEY}`;
-    const PRINTFUL_API_URL = 'https://api.printful.com/store/products'; 
+    
+    // FINAL FIX: Added the required 'store_id' parameter to the API URL
+    const PRINTFUL_API_URL = 'https://api.printful.com/store/products?store_id=13451363'; 
 
     try {
         // 3. Securely Fetch data from Printful
