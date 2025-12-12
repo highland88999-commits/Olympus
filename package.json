@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Netlify Function to securely fetch Printful products.",
   "dependencies": {
-    "node-fetch": "^2.6.1"
+    "node-fetch": "^3.6.2"  <-- CHANGE THIS LINE
   },
   "scripts": {
     "start": "node netlify-functions/fetchPrintfulProducts.js"
