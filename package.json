@@ -1,11 +1,7 @@
 {
   "name": "printful-storefront-api",
   "version": "1.0.0",
-  "description": "Netlify Function to securely fetch Printful products.",
   "dependencies": {
-    "node-fetch": "^3.6.2" 
-  },
-  "scripts": {
-    "start": "node netlify-functions/fetchPrintfulProducts.js"
+    "node-fetch": "^3.6.2"
   }
 }
