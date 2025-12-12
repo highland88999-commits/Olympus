@@ -1,11 +1,13 @@
 // netlify-functions/fetchPrintfulProducts.js
-const fetch = require('node-fetch');
+
+// FIX: This wrapper allows node-fetch v3 (which fixes the dependency error) to be used with Netlify's older CommonJS 'require' syntax.
+const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args)); 
 
 // The function will securely access the key stored in Netlify's Environment Variables
 const PRINTFUL_API_KEY = process.env.PRINTFUL_API_KEY; 
 
 exports.handler = async (event, context) => {
-    // 1. Check if the key is available (it should be, if Netlify is configured)
+    // 1. Check if the key is available
     if (!PRINTFUL_API_KEY) {
         console.error("Missing PRINTFUL_API_KEY environment variable.");
         return {
@@ -47,8 +49,7 @@ exports.handler = async (event, context) => {
             const firstVariant = item.variants && item.variants.length > 0 ? item.variants[0] : null;
             const imageUrl = firstVariant?.files?.[0]?.url || 'https://via.placeholder.com/200';
             
-            // NOTE: Simple placeholder price logic here. 
-            // Replace with your actual price calculation logic!
+            // Placeholder price. If Printful provides a retail price, use it.
             const price = firstVariant?.retail_price || (Math.random() * 50 + 20).toFixed(2); 
 
             return {
@@ -56,7 +57,7 @@ exports.handler = async (event, context) => {
                 title: item.name,
                 image_url: imageUrl, 
                 price: price, 
-                // IMPORTANT: Replace this with your actual external store link or checkout URL format!
+                // IMPORTANT: You will update this later for your secure checkout
                 checkout_url: `https://YOUR_EXTERNAL_SHOP.com/product/${item.id}` 
             };
         });
