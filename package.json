@@ -2,6 +2,9 @@
   "name": "printful-storefront-api",
   "version": "1.0.0",
   "dependencies": {
-    "node-fetch": "^3.6.2"
+    "node-fetch": "^2.6.7"  <-- CHANGE THIS LINE
+  },
+  "scripts": {
+    "build": "echo 'No build step required for functions'"
   }
 }
