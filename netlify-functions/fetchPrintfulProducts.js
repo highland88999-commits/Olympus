@@ -1,7 +1,4 @@
-// netlify-functions/fetchPrintfulProducts.js
-
-// FIX: This wrapper allows node-fetch v3 (which fixes the dependency error) to be used with Netlify's older CommonJS 'require' syntax.
-const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args)); 
+const fetch = require('node-fetch'); 
 
 // The function will securely access the key stored in Netlify's Environment Variables
 const PRINTFUL_API_KEY = process.env.PRINTFUL_API_KEY; 
@@ -82,3 +79,4 @@ exports.handler = async (event, context) => {
         };
     }
 };
+    
