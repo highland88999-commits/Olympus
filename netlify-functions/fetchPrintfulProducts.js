@@ -18,7 +18,7 @@ exports.handler = async (event, context) => {
     // Using modern 'Bearer' token authentication
     const authHeader = `Bearer ${PRINTFUL_API_KEY}`;
     
-    // FINAL FIX: Changed to the universal /products endpoint to work with all store types
+    // Uses the universal /products endpoint with store_id=13451363 (Final Working URL)
     const PRINTFUL_API_URL = 'https://api.printful.com/products?store_id=13451363'; 
 
     try {
@@ -44,12 +44,16 @@ exports.handler = async (event, context) => {
         
         // 4. Process the data and prepare it for the HTML storefront
         const products = data.result.map(item => {
-            // Find the image and a simple price for the first variant
-            const firstVariant = item.variants && item.variants.length > 0 ? item.variants[0] : null;
-            const imageUrl = firstVariant?.files?.[0]?.url || 'https://via.placeholder.com/200';
             
-            // Placeholder price. If Printful provides a retail price, use it.
-            const price = firstVariant?.retail_price || (Math.random() * 50 + 20).toFixed(2); 
+            const firstVariant = item.variants && item.variants.length > 0 ? item.variants[0] : null;
+
+            // FIX 1: Use the main mockup image (item.main_image) for reliability
+            const mainMockupUrl = item.main_image; 
+            const imageUrl = mainMockupUrl || firstVariant?.files?.[0]?.url || 'https://via.placeholder.com/200';
+            
+            // FIX 2: Explicitly use the retail_price from the first variant
+            const retailPrice = firstVariant?.retail_price;
+            const price = retailPrice ? retailPrice : 'N/A'; // Show 'N/A' if price is missing, instead of a random number
 
             return {
                 id: item.id,
@@ -81,4 +85,3 @@ exports.handler = async (event, context) => {
         };
     }
 };
-                
