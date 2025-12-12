@@ -18,8 +18,8 @@ exports.handler = async (event, context) => {
     // Using modern 'Bearer' token authentication
     const authHeader = `Bearer ${PRINTFUL_API_KEY}`;
     
-    // FINAL FIX: Added the required 'store_id' parameter to the API URL
-    const PRINTFUL_API_URL = 'https://api.printful.com/store/products?store_id=13451363'; 
+    // FINAL FIX: Changed to the universal /products endpoint to work with all store types
+    const PRINTFUL_API_URL = 'https://api.printful.com/products?store_id=13451363'; 
 
     try {
         // 3. Securely Fetch data from Printful
@@ -81,3 +81,4 @@ exports.handler = async (event, context) => {
         };
     }
 };
+                
