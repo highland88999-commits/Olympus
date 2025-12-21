@@ -1,29 +1,25 @@
-import fetch from 'node-fetch';
-
 exports.handler = async () => {
-  // MATCHING YOUR NETLIFY KEY: PRINTFUL_API_KEY
+  // Use the key you set in Netlify Environment Variables
   const PRINTFUL_API_TOKEN = process.env.PRINTFUL_API_KEY;
 
-  if (!PRINTFUL_API_TOKEN) {
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: "Key mismatch: Code expects PRINTFUL_API_KEY" })
-    };
-  }
-
   try {
+    // Netlify provides 'fetch' automatically; no 'import' needed
     const response = await fetch('https://api.printful.com/store/products', {
       headers: { 'Authorization': `Bearer ${PRINTFUL_API_TOKEN}` }
     });
     
     const data = await response.json();
 
-    // Mapping the data for your HTML storefront
-    const products = (data.result || []).map(p => ({
+    // Check if Printful actually sent products
+    if (!data.result) {
+        return { statusCode: 200, body: JSON.stringify([]) };
+    }
+
+    // Convert the data into a simple list for the website
+    const products = data.result.map(p => ({
       id: p.id,
       name: p.name,
-      thumbnail_url: p.thumbnail_url,
-      price: "View Item" 
+      thumbnail_url: p.thumbnail_url
     }));
 
     return {
@@ -35,6 +31,9 @@ exports.handler = async () => {
       body: JSON.stringify(products), 
     };
   } catch (error) {
-    return { statusCode: 500, body: JSON.stringify({ error: error.message }) };
+    return { 
+      statusCode: 500, 
+      body: JSON.stringify({ error: "Backend Error: " + error.message }) 
+    };
   }
 };
