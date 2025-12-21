@@ -5,10 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AXIOM REPOSITORY | CAD</title>
     <style>
-        /* Updated neon to a cyan/blue to match the coral reef video */
-        :root { --neon: #00f2ff; --bg: #050505; }
+        :root { --neon: #00f2ff; --bg: #050505; --crypto: #f7931a; }
         
-        /* FIXED VIDEO BACKGROUND */
         .video-bg {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: -1; pointer-events: none; overflow: hidden; background: var(--bg);
@@ -18,56 +16,41 @@
             width: 100vw; height: 56.25vw;
             min-height: 100vh; min-width: 177.77vh;
             transform: translate(-50%, -50%);
-            /* Adjusted brightness to ensure fish and coral details are visible but don't overwhelm text */
             filter: brightness(0.35);
         }
 
         body { color: white; font-family: 'Segoe UI', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
-        
-        header { 
-            width: 100%; padding: 40px 0; text-align: center; 
-            background: rgba(0, 0, 0, 0.7); border-bottom: 1px solid #222; 
-            margin-bottom: 40px; backdrop-filter: blur(10px); 
-        }
-        
+        header { width: 100%; padding: 40px 0; text-align: center; background: rgba(0, 0, 0, 0.7); border-bottom: 1px solid #222; margin-bottom: 40px; backdrop-filter: blur(10px); }
         h1 { letter-spacing: 8px; font-weight: 200; margin: 0; color: var(--neon); text-shadow: 0 0 15px var(--neon); }
         
-        .grid { 
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
-            gap: 30px; width: 90%; max-width: 1200px; padding-bottom: 50px; 
-            z-index: 1; 
-        }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; width: 90%; max-width: 1200px; padding-bottom: 50px; z-index: 1; }
 
-        .card { 
-            background: rgba(17, 17, 17, 0.85); border: 1px solid #222; 
-            border-radius: 4px; padding: 20px; text-align: center;
-            backdrop-filter: blur(5px); transition: 0.4s;
-        }
-        .card:hover { border-color: var(--neon); transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0, 242, 255, 0.3); }
+        .card { background: rgba(17, 17, 17, 0.85); border: 1px solid #222; border-radius: 4px; padding: 20px; text-align: center; backdrop-filter: blur(5px); transition: 0.4s; }
         .card img { width: 100%; height: 300px; object-fit: cover; border-radius: 2px; }
         
         h3 { font-size: 0.9rem; margin: 20px 0 10px; font-weight: 400; height: 2.5em; overflow: hidden; color: #ddd; }
         .price { color: var(--neon); font-weight: bold; font-size: 1.2rem; margin-bottom: 5px; }
-        .currency-tag { font-size: 0.7rem; color: #888; letter-spacing: 1px; }
+        .currency-tag { font-size: 0.7rem; color: #888; letter-spacing: 1px; margin-bottom: 15px; }
         
+        /* PAYMENT BUTTONS */
+        .btn-container { display: flex; flex-direction: column; gap: 10px; }
         .buy-btn { 
-            display: block; width: 100%; padding: 12px; margin-top: 15px; 
+            display: block; width: 100%; padding: 10px; 
             background: none; border: 1px solid var(--neon); color: white; 
-            text-transform: uppercase; cursor: pointer; transition: 0.3s; 
+            text-transform: uppercase; cursor: pointer; transition: 0.3s; font-size: 0.8rem; font-weight: bold;
         }
-        .buy-btn:hover { background: var(--neon); box-shadow: 0 0 15px var(--neon); color: black; font-weight: bold; }
+        .buy-btn.fiat:hover { background: var(--neon); color: black; box-shadow: 0 0 15px var(--neon); }
+        
+        .buy-btn.crypto { border-color: var(--crypto); color: var(--crypto); }
+        .buy-btn.crypto:hover { background: var(--crypto); color: white; box-shadow: 0 0 15px var(--crypto); }
     </style>
 </head>
 <body>
     <div class="video-bg">
-        <iframe 
-            src="https://www.youtube.com/embed/XBiB_m8vCTg?autoplay=1&loop=1&mute=1&controls=0&showinfo=0&rel=0&playlist=XBiB_m8vCTg" 
-            frameborder="0" allow="autoplay">
-        </iframe>
+        <iframe src="https://www.youtube.com/embed/XBiB_m8vCTg?autoplay=1&loop=1&mute=1&controls=0&showinfo=0&rel=0&playlist=XBiB_m8vCTg" frameborder="0" allow="autoplay"></iframe>
     </div>
 
     <header><h1>AXIOM REPOSITORY</h1></header>
-    
     <div class="grid" id="store-grid">INITIALIZING SYSTEM...</div>
 
     <script>
@@ -77,27 +60,31 @@
                 const res = await fetch('/.netlify/functions/get-products');
                 const products = await res.json();
                 
-                if (products.length === 0) {
-                    grid.innerHTML = "No products found in the repository.";
-                    return;
-                }
-
                 grid.innerHTML = products.map(p => `
                     <div class="card">
                         <img src="${p.thumbnail_url}" alt="${p.name}" loading="lazy">
                         <h3>${p.name}</h3>
                         <div class="price">$${parseFloat(p.price).toFixed(2)}</div>
                         <div class="currency-tag">SYSTEM ACCESS | CAD</div>
-                        <button class="buy-btn" onclick="initiatePurchase('${p.id}')">Initiate Purchase</button>
+                        <div class="btn-container">
+                            <button class="buy-btn fiat" onclick="payFiat('${p.id}')">Buy with Fiat</button>
+                            <button class="buy-btn crypto" onclick="payCrypto('${p.id}')">Buy with Crypto</button>
+                        </div>
                     </div>
                 `).join('');
             } catch (e) {
-                grid.innerHTML = "Connection Error. Check Netlify Env Variables.";
+                grid.innerHTML = "Connection Error.";
             }
         }
 
-        function initiatePurchase(productId) {
-            alert("ACCESS GRANTED: Product ID " + productId + " ready for checkout.");
+        function payFiat(id) {
+            // Replace with your Stripe CAD Payment Link
+            window.location.href = "https://buy.stripe.com/your_stripe_link";
+        }
+
+        function payCrypto(id) {
+            // Replace with your Coinbase Commerce Link
+            window.location.href = "https://commerce.coinbase.com/checkout/your_crypto_link";
         }
 
         fetchStore();
