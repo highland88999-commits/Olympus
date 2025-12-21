@@ -3,52 +3,103 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AXIOM REPOSITORY</title>
+    <title>AXIOM REPOSITORY | CAD</title>
     <style>
         :root { --neon: #5a00ff; --bg: #050505; }
-        body { background: var(--bg); color: white; font-family: 'Segoe UI', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
-        header { width: 100%; padding: 40px 0; text-align: center; border-bottom: 1px solid #222; margin-bottom: 40px; }
+        
+        /* FIXED VIDEO BACKGROUND */
+        .video-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; pointer-events: none; overflow: hidden; background: var(--bg);
+        }
+        .video-bg iframe {
+            position: absolute; top: 50%; left: 50%;
+            width: 100vw; height: 56.25vw;
+            min-height: 100vh; min-width: 177.77vh;
+            transform: translate(-50%, -50%);
+            filter: brightness(0.4);
+        }
+
+        body { color: white; font-family: 'Segoe UI', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+        
+        header { 
+            width: 100%; padding: 40px 0; text-align: center; 
+            background: rgba(0, 0, 0, 0.7); border-bottom: 1px solid #222; 
+            margin-bottom: 40px; backdrop-filter: blur(10px); 
+        }
+        
         h1 { letter-spacing: 8px; font-weight: 200; margin: 0; color: var(--neon); text-shadow: 0 0 15px var(--neon); }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; width: 90%; max-width: 1200px; padding-bottom: 50px; }
-        .card { background: #111; border: 1px solid #222; border-radius: 4px; padding: 20px; transition: 0.4s; position: relative; overflow: hidden; }
-        .card:hover { border-color: var(--neon); transform: translateY(-5px); box-shadow: 0 10px 30px rgba(90, 0, 255, 0.2); }
-        .card img { width: 100%; height: 300px; object-fit: cover; border-radius: 2px; filter: grayscale(30%); transition: 0.4s; }
-        .card:hover img { filter: grayscale(0%); }
-        h3 { font-size: 1rem; margin: 20px 0 10px; font-weight: 400; height: 2.5em; overflow: hidden; }
-        .price { color: var(--neon); font-weight: bold; font-size: 1.2rem; }
-        .buy-btn { display: block; width: 100%; padding: 12px; margin-top: 15px; background: none; border: 1px solid var(--neon); color: white; text-transform: uppercase; cursor: pointer; transition: 0.3s; }
-        .buy-btn:hover { background: var(--neon); box-shadow: 0 0 15px var(--neon); }
+        
+        .grid { 
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
+            gap: 30px; width: 90%; max-width: 1200px; padding-bottom: 50px; 
+            z-index: 1; 
+        }
+
+        .card { 
+            background: rgba(17, 17, 17, 0.85); border: 1px solid #222; 
+            border-radius: 4px; padding: 20px; text-align: center;
+            backdrop-filter: blur(5px); transition: 0.4s;
+        }
+        .card:hover { border-color: var(--neon); transform: translateY(-5px); box-shadow: 0 10px 30px rgba(90, 0, 255, 0.4); }
+        .card img { width: 100%; height: 300px; object-fit: cover; border-radius: 2px; }
+        
+        h3 { font-size: 0.9rem; margin: 20px 0 10px; font-weight: 400; height: 2.5em; overflow: hidden; color: #ddd; }
+        .price { color: var(--neon); font-weight: bold; font-size: 1.2rem; margin-bottom: 5px; }
+        .currency-tag { font-size: 0.7rem; color: #888; letter-spacing: 1px; }
+        
+        .buy-btn { 
+            display: block; width: 100%; padding: 12px; margin-top: 15px; 
+            background: none; border: 1px solid var(--neon); color: white; 
+            text-transform: uppercase; cursor: pointer; transition: 0.3s; 
+        }
+        .buy-btn:hover { background: var(--neon); box-shadow: 0 0 15px var(--neon); color: black; font-weight: bold; }
     </style>
 </head>
 <body>
+    <div class="video-bg">
+        <iframe 
+            src="https://www.youtube.com/embed/ye8b5stikl0?autoplay=1&loop=1&mute=1&controls=0&showinfo=0&rel=0&playlist=ye8b5stikl0" 
+            frameborder="0" allow="autoplay">
+        </iframe>
+    </div>
+
     <header><h1>AXIOM REPOSITORY</h1></header>
-    <div class="grid" id="store-grid">Loading Inventory...</div>
+    
+    <div class="grid" id="store-grid">INITIALIZING SYSTEM...</div>
 
     <script>
         async function fetchStore() {
             const grid = document.getElementById('store-grid');
             try {
-                // This connects to your netlify-functions/get-products.js file
                 const res = await fetch('/.netlify/functions/get-products');
                 const products = await res.json();
                 
                 if (products.length === 0) {
-                    grid.innerHTML = "No products found in your Printful store.";
+                    grid.innerHTML = "No products found in the repository.";
                     return;
                 }
 
                 grid.innerHTML = products.map(p => `
                     <div class="card">
-                        <img src="${p.thumbnail_url}" alt="${p.name}">
+                        <img src="${p.thumbnail_url}" alt="${p.name}" loading="lazy">
                         <h3>${p.name}</h3>
-                        <div class="price">SYSTEM ACCESS: $44.00</div>
-                        <button class="buy-btn" onclick="window.location.href='#'">Initiate Purchase</button>
+                        <div class="price">$${parseFloat(p.price).toFixed(2)}</div>
+                        <div class="currency-tag">SYSTEM ACCESS | CAD</div>
+                        <button class="buy-btn" onclick="initiatePurchase('${p.id}')">Initiate Purchase</button>
                     </div>
                 `).join('');
             } catch (e) {
-                grid.innerHTML = "System Offline. Verify backend function deployment.";
+                grid.innerHTML = "Connection Error. Check Netlify Env Variables.";
             }
         }
+
+        function initiatePurchase(productId) {
+            // For now, this just alerts the ID. 
+            // In the next step, we can link this to a checkout page.
+            alert("ACCESS GRANTED: Product ID " + productId + " ready for checkout.");
+        }
+
         fetchStore();
     </script>
 </body>
