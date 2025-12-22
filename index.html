@@ -67,8 +67,8 @@
                         <div class="price">$${parseFloat(p.price).toFixed(2)}</div>
                         <div class="currency-tag">SYSTEM ACCESS | CAD</div>
                         <div class="btn-container">
-                            <button class="buy-btn fiat" onclick="payFiat('${p.id}')">Buy with Fiat</button>
-                            <button class="buy-btn crypto" onclick="payCrypto('${p.id}')">Buy with Crypto</button>
+                            <button class="buy-btn fiat" onclick="payFiat('${p.id}', '${p.name}')">Buy with Fiat</button>
+                            <button class="buy-btn crypto" onclick="payCrypto('${p.id}', '${p.name}')">Buy with Crypto</button>
                         </div>
                     </div>
                 `).join('');
@@ -77,14 +77,19 @@
             }
         }
 
-        function payFiat(id) {
-            // Replace with your Stripe CAD Payment Link
-            window.location.href = "https://buy.stripe.com/your_stripe_link";
+        function payFiat(id, name) {
+            // STEP 1: Paste your Stripe URL from your Sandbox dashboard here
+            const STRIPE_LINK = "https://buy.stripe.com/test_PASTE_YOUR_LINK_HERE"; 
+            
+            // STEP 2: This appends the design info automatically for global orders
+            const checkoutUrl = `${STRIPE_LINK}?client_reference_id=${id}&description=${encodeURIComponent(name)}`;
+            
+            window.location.href = checkoutUrl;
         }
 
-        function payCrypto(id) {
-            // Replace with your Coinbase Commerce Link
-            window.location.href = "https://commerce.coinbase.com/checkout/your_crypto_link";
+        function payCrypto(id, name) {
+            // Placeholder for Coinbase Commerce setup
+            alert("CRYPTO ACCESS INITIATED: " + name);
         }
 
         fetchStore();
