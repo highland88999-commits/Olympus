@@ -4,47 +4,44 @@ exports.handler = async (event, context) => {
   const API_KEY = process.env.PRINTFUL_API_KEY;
 
   try {
-    // 1. Fetch your 586 templates
     const listRes = await fetch('https://api.printful.com/product-templates?limit=100', {
       headers: { 'Authorization': `Bearer ${API_KEY}` }
     });
     const listData = await listRes.json();
     const templates = listData.result.items;
 
-    // 2. Loop through and check for "Black Boxes"
-    const products = await Promise.all(templates.map(async (item) => {
-      let imageUrl = item.thumbnail_url;
+    let completedCount = 0;
+    let pendingCount = 0;
 
-      // If the image is the black placeholder, trigger a fresh mockup task
-      if (!imageUrl || imageUrl.includes('default-product-image')) {
-        try {
-          const taskRes = await fetch(`https://api.printful.com/mockup-generator/create-task/140`, {
-            method: 'POST',
-            headers: { 'Authorization': `Bearer ${API_KEY}` },
-            body: JSON.stringify({
-              variant_ids: [10374], // Default 'Large' variant for the hoodie
-              format: "jpg",
-              template_id: item.id // This inherits your manual pocket alignment!
-            })
-          });
-          const taskData = await taskRes.json();
-          // We grab the new URL from the generation task
-          imageUrl = taskData.result?.mockups?.[0]?.extra_mockups?.[0]?.mockup_url || imageUrl;
-        } catch (e) { console.error("Mockup Task Failed", e); }
+    const products = templates.map(item => {
+      const isBlackBox = !item.thumbnail_url || item.thumbnail_url.includes('default-product-image');
+      
+      if (isBlackBox) {
+        pendingCount++;
+      } else {
+        completedCount++;
       }
 
       return {
         id: item.id,
         name: item.title,
-        images: [imageUrl],
-        price: "95.00"
+        status: isBlackBox ? "pending" : "ready",
+        image: item.thumbnail_url || "loading-spinner.gif"
       };
-    }));
+    });
 
     return {
       statusCode: 200,
       headers: { "Access-Control-Allow-Origin": "*" },
-      body: JSON.stringify(products),
+      body: JSON.stringify({
+        queue: {
+          total: templates.length,
+          ready: completedCount,
+          processing: pendingCount,
+          percent_complete: Math.round((completedCount / templates.length) * 100)
+        },
+        items: products
+      }),
     };
   } catch (error) {
     return { statusCode: 500, body: JSON.stringify({ error: error.message }) };
