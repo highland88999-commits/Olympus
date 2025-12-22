@@ -79,7 +79,6 @@
         async function fetchStore() {
             const grid = document.getElementById('store-grid');
             try {
-                // Ensure your Netlify function 'get-products' is correctly deployed
                 const res = await fetch('/.netlify/functions/get-products');
                 const products = await res.json();
                 
@@ -101,10 +100,20 @@
         }
 
         function payFiat(id, name) {
-            // STEP: Paste the final Link from your Stripe dashboard here
-            const STRIPE_LINK = "https://buy.stripe.com/test_PASTE_YOUR_LINK_HERE"; 
+            // YOUR UPDATED STRIPE LINK
+            const STRIPE_LINK = "https://buy.stripe.com/test_fZu14n90c1J05W5eyi8g000"; 
             
-            // This transmits the specific Design ID and Name so you can fulfill the correct hoodie
+            // Appends design ID and Name for your manual Printful fulfillment
             const checkoutUrl = `${STRIPE_LINK}?client_reference_id=${id}&description=${encodeURIComponent(name)}`;
             
             window.location.href = checkoutUrl;
+        }
+
+        function payCrypto(id, name) {
+            alert("CRYPTO ACCESS INITIATED: Fulfilling Design: " + name);
+        }
+
+        fetchStore();
+    </script>
+</body>
+</html>
