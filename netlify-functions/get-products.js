@@ -1,47 +1,25 @@
 const fetch = require('node-fetch');
 
 exports.handler = async (event, context) => {
-  const API_KEY = process.env.PRINTFUL_API_KEY;
+  const PRINTFUL_API_KEY = process.env.PRINTFUL_API_KEY;
 
   try {
-    const listRes = await fetch('https://api.printful.com/product-templates?limit=100', {
-      headers: { 'Authorization': `Bearer ${API_KEY}` }
+    const response = await fetch('https://api.printful.com/store/products', {
+      headers: { 'Authorization': `Bearer ${PRINTFUL_API_KEY}` }
     });
-    const listData = await listRes.json();
-    const templates = listData.result.items;
+    const data = await response.json();
 
-    let completedCount = 0;
-    let pendingCount = 0;
-
-    const products = templates.map(item => {
-      const isBlackBox = !item.thumbnail_url || item.thumbnail_url.includes('default-product-image');
-      
-      if (isBlackBox) {
-        pendingCount++;
-      } else {
-        completedCount++;
-      }
-
-      return {
-        id: item.id,
-        name: item.title,
-        status: isBlackBox ? "pending" : "ready",
-        image: item.thumbnail_url || "loading-spinner.gif"
-      };
-    });
+    const products = data.result.map(item => ({
+      id: item.id,
+      name: item.name,
+      thumbnail_url: item.thumbnail_url,
+      price: "95.00"
+    }));
 
     return {
       statusCode: 200,
-      headers: { "Access-Control-Allow-Origin": "*" },
-      body: JSON.stringify({
-        queue: {
-          total: templates.length,
-          ready: completedCount,
-          processing: pendingCount,
-          percent_complete: Math.round((completedCount / templates.length) * 100)
-        },
-        items: products
-      }),
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(products),
     };
   } catch (error) {
     return { statusCode: 500, body: JSON.stringify({ error: error.message }) };
