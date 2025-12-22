@@ -1,75 +1,27 @@
-exports.handler = async () => {
-  const PRINTFUL_API_TOKEN = process.env.PRINTFUL_API_KEY;
-  const STORE_ID = process.env.PRINTFUL_STORE_ID;
+const axios = require('axios');
 
-  if (!PRINTFUL_API_TOKEN || !STORE_ID) {
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: "Configuration Error: Missing API Key or Store ID." })
-    };
-  }
-
-  let allProducts = [];
-  let offset = 0;
-  const limit = 100; // Max per page
-  let hasMore = true;
+exports.handler = async (event, context) => {
+  const PRINTFUL_API_KEY = process.env.PRINTFUL_API_KEY;
 
   try {
-    // 1. PAGINATION LOOP: Get every single product ID first
-    while (hasMore) {
-      const listUrl = `https://api.printful.com/store/products?store_id=${STORE_ID}&offset=${offset}&limit=${limit}`;
-      const listRes = await fetch(listUrl, {
-        headers: { 'Authorization': `Bearer ${PRINTFUL_API_TOKEN}` }
-      });
-      const listData = await listRes.json();
+    // We are now calling the PRODUCT-TEMPLATES endpoint
+    const response = await axios.get('https://api.printful.com/product-templates', {
+      headers: { 'Authorization': `Bearer ${PRINTFUL_API_KEY}` }
+    });
 
-      if (listData.code !== 200) throw new Error(listData.result || "API Error");
-
-      const batch = listData.result || [];
-      allProducts = [...allProducts, ...batch];
-
-      if (batch.length < limit) {
-        hasMore = false;
-      } else {
-        offset += limit;
-      }
-    }
-
-    // 2. INTERCEPTOR: Get detailed retail prices for every product found
-    const finalProducts = await Promise.all(allProducts.map(async (p) => {
-      try {
-        const detailRes = await fetch(`https://api.printful.com/store/products/${p.id}?store_id=${STORE_ID}`, {
-          headers: { 'Authorization': `Bearer ${PRINTFUL_API_TOKEN}` }
-        });
-        const detailData = await detailRes.json();
-        
-        // Grab the price from the first available variant
-        const variants = detailData.result.sync_variants || [];
-        const retailPrice = variants.length > 0 ? variants[0].retail_price : "0.00";
-
-        return {
-          id: p.id,
-          name: p.name,
-          thumbnail_url: p.thumbnail_url,
-          price: retailPrice
-        };
-      } catch (err) {
-        return { id: p.id, name: p.name, thumbnail_url: p.thumbnail_url, price: "N/A" };
-      }
+    // We map the templates so the HTML still recognizes "name", "thumbnail_url", etc.
+    const products = response.data.result.map(item => ({
+      id: item.id,
+      name: item.title, // Templates use 'title' instead of 'name'
+      thumbnail_url: item.thumbnail_url,
+      price: "95.00" // Since templates don't always have a retail price set
     }));
 
     return {
       statusCode: 200,
-      headers: { 
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*" 
-      },
-      body: JSON.stringify(finalProducts), 
+      body: JSON.stringify(products),
     };
   } catch (error) {
-    return { 
-      statusCode: 500, 
-      body: JSON.stringify({ error: "Repository Sync Failed: " + error.message }) 
-    };
+    return { statusCode: 500, body: JSON.stringify({ error: error.message }) };
   }
 };
