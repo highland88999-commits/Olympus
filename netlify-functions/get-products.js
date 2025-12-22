@@ -4,8 +4,7 @@ exports.handler = async (event, context) => {
   const PRINTFUL_API_KEY = process.env.PRINTFUL_API_KEY;
 
   try {
-    // 1. Fetch from Product Templates (the design library)
-    // This endpoint is NOT restricted by the "Manual Order" block you saw.
+    // We target product-templates to bypass the Etsy API restriction
     const response = await fetch('https://api.printful.com/product-templates?limit=100', {
       headers: { 'Authorization': `Bearer ${PRINTFUL_API_KEY}` }
     });
@@ -16,13 +15,13 @@ exports.handler = async (event, context) => {
     const products = templateList.map(item => {
       const images = [];
       
-      // Safety Net 1: Use the Template's internal high-res thumbnail
+      // Best mockup image for templates
       if (item.thumbnail_url) images.push(item.thumbnail_url);
       
-      // Safety Net 2: Check for a direct mockup preview URL
+      // Secondary preview image (often higher resolution)
       if (item.preview_url) images.push(item.preview_url);
       
-      // Safety Net 3: Pull any extra mockups (like different angles)
+      // Additional mockup angles if you've generated them
       if (item.extra_mockups && Array.isArray(item.extra_mockups)) {
         item.extra_mockups.forEach(m => {
           if (m.mockup_url) images.push(m.mockup_url);
@@ -32,8 +31,8 @@ exports.handler = async (event, context) => {
       return {
         id: item.id,
         name: item.title, 
-        // If absolutely no design is found, use a clean placeholder
-        images: images.length > 0 ? images : ["https://via.placeholder.com/600x600?text=Design+Pending"],
+        // Fallback to a Printful placeholder if no images exist
+        images: images.length > 0 ? images : ["https://www.printful.com/static/images/layout/default-product-image.png"],
         price: "95.00" 
       };
     });
@@ -49,7 +48,7 @@ exports.handler = async (event, context) => {
   } catch (error) {
     return { 
       statusCode: 500, 
-      body: JSON.stringify({ error: "Backdoor Fetch Failed", details: error.message }) 
+      body: JSON.stringify({ error: "Failed to fetch images", details: error.message }) 
     };
   }
 };
