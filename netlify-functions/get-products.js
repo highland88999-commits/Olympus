@@ -9,35 +9,33 @@ exports.handler = async (event, context) => {
     });
     
     const data = await response.json();
-
-    // PRINTFUL LOGIC ADJUSTMENT:
-    // Templates are stored in data.result.items, not just data.result
     const templateList = data.result && data.result.items ? data.result.items : [];
 
-    if (templateList.length === 0) {
-        console.log("No templates found or API response structure changed:", data);
-    }
+    const products = templateList.map(item => {
+      // Collect all available images into an array
+      const images = [];
+      if (item.thumbnail_url) images.push(item.thumbnail_url);
+      
+      // Add extra mockups if they exist
+      if (item.extra_mockups) {
+        item.extra_mockups.forEach(m => images.push(m.mockup_url));
+      }
 
-    const products = templateList.map(item => ({
-      id: item.id,
-      name: item.title, 
-      thumbnail_url: item.thumbnail_url,
-      price: "95.00" 
-    }));
+      return {
+        id: item.id,
+        name: item.title, 
+        // We pass the whole array of images to the frontend
+        images: images.length > 0 ? images : ["https://via.placeholder.com/300?text=Axiom+Design"],
+        price: "95.00" 
+      };
+    });
 
     return {
       statusCode: 200,
-      headers: { 
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*" 
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(products),
     };
   } catch (error) {
-    console.error("Critical Function Error:", error.message);
-    return { 
-      statusCode: 500, 
-      body: JSON.stringify({ error: "Server Error", details: error.message }) 
-    };
+    return { statusCode: 500, body: JSON.stringify({ error: error.message }) };
   }
 };
