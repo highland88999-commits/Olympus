@@ -5,14 +5,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AXIOM REPOSITORY | CAD</title>
     <style>
-        :root { --neon: #00f2ff; --bg: #050505; --crypto: #f7931a; --gold: #ffd700; }
+        :root { 
+            --neon: #00f2ff; 
+            --bg: #050505; 
+            --crypto: #f7931a; 
+            --gold: #ffd700; 
+            --silver-blue: #a5c9e1; 
+        }
+        
         .video-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; overflow: hidden; background: var(--bg); }
         .video-bg iframe { position: absolute; top: 50%; left: 50%; width: 100vw; height: 56.25vw; min-height: 100vh; min-width: 177.77vh; transform: translate(-50% , -50%); filter: brightness(0.35); }
+        
         body { color: white; font-family: 'Segoe UI', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
-        header { width: 100%; padding: 40px 0; text-align: center; background: rgba(0, 0, 0, 0.7); border-bottom: 1px solid #222; margin-bottom: 40px; backdrop-filter: blur(10px); }
+        
+        header { width: 100%; padding: 40px 0; text-align: center; background: rgba(0, 0, 0, 0.7); border-bottom: 1px solid #222; backdrop-filter: blur(10px); }
         h1 { letter-spacing: 8px; font-weight: 200; margin: 0; color: var(--neon); text-shadow: 0 0 15px var(--neon); }
         .sub-header { letter-spacing: 4px; font-weight: 200; margin-top: 15px; color: var(--gold); text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); font-size: 0.8rem; text-transform: uppercase; }
         
+        /* NEW SILVER-BLUE NOTIFICATION BANNER */
+        .notification-banner {
+            width: 100%;
+            padding: 15px 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            border-bottom: 1px solid rgba(165, 201, 225, 0.2);
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .banner-text {
+            color: var(--silver-blue);
+            font-size: 0.75rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-weight: 200;
+            text-shadow: 0 0 8px rgba(165, 201, 225, 0.4);
+        }
+
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; width: 90%; max-width: 1200px; padding-bottom: 50px; z-index: 1; }
         .card { background: rgba(17, 17, 17, 0.85); border: 1px solid #222; border-radius: 4px; padding: 20px; text-align: center; backdrop-filter: blur(5px); transition: 0.4s; }
         .card img { width: 100%; height: 300px; object-fit: cover; border-radius: 2px; }
@@ -39,10 +67,16 @@
     <div class="video-bg">
         <iframe src="https://www.youtube.com/embed/XBiB_m8vCTg?autoplay=1&loop=1&mute=1&controls=0&showinfo=0&rel=0&playlist=XBiB_m8vCTg" frameborder="0" allow="autoplay"></iframe>
     </div>
+
     <header>
         <h1>AXIOM REPOSITORY</h1>
         <div class="sub-header">1.5% of your purchase is dedicated to removing CO2 from the atmosphere.</div>
     </header>
+
+    <div class="notification-banner">
+        <div class="banner-text">New products are added frequently. Check back often.</div>
+    </div>
+
     <div class="grid" id="store-grid">INITIALIZING SYSTEM...</div>
 
     <script>
@@ -59,12 +93,13 @@
                         <div class="currency-tag">SYSTEM ACCESS | CAD</div>
                         
                         <select id="size-${p.id}" class="size-selector">
-                            <option value="" disabled selected>Select Size (S-2XL)</option>
-                            <option value="Small">Small</option>
-                            <option value="Medium">Medium</option>
-                            <option value="Large">Large</option>
-                            <option value="XL">XL</option>
-                            <option value="2XL">2XL</option>
+                            <option value="" disabled selected>Select Size</option>
+                            <option value="2XS">2XS</option><option value="XS">XS</option>
+                            <option value="S">S</option><option value="M">M</option>
+                            <option value="L">L</option><option value="XL">XL</option>
+                            <option value="2XL">2XL</option><option value="3XL">3XL</option>
+                            <option value="4XL">4XL</option><option value="5XL">5XL</option>
+                            <option value="6XL">6XL</option>
                         </select>
 
                         <div class="btn-container">
@@ -79,8 +114,6 @@
         function payFiat(id, name) {
             const size = document.getElementById(`size-${id}`).value;
             if (!size) return alert("Please select a size first!");
-
-            // STRIPE FIAT TERMINAL
             const STRIPE_LINK = "https://buy.stripe.com/test_fZu14n90c1J05W5eyi8g000"; 
             const finalDesc = `${name} | Size: ${size}`;
             window.location.href = `${STRIPE_LINK}?client_reference_id=${id}&description=${encodeURIComponent(finalDesc)}`;
@@ -89,8 +122,6 @@
         function payCrypto(id, name) {
             const size = document.getElementById(`size-${id}`).value;
             if (!size) return alert("Please select a size first!");
-
-            // COINBASE CRYPTO GATEWAY
             const COINBASE_LINK = "https://commerce.coinbase.com/checkout/9f0dce50-bb09-4f23-beda-7288bdc15aa5"; 
             const finalDesc = `${name} | Size: ${size}`;
             window.location.href = `${COINBASE_LINK}?client_reference_id=${id}&description=${encodeURIComponent(finalDesc)}`;
