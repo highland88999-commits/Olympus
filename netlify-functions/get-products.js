@@ -1,82 +1,41 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AXIOM REPOSITORY | CAD</title>
-    <style>
-        :root { --neon: #00f2ff; --bg: #050505; --crypto: #f7931a; --gold: #ffd700; --silver-blue: #a5c9e1; }
-        .video-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; overflow: hidden; background: var(--bg); }
-        .video-bg iframe { position: absolute; top: 50%; left: 50%; width: 100vw; height: 56.25vw; min-height: 100vh; min-width: 177.77vh; transform: translate(-50% , -50%); filter: brightness(0.35); }
-        body { color: white; font-family: 'Segoe UI', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
-        header { width: 100%; padding: 40px 0; text-align: center; background: rgba(0, 0, 0, 0.7); border-bottom: 1px solid #222; backdrop-filter: blur(10px); }
-        h1 { letter-spacing: 8px; font-weight: 200; margin: 0; color: var(--neon); text-shadow: 0 0 15px var(--neon); }
-        .sub-header { letter-spacing: 4px; font-weight: 200; margin-top: 15px; color: var(--gold); text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); font-size: 0.8rem; text-transform: uppercase; }
-        .notification-banner { width: 100%; padding: 15px 0; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(5px); border-bottom: 1px solid rgba(165, 201, 225, 0.2); text-align: center; margin-bottom: 40px; }
-        .banner-text { color: var(--silver-blue); font-size: 0.75rem; letter-spacing: 3px; text-transform: uppercase; font-weight: 200; text-shadow: 0 0 8px rgba(165, 201, 225, 0.4); }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; width: 90%; max-width: 1200px; padding-bottom: 50px; z-index: 1; }
-        .card { background: rgba(17, 17, 17, 0.85); border: 1px solid #222; border-radius: 4px; padding: 20px; text-align: center; backdrop-filter: blur(5px); transition: 0.4s; }
-        .card img { width: 100%; height: 300px; object-fit: cover; border-radius: 2px; }
-        h3 { font-size: 0.9rem; margin: 20px 0 10px; font-weight: 400; height: 2.5em; overflow: hidden; color: #ddd; }
-        .price { color: var(--neon); font-weight: bold; font-size: 1.2rem; margin-bottom: 5px; }
-        .currency-tag { font-size: 0.7rem; color: #888; letter-spacing: 1px; margin-bottom: 15px; }
-        .size-selector { width: 100%; padding: 10px; background: #111; border: 1px solid #333; color: white; margin-bottom: 15px; border-radius: 4px; cursor: pointer; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; }
-        .btn-container { display: flex; flex-direction: column; gap: 10px; }
-        .buy-btn { display: block; width: 100%; padding: 10px; background: none; border: 1px solid var(--neon); color: white; text-transform: uppercase; cursor: pointer; transition: 0.3s; font-size: 0.8rem; font-weight: bold; }
-        .buy-btn.fiat:hover { background: var(--neon); color: black; box-shadow: 0 0 15px var(--neon); }
-        .buy-btn.crypto { border-color: var(--crypto); color: var(--crypto); }
-        .buy-btn.crypto:hover { background: var(--crypto); color: white; box-shadow: 0 0 15px var(--crypto); }
-    </style>
-</head>
-<body>
-    <div class="video-bg"><iframe src="https://www.youtube.com/embed/XBiB_m8vCTg?autoplay=1&loop=1&mute=1&controls=0&showinfo=0&rel=0&playlist=XBiB_m8vCTg" frameborder="0" allow="autoplay"></iframe></div>
-    <header><h1>AXIOM REPOSITORY</h1><div class="sub-header">1.5% of your purchase is dedicated to removing CO2 from the atmosphere.</div></header>
-    <div class="notification-banner"><div class="banner-text">New products are added frequently. Check back often.</div></div>
-    <div class="grid" id="store-grid">INITIALIZING SYSTEM...</div>
-    <script>
-        async function fetchStore() {
-            const grid = document.getElementById('store-grid');
-            try {
-                const res = await fetch('/.netlify/functions/get-products');
-                const products = await res.json();
-                grid.innerHTML = products.map(p => `
-                    <div class="card">
-                        <img src="${p.thumbnail_url}" alt="${p.name}" loading="lazy">
-                        <h3>${p.name}</h3>
-                        <div class="price">$95.00</div>
-                        <div class="currency-tag">SYSTEM ACCESS | CAD</div>
-                        <select id="size-${p.id}" class="size-selector">
-                            <option value="" disabled selected>Select Size</option>
-                            <option value="2XS">2XS</option><option value="XS">XS</option>
-                            <option value="S">S</option><option value="M">M</option>
-                            <option value="L">L</option><option value="XL">XL</option>
-                            <option value="2XL">2XL</option><option value="3XL">3XL</option>
-                            <option value="4XL">4XL</option><option value="5XL">5XL</option>
-                            <option value="6XL">6XL</option>
-                        </select>
-                        <div class="btn-container">
-                            <button class="buy-btn fiat" onclick="payFiat('${p.id}', '${p.name}')">Buy with Fiat</button>
-                            <button class="buy-btn crypto" onclick="payCrypto('${p.id}', '${p.name}')">Buy with Crypto</button>
-                        </div>
-                    </div>
-                `).join('');
-            } catch (e) { grid.innerHTML = "Connection Error."; }
-        }
-        function payFiat(id, name) {
-            const size = document.getElementById(`size-${id}`).value;
-            if (!size) return alert("Please select a size first!");
-            const STRIPE_LINK = "https://buy.stripe.com/test_fZu14n90c1J05W5eyi8g000"; 
-            const finalDesc = `${name} | Size: ${size}`;
-            window.location.href = `${STRIPE_LINK}?client_reference_id=${id}&description=${encodeURIComponent(finalDesc)}`;
-        }
-        function payCrypto(id, name) {
-            const size = document.getElementById(`size-${id}`).value;
-            if (!size) return alert("Please select a size first!");
-            const COINBASE_LINK = "https://commerce.coinbase.com/checkout/9f0dce50-bb09-4f23-beda-7288bdc15aa5"; 
-            const finalDesc = `${name} | Size: ${size}`;
-            window.location.href = `${COINBASE_LINK}?client_reference_id=${id}&description=${encodeURIComponent(finalDesc)}`;
-        }
-        fetchStore();
-    </script>
-</body>
-</html>
+const fetch = require('node-fetch');
+
+exports.handler = async (event, context) => {
+  const API_KEY = process.env.PRINTFUL_API_KEY;
+  const STORE_ID = '17419146'; 
+
+  try {
+    const response = await fetch(`https://api.printful.com/store/products?store_id=${STORE_ID}`, {
+      headers: { 'Authorization': `Bearer ${API_KEY}` }
+    });
+    
+    const data = await response.json();
+    
+    // Safety check to ensure we got results
+    if (!data.result) {
+      throw new Error("No products found in this store.");
+    }
+
+    const products = data.result.map(p => ({
+      id: p.id,
+      name: p.name,
+      thumbnail_url: p.thumbnail_url,
+      price: "95.00"
+    }));
+
+    return {
+      statusCode: 200,
+      headers: { 
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*" 
+      },
+      body: JSON.stringify(products),
+    };
+  } catch (error) {
+    console.error("Store Fetch Error:", error.message);
+    return { 
+      statusCode: 500, 
+      body: JSON.stringify({ error: "Failed to load Store products." }) 
+    };
+  }
+};
