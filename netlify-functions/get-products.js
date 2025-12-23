@@ -9,25 +9,31 @@ exports.handler = async (event, context) => {
       headers: { 'Authorization': `Bearer ${API_KEY}` }
     });
     
-    if (!response.ok) throw new Error("Connection Error");
+    if (!response.ok) throw new Error("Printful API Connection Failed");
 
     const data = await response.json();
     const syncProducts = data.result || [];
 
-    // Map strictly to the property 'thumbnail_url' used in your HTML script
+    // This matches p.thumbnail_url in your HTML
     const products = syncProducts.map(p => ({
       id: p.id,
       name: p.name,
-      thumbnail_url: p.thumbnail_url,
+      thumbnail_url: p.thumbnail_url, 
       price: "95.00"
     }));
 
     return {
       statusCode: 200,
-      headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" },
+      headers: { 
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*" 
+      },
       body: JSON.stringify(products),
     };
   } catch (error) {
-    return { statusCode: 500, body: JSON.stringify({ error: error.message }) };
+    return { 
+      statusCode: 500, 
+      body: JSON.stringify({ error: "Failed to load Store products." }) 
+    };
   }
 };
