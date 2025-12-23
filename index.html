@@ -22,30 +22,44 @@
         h1 { letter-spacing: 8px; font-weight: 200; margin: 0; color: var(--neon); text-shadow: 0 0 15px var(--neon); }
         .sub-header { letter-spacing: 4px; font-weight: 200; margin-top: 15px; color: var(--gold); text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); font-size: 0.8rem; text-transform: uppercase; }
         
-        /* NEW SILVER-BLUE NOTIFICATION BANNER */
         .notification-banner {
-            width: 100%;
-            padding: 15px 0;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(5px);
-            border-bottom: 1px solid rgba(165, 201, 225, 0.2);
-            text-align: center;
-            margin-bottom: 40px;
+            width: 100%; padding: 15px 0; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(5px);
+            border-bottom: 1px solid rgba(165, 201, 225, 0.2); text-align: center; margin-bottom: 40px;
         }
-        .banner-text {
+        .banner-text { color: var(--silver-blue); font-size: 0.75rem; letter-spacing: 3px; text-transform: uppercase; font-weight: 200; text-shadow: 0 0 8px rgba(165, 201, 225, 0.4); }
+
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; width: 90%; max-width: 1200px; padding-bottom: 100px; z-index: 1; }
+        .card { background: rgba(17, 17, 17, 0.85); border: 1px solid #222; border-radius: 4px; padding: 20px; text-align: center; backdrop-filter: blur(5px); transition: 0.4s; }
+        
+        /* HORIZONTAL MOCKUP SLIDER */
+        .mockup-viewport {
+            width: 100%;
+            overflow-x: auto;
+            display: flex;
+            scroll-snap-type: x mandatory;
+            gap: 0;
+            border-radius: 2px;
+            background: #000;
+            scrollbar-width: none; 
+        }
+        .mockup-viewport::-webkit-scrollbar { display: none; }
+        .mockup-viewport img {
+            flex: 0 0 100%;
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            scroll-snap-align: start;
+        }
+        .scroll-indicator {
+            font-size: 0.6rem;
             color: var(--silver-blue);
-            font-size: 0.75rem;
-            letter-spacing: 3px;
+            margin: 10px 0;
+            letter-spacing: 2px;
+            opacity: 0.6;
             text-transform: uppercase;
-            font-weight: 200;
-            text-shadow: 0 0 8px rgba(165, 201, 225, 0.4);
         }
 
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; width: 90%; max-width: 1200px; padding-bottom: 50px; z-index: 1; }
-        .card { background: rgba(17, 17, 17, 0.85); border: 1px solid #222; border-radius: 4px; padding: 20px; text-align: center; backdrop-filter: blur(5px); transition: 0.4s; }
-        .card img { width: 100%; height: 300px; object-fit: cover; border-radius: 2px; }
-        
-        h3 { font-size: 0.9rem; margin: 20px 0 10px; font-weight: 400; height: 2.5em; overflow: hidden; color: #ddd; }
+        h3 { font-size: 0.8rem; margin: 10px 0; font-weight: 400; height: 2.5em; overflow: hidden; color: #ddd; text-transform: uppercase; letter-spacing: 1px; }
         .price { color: var(--neon); font-weight: bold; font-size: 1.2rem; margin-bottom: 5px; }
         .currency-tag { font-size: 0.7rem; color: #888; letter-spacing: 1px; margin-bottom: 15px; }
 
@@ -54,7 +68,6 @@
             color: white; margin-bottom: 15px; border-radius: 4px; cursor: pointer;
             font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px;
         }
-        .size-selector:focus { border-color: var(--neon); outline: none; }
 
         .btn-container { display: flex; flex-direction: column; gap: 10px; }
         .buy-btn { display: block; width: 100%; padding: 10px; background: none; border: 1px solid var(--neon); color: white; text-transform: uppercase; cursor: pointer; transition: 0.3s; font-size: 0.8rem; font-weight: bold; }
@@ -87,7 +100,10 @@
                 const products = await res.json();
                 grid.innerHTML = products.map(p => `
                     <div class="card">
-                        <img src="${p.thumbnail_url}" alt="${p.name}" loading="lazy">
+                        <div class="mockup-viewport">
+                            ${p.images.map(imgUrl => `<img src="${imgUrl}" loading="lazy" alt="${p.name}">`).join('')}
+                        </div>
+                        <div class="scroll-indicator">⟵ SWIPE ARCHIVE ⟶</div>
                         <h3>${p.name}</h3>
                         <div class="price">$95.00</div>
                         <div class="currency-tag">SYSTEM ACCESS | CAD</div>
