@@ -19,16 +19,19 @@
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; width: 90%; max-width: 1200px; padding-bottom: 100px; }
         .card { background: rgba(17,17,17,0.85); border: 1px solid #222; padding: 20px; text-align: center; backdrop-filter: blur(5px); }
         
-        /* SLIDER STYLE */
         .mockup-viewport { width: 100%; display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; border-radius: 2px; }
         .mockup-viewport::-webkit-scrollbar { display: none; }
         .mockup-viewport img { flex: 0 0 100%; width: 100%; height: 300px; object-fit: cover; scroll-snap-align: start; }
         .scroll-indicator { font-size: 0.6rem; color: var(--silver-blue); margin: 10px 0; letter-spacing: 2px; opacity: 0.6; }
 
         .price { color: var(--neon); font-weight: bold; font-size: 1.2rem; }
-        .size-selector { width: 100%; padding: 10px; background: #111; border: 1px solid #333; color: white; margin: 15px 0; }
-        .buy-btn { width: 100%; padding: 10px; background: none; border: 1px solid var(--neon); color: white; cursor: pointer; font-weight: bold; margin-bottom: 10px; }
-        .buy-btn.fiat:hover { background: var(--neon); color: black; }
+        .size-selector { width: 100%; padding: 10px; background: #111; border: 1px solid #333; color: white; margin: 15px 0; border-radius: 4px; }
+        
+        .btn-container { display: flex; flex-direction: column; gap: 10px; }
+        .buy-btn { width: 100%; padding: 10px; background: none; border: 1px solid var(--neon); color: white; cursor: pointer; font-weight: bold; text-transform: uppercase; transition: 0.3s; }
+        .buy-btn.fiat:hover { background: var(--neon); color: black; box-shadow: 0 0 15px var(--neon); }
+        .buy-btn.crypto { border-color: var(--crypto); color: var(--crypto); }
+        .buy-btn.crypto:hover { background: var(--crypto); color: white; box-shadow: 0 0 15px var(--crypto); }
     </style>
 </head>
 <body>
@@ -53,9 +56,13 @@
                         <h3>${p.name}</h3>
                         <div class="price">$95.00</div>
                         <select id="size-${p.id}" class="size-selector">
-                            <option value="S">S</option><option value="M">M</option><option value="L">L</option><option value="XL">XL</option>
+                            <option value="" disabled selected>Select Size</option>
+                            <option value="S">S</option><option value="M">M</option><option value="L">L</option><option value="XL">XL</option><option value="2XL">2XL</option>
                         </select>
-                        <button class="buy-btn fiat" onclick="payFiat('${p.id}', '${p.name}')">Buy with Fiat</button>
+                        <div class="btn-container">
+                            <button class="buy-btn fiat" onclick="payFiat('${p.id}', '${p.name}')">Buy with Fiat</button>
+                            <button class="buy-btn crypto" onclick="payCrypto('${p.id}', '${p.name}')">Buy with Crypto</button>
+                        </div>
                     </div>
                 `).join('');
             } catch (e) { console.error(e); }
@@ -63,8 +70,16 @@
 
         function payFiat(id, name) {
             const size = document.getElementById(`size-${id}`).value;
+            if (!size) return alert("Please select a size!");
             const STRIPE_LINK = "https://buy.stripe.com/4gMaEWdE3dha4GU6oo"; 
             window.location.href = `${STRIPE_LINK}?client_reference_id=${id}&description=${encodeURIComponent(name + ' | Size: ' + size)}`;
+        }
+
+        function payCrypto(id, name) {
+            const size = document.getElementById(`size-${id}`).value;
+            if (!size) return alert("Please select a size!");
+            const COINBASE_LINK = "https://commerce.coinbase.com/checkout/9f0dce50-bb09-4f23-beda-7288bdc15aa5"; 
+            window.location.href = `${COINBASE_LINK}?client_reference_id=${id}&description=${encodeURIComponent(name + ' | Size: ' + size)}`;
         }
         fetchStore();
     </script>
