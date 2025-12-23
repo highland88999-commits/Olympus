@@ -9,14 +9,13 @@ exports.handler = async (event, context) => {
       headers: { 'Authorization': `Bearer ${API_KEY}` }
     });
     
-    const data = await response.json();
-    
-    // Safety check to ensure we got results
-    if (!data.result) {
-      throw new Error("No products found in this store.");
-    }
+    if (!response.ok) throw new Error("Connection Error");
 
-    const products = data.result.map(p => ({
+    const data = await response.json();
+    const syncProducts = data.result || [];
+
+    // Map strictly to the property 'thumbnail_url' used in your HTML script
+    const products = syncProducts.map(p => ({
       id: p.id,
       name: p.name,
       thumbnail_url: p.thumbnail_url,
@@ -25,17 +24,10 @@ exports.handler = async (event, context) => {
 
     return {
       statusCode: 200,
-      headers: { 
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*" 
-      },
+      headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" },
       body: JSON.stringify(products),
     };
   } catch (error) {
-    console.error("Store Fetch Error:", error.message);
-    return { 
-      statusCode: 500, 
-      body: JSON.stringify({ error: "Failed to load Store products." }) 
-    };
+    return { statusCode: 500, body: JSON.stringify({ error: error.message }) };
   }
 };
