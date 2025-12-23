@@ -14,11 +14,10 @@ exports.handler = async (event, context) => {
     const data = await response.json();
     const syncProducts = data.result || [];
 
-    // Mapping to an array of images to enable the horizontal slider
+    // This format creates the 'images' array your HTML slider needs
     const products = syncProducts.map(p => ({
       id: p.id,
       name: p.name,
-      // We wrap the thumbnail in an array so the HTML slider has something to map over
       images: [p.thumbnail_url], 
       price: "95.00"
     }));
@@ -32,7 +31,6 @@ exports.handler = async (event, context) => {
       body: JSON.stringify(products),
     };
   } catch (error) {
-    console.error("Backend Error:", error.message);
     return { 
       statusCode: 500, 
       body: JSON.stringify({ error: "Failed to load Store products." }) 
