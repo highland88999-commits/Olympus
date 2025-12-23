@@ -33,7 +33,7 @@ exports.handler = async (event, context) => {
 
     return {
       statusCode: 200,
-      headers: { "Content-Type": "json", "Access-Control-Allow-Origin": "*" },
+      headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" },
       body: JSON.stringify(productsWithMockups),
     };
   } catch (error) {
