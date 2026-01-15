@@ -3,123 +3,219 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AXIOM REPOSITORY | CAD</title>
+    <title>OLYMPIAN HOODIES | AXIOM</title>
     <style>
         :root { 
             --neon: #00f2ff; --bg: #050505; --crypto: #f7931a; 
             --gold: #ffd700; --silver-blue: #a5c9e1; 
         }
-        /* Ensure the body expands to content and doesn't scroll inside the iframe */
-        html, body { height: auto; overflow: hidden; background: var(--bg); margin: 0; }
         
-        .video-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; background: var(--bg); overflow: hidden; }
-        .video-bg iframe { position: absolute; top: 50%; left: 50%; width: 100vw; height: 56.25vw; min-height: 100vh; min-width: 177.77vh; transform: translate(-50% , -50%); filter: brightness(0.35); }
+        html, body { height: 100%; background: var(--bg); margin: 0; color: white; font-family: 'Segoe UI', sans-serif; overflow-x: hidden; }
         
-        body { color: white; font-family: 'Segoe UI', sans-serif; display: flex; flex-direction: column; align-items: center; }
-        header { width: 100%; padding: 40px 0; text-align: center; background: rgba(0, 0, 0, 0.7); border-bottom: 1px solid #222; backdrop-filter: blur(10px); }
-        h1 { letter-spacing: 8px; font-weight: 200; margin: 0; color: var(--neon); text-shadow: 0 0 15px var(--neon); }
-        .sub-header { letter-spacing: 4px; font-weight: 200; margin-top: 15px; color: var(--gold); text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); font-size: 0.8rem; text-transform: uppercase; padding: 0 10px; }
-        
-        .notification-banner { width: 100%; padding: 15px 0; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(5px); border-bottom: 1px solid rgba(165, 201, 225, 0.2); text-align: center; margin-bottom: 40px; }
-        .banner-text { color: var(--silver-blue); font-size: 0.75rem; letter-spacing: 3px; text-transform: uppercase; font-weight: 200; }
+        /* Spark Canvas */
+        #sparkCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
 
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; width: 90%; max-width: 1200px; padding-bottom: 50px; z-index: 1; }
-        .card { background: rgba(17, 17, 17, 0.85); border: 1px solid #222; border-radius: 4px; padding: 20px; text-align: center; backdrop-filter: blur(5px); }
-        
-        .mockup-viewport { width: 100%; overflow-x: auto; display: flex; scroll-snap-type: x mandatory; border-radius: 2px; background: #000; scrollbar-width: none; }
-        .mockup-viewport::-webkit-scrollbar { display: none; }
-        .mockup-viewport img { flex: 0 0 100%; width: 100%; height: 300px; object-fit: cover; scroll-snap-align: start; }
-        .scroll-indicator { font-size: 0.6rem; color: var(--silver-blue); margin: 10px 0; letter-spacing: 2px; opacity: 0.6; text-transform: uppercase; }
+        /* Background Video */
+        .video-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; opacity: 0.3; }
+        .video-bg iframe { width: 100vw; height: 56.25vw; min-height: 100vh; min-width: 177.77vh; transform: translate(-50%, -50%); position: absolute; top: 50%; left: 50%; }
 
-        h3 { font-size: 0.8rem; margin: 10px 0; font-weight: 400; color: #ddd; text-transform: uppercase; }
-        .price { color: var(--neon); font-weight: bold; font-size: 1.2rem; }
-        
-        .size-selector { width: 100%; padding: 10px; background: #111; border: 1px solid #333; color: white; margin-bottom: 15px; border-radius: 4px; }
-        .btn-container { display: flex; flex-direction: column; gap: 10px; }
-        .buy-btn { width: 100%; padding: 10px; background: none; border: 1px solid var(--neon); color: white; text-transform: uppercase; cursor: pointer; font-weight: bold; }
-        .buy-btn.fiat:hover { background: var(--neon); color: black; }
+        header { position: relative; z-index: 10; text-align: center; padding: 60px 0; background: rgba(0,0,0,0.8); border-bottom: 1px solid #222; backdrop-filter: blur(5px); }
+        h1 { letter-spacing: 12px; color: var(--neon); text-shadow: 0 0 20px var(--neon); margin: 0; font-weight: 200; font-size: 2.5rem; }
+
+        /* 4-Item Grid */
+        .grid { 
+            position: relative; z-index: 5;
+            display: grid; grid-template-columns: repeat(2, 1fr); 
+            gap: 30px; width: 90%; max-width: 1100px; margin: 50px auto;
+        }
+
+        .card { 
+            background: rgba(10, 10, 10, 0.85); border: 1px solid #222; 
+            padding: 20px; cursor: pointer; transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: center;
+        }
+
+        /* Expanded State Logic */
+        .card.expanded {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 85vw; height: 80vh; z-index: 100;
+            flex-direction: row; padding: 50px;
+            background: rgba(5, 5, 5, 0.98); border: 1px solid var(--neon);
+            cursor: default;
+        }
+
+        /* Close Button Styling */
+        .close-btn {
+            position: absolute; top: 20px; right: 30px;
+            font-size: 2rem; color: var(--silver-blue);
+            cursor: pointer; display: none; z-index: 110;
+            transition: color 0.3s;
+        }
+        .card.expanded .close-btn { display: block; }
+        .close-btn:hover { color: var(--neon); }
+
+        /* Slider elements */
+        .slider-container { width: 100%; position: relative; }
+        .card.expanded .slider-container { width: 55%; height: 100%; }
+        .mockup-viewport { display: flex; overflow: hidden; scroll-behavior: smooth; border-radius: 4px; }
+        .mockup-viewport img { flex: 0 0 100%; width: 100%; height: 400px; object-fit: contain; }
+        .card.expanded .mockup-viewport img { height: 100%; }
+
+        .slider-nav { display: flex; justify-content: center; gap: 8px; margin-top: 15px; }
+        .dot { width: 6px; height: 6px; border-radius: 50%; background: #333; transition: 0.3s; cursor: pointer; }
+        .dot.active { background: var(--neon); box-shadow: 0 0 8px var(--neon); transform: scale(1.3); }
+
+        /* Details */
+        .details { display: none; flex-direction: column; justify-content: center; width: 45%; padding-left: 40px; }
+        .card.expanded .details { display: flex; }
+        .grid-label { margin-top: 15px; font-size: 0.8rem; letter-spacing: 2px; color: var(--silver-blue); text-transform: uppercase; }
+        .price { font-size: 2.5rem; color: var(--neon); margin: 20px 0; font-weight: bold; }
+
+        .buy-btn { 
+            padding: 15px; margin-bottom: 10px; background: none; border: 1px solid var(--neon); 
+            color: white; font-weight: bold; text-transform: uppercase; cursor: pointer; transition: 0.3s;
+        }
+        .buy-btn:hover { background: var(--neon); color: black; }
         .buy-btn.crypto { border-color: var(--crypto); color: var(--crypto); }
-        .buy-btn.crypto:hover { background: var(--crypto); color: white; }
+
+        .pagination { display: flex; justify-content: center; gap: 15px; padding-bottom: 100px; position: relative; z-index: 5; }
+        .page-btn { background: none; border: 1px solid #333; color: white; padding: 10px 20px; cursor: pointer; }
     </style>
 </head>
-<body id="content-wrapper">
+<body>
+
+    <canvas id="sparkCanvas"></canvas>
+
     <div class="video-bg">
-        <iframe src="https://www.youtube.com/embed/gv1VD4b4vpA?autoplay=1&loop=1&mute=1&controls=0&showinfo=0&rel=0&playlist=gv1VD4b4vpA" frameborder="0" allow="autoplay"></iframe>
+        <iframe src="https://www.youtube.com/embed/gv1VD4b4vpA?autoplay=1&loop=1&mute=1&controls=0&showinfo=0&rel=0&playlist=gv1VD4b4vpA" frameborder="0"></iframe>
     </div>
 
     <header>
-        <h1>AXIOM REPOSITORY</h1>
-        <div class="sub-header">1.5% of your purchase is dedicated to removing CO2 from the atmosphere.</div>
+        <h1>OLYMPIAN HOODIES</h1>
     </header>
 
-    <div class="notification-banner">
-        <div class="banner-text">Archive updated in real-time. Suit up.</div>
-    </div>
-
-    <div class="grid" id="store-grid">INITIALIZING SYSTEM...</div>
+    <div class="grid" id="store-grid">INITIALIZING...</div>
+    <div class="pagination" id="pagination"></div>
 
     <script>
-        // 1. AUTO-RESIZER LOGIC 
-        const sendHeight = () => {
-            const height = document.getElementById('content-wrapper').offsetHeight;
-            window.parent.postMessage({ type: 'resize', height: height }, "*");
-        };
+        // SPARK ENGINE
+        const canvas = document.getElementById('sparkCanvas');
+        const ctx = canvas.getContext('2d');
+        let sparks = [];
 
-        // Create a watchman to monitor height changes (like when images load)
-        const resizeObserver = new ResizeObserver(entries => {
-            sendHeight();
-        });
-        resizeObserver.observe(document.getElementById('content-wrapper'));
+        function initCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
 
-        // 2. STORE FETCH LOGIC
+        class Spark {
+            constructor() { this.reset(); }
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = canvas.height + 100;
+                this.size = Math.random() * 2;
+                this.speedY = Math.random() * -1.5 - 0.5;
+                this.speedX = (Math.random() - 0.5) * 1;
+                this.opacity = Math.random() * 0.5 + 0.5;
+                this.color = Math.random() > 0.5 ? '#00f2ff' : '#ffd700';
+            }
+            update() {
+                this.y += this.speedY;
+                this.x += this.speedX;
+                this.opacity -= 0.002;
+                if (this.opacity <= 0 || this.y < -10) this.reset();
+            }
+            draw() {
+                ctx.globalAlpha = this.opacity;
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < 60; i++) sparks.push(new Spark());
+
+        function animateSparks() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            sparks.forEach(s => { s.update(); s.draw(); });
+            requestAnimationFrame(animateSparks);
+        }
+        window.addEventListener('resize', initCanvas);
+        initCanvas(); animateSparks();
+
+        // STORE LOGIC
+        let allProducts = [];
+        let currentPage = 0;
+        const itemsPerPage = 4;
+
         async function fetchStore() {
-            const grid = document.getElementById('store-grid');
             try {
                 const res = await fetch('/.netlify/functions/get-products');
-                const products = await res.json();
-                
-                if (!products || products.length === 0) {
-                    grid.innerHTML = "SYSTEM CACHE EMPTY";
-                    return;
-                }
+                allProducts = await res.json();
+                renderGrid();
+            } catch (e) { document.getElementById('store-grid').innerHTML = "SYSTEM OFFLINE"; }
+        }
 
-                grid.innerHTML = products.map(p => `
-                    <div class="card">
-                        <div class="mockup-viewport">
-                            ${p.images.map(imgUrl => `<img src="${imgUrl}" loading="lazy">`).join('')}
+        function renderGrid() {
+            const grid = document.getElementById('store-grid');
+            const start = currentPage * itemsPerPage;
+            const items = allProducts.slice(start, start + itemsPerPage);
+
+            grid.innerHTML = items.map(p => `
+                <div class="card" onclick="expandCard(this)" ondblclick="shrinkCard(this)">
+                    <div class="close-btn" onclick="event.stopPropagation(); shrinkCard(this.parentElement)">×</div>
+                    <div class="slider-container" onclick="event.stopPropagation()">
+                        <div class="mockup-viewport" id="slider-${p.id}">
+                            ${p.images.map(img => `<img src="${img}" loading="lazy">`).join('')}
                         </div>
-                        <div class="scroll-indicator">⟵ SWIPE ARCHIVE ⟶</div>
-                        <h3>${p.name}</h3>
-                        <div class="price">$95.00</div>
-                        <select id="size-${p.id}" class="size-selector">
-                            <option value="" disabled selected>SELECT SIZE</option>
-                            <option value="S">S</option><option value="M">M</option><option value="L">L</option><option value="XL">XL</option><option value="2XL">2XL</option>
-                        </select>
-                        <div class="btn-container">
-                            <button class="buy-btn fiat" onclick="payFiat('${p.id}', '${p.name}')">Buy with Fiat</button>
-                            <button class="buy-btn crypto" onclick="payCrypto('${p.id}', '${p.name}')">Buy with Crypto</button>
+                        <div class="slider-nav">
+                            ${p.images.map((_, i) => `<div class="dot ${i===0?'active':''}" onclick="slideTo('${p.id}', ${i})"></div>`).join('')}
                         </div>
                     </div>
-                `).join('');
-                
-                // Final height check after products render
-                setTimeout(sendHeight, 500); 
-
-            } catch (e) { grid.innerHTML = "CONNECTION ERROR."; }
+                    <div class="details">
+                        <h2>${p.name}</h2>
+                        <div class="price">$95.00</div>
+                        <select class="buy-btn" style="background:#111; margin-bottom: 20px;">
+                            <option>S</option><option>M</option><option>L</option><option>XL</option>
+                        </select>
+                        <button class="buy-btn" onclick="payFiat('${p.id}')">Buy with Fiat</button>
+                        <button class="buy-btn crypto" onclick="payCrypto('${p.id}')">Buy with Crypto</button>
+                    </div>
+                    <div class="grid-label">${p.name}</div>
+                </div>
+            `).join('');
+            renderPagination();
         }
 
-        function payFiat(id, name) {
-            const size = document.getElementById(`size-${id}`).value;
-            if (!size) return alert("Please select a size!");
-            window.location.href = `https://buy.stripe.com/4gMaEWdE3dha4GU6oo?client_reference_id=${id}&description=${encodeURIComponent(name + ' | Size: ' + size)}`;
+        function expandCard(card) {
+            if (card.classList.contains('expanded')) return;
+            document.querySelectorAll('.card.expanded').forEach(c => c.classList.remove('expanded'));
+            card.classList.add('expanded');
         }
 
-        function payCrypto(id, name) {
-            const size = document.getElementById(`size-${id}`).value;
-            if (!size) return alert("Please select a size!");
-            window.location.href = `https://commerce.coinbase.com/checkout/9f0dce50-bb09-4f23-beda-7288bdc15aa5?client_reference_id=${id}&description=${encodeURIComponent(name + ' | Size: ' + size)}`;
+        function shrinkCard(card) {
+            card.classList.remove('expanded');
         }
-        
+
+        function slideTo(id, index) {
+            const slider = document.getElementById(`slider-${id}`);
+            const dots = slider.parentElement.querySelectorAll('.dot');
+            slider.scrollTo({ left: slider.offsetWidth * index, behavior: 'smooth' });
+            dots.forEach((d, i) => d.classList.toggle('active', i === index));
+        }
+
+        function renderPagination() {
+            const nav = document.getElementById('pagination');
+            const pages = Math.ceil(allProducts.length / itemsPerPage);
+            nav.innerHTML = Array.from({length: pages}, (_, i) => `
+                <button class="page-btn" onclick="currentPage=${i}; renderGrid();" 
+                        style="${i === currentPage ? 'border-color: var(--neon); color: var(--neon);' : ''}">
+                    ${(i + 1).toString().padStart(2, '0')}
+                </button>
+            `).join('');
+        }
+
         fetchStore();
     </script>
 </body>
