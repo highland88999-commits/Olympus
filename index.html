@@ -6,7 +6,7 @@
     <title>OLYMPIAN HOODIES | AXIOM</title>
     <style>
         :root { 
-            --fire-glow: #ffae00; --fire-core: #ff4500; --cyan: #00f2ff;
+            --fire-glow: #ffae00; --fire-core: #ff4500;
             --header-h: 60px; --search-h: 65px; --action-h: 85px;
         }
 
@@ -16,20 +16,23 @@
             overflow: hidden; touch-action: manipulation;
         }
 
-        /* FRACTAL BACKGROUND LAYER */
+        /* FRACTAL ENGINE LAYER */
         canvas#fractalCanvas { position: fixed; top: 0; left: 0; z-index: 0; pointer-events: none; }
 
-        header { position: relative; z-index: 10; height: var(--header-h); display: flex; align-items: center; justify-content: center; }
+        /* HEADER - FULLY TRANSPARENT */
+        header { position: relative; z-index: 10; height: var(--header-h); display: flex; align-items: center; justify-content: center; background: transparent; }
         h1 { letter-spacing: 10px; color: var(--fire-glow); text-shadow: 0 0 15px var(--fire-core); font-size: 1.4rem; margin: 0; font-weight: 200; }
 
-        .search-container { position: relative; z-index: 20; height: var(--search-h); display: flex; align-items: center; }
+        /* SEARCH - GLASS MORPHISM / TRANSPARENT */
+        .search-container { position: relative; z-index: 20; height: var(--search-h); display: flex; align-items: center; background: transparent; }
         #search-input { 
             width: 90%; margin: 0 auto; padding: 12px; 
-            background: rgba(0,0,0,0.85); border: 1px solid var(--fire-core); 
+            background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 69, 0, 0.5); 
             color: var(--fire-glow); outline: none; box-sizing: border-box;
+            backdrop-filter: blur(2px);
         }
 
-        /* 4-ITEM SQUARE GRID */
+        /* 4-ITEM GRID - NO CARD BG */
         #store-grid { 
             position: relative; z-index: 5; height: calc(100vh - var(--header-h) - var(--search-h) - 100px);
             display: grid; grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(2, 1fr);
@@ -37,42 +40,52 @@
         }
 
         .card { 
-            background: rgba(0, 0, 0, 0.6); border: 1px solid rgba(255, 69, 0, 0.3); 
+            background: transparent; border: 1px solid rgba(255, 69, 0, 0.2); 
             padding: 8px; cursor: pointer; display: flex; flex-direction: column; overflow: hidden;
         }
 
-        /* EXPANDED VIEW */
+        /* EXPANDED VIEW - FULLY TRANSPARENT OVERLAY */
         .card.expanded {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; 
             z-index: 100; display: flex; flex-direction: column;
-            background: rgba(0, 0, 0, 0.98); padding: 0;
-            transition: transform 0.3s ease-out;
+            background: rgba(0, 0, 0, 0.85); /* Slight tint for text readability */
+            padding: 0; transition: transform 0.3s ease-out;
         }
 
-        .slider-container { width: 100%; flex-grow: 1; position: relative; overflow: hidden; }
+        /* MOCKUPS - LIGHTEN BLEND ALLOWS TREE TO SHOW THROUGH DARK FABRIC */
+        .slider-container { width: 100%; flex-grow: 1; position: relative; overflow: hidden; background: transparent; }
         .mockup-viewport { display: flex; height: 100%; overflow: hidden; scroll-behavior: smooth; }
-        .mockup-viewport img { height: 100%; width: 100%; object-fit: contain; mix-blend-mode: lighten; }
+        .mockup-viewport img { 
+            height: 100%; width: 100%; object-fit: contain; 
+            mix-blend-mode: lighten; 
+        }
 
-        /* ACTION ROW */
+        /* ACTION ROW - TRANSPARENT BUTTONS */
         .action-row {
             height: var(--action-h); display: none; grid-template-columns: 1fr 1.2fr 1.2fr; gap: 10px;
-            padding: 15px; background: #000; border-top: 1px solid var(--fire-core); box-sizing: border-box;
+            padding: 15px; background: transparent; border-top: 1px solid rgba(255, 69, 0, 0.5); box-sizing: border-box;
         }
         .card.expanded .action-row { display: grid; }
 
-        .buy-btn { height: 100%; background: none; border: 1px solid var(--fire-glow); color: white; font-size: 0.7rem; font-weight: bold; }
+        .buy-btn { 
+            height: 100%; background: rgba(255, 255, 255, 0.05); 
+            border: 1px solid var(--fire-glow); color: white; font-size: 0.7rem; font-weight: bold; 
+        }
         .buy-btn.crypto { border-color: #f7931a; color: #f7931a; }
-        .size-select { height: 100%; background: #111; color: white; border: 1px solid #444; font-size: 0.8rem; }
+        .size-select { 
+            height: 100%; background: rgba(0,0,0,0.5); color: white; 
+            border: 1px solid #444; font-size: 0.8rem; border-radius: 0;
+        }
 
-        /* PAGINATION BARS */
+        /* PAGINATION BARS - GHOST STYLE */
         .pagination-container { position: relative; z-index: 10; height: 60px; display: flex; align-items: center; justify-content: center; width: 100%; }
         .pagination-bar { display: flex; gap: 10px; }
-        .page-dot { width: 35px; height: 5px; background: rgba(255, 69, 0, 0.2); cursor: pointer; }
+        .page-dot { width: 35px; height: 3px; background: rgba(255, 255, 255, 0.1); cursor: pointer; }
         .page-dot.active { background: var(--fire-glow); box-shadow: 0 0 10px var(--fire-core); }
 
         .close-btn { position: absolute; top: 15px; right: 20px; font-size: 2.5rem; color: var(--fire-glow); z-index: 110; display: none; cursor: pointer; }
         .card.expanded .close-btn { display: block; }
-        .grid-label { text-align: center; font-size: 0.6rem; color: var(--fire-glow); margin-top: 5px; text-transform: uppercase; }
+        .grid-label { text-align: center; font-size: 0.6rem; color: var(--fire-glow); margin-top: 5px; text-transform: uppercase; background: transparent; }
     </style>
 </head>
 <body>
@@ -85,7 +98,7 @@
     <input type="text" id="search-input" placeholder="SCAN ARCHIVE..." oninput="handleSearch()">
 </div>
 
-<div id="store-grid">INITIALIZING...</div>
+<div id="store-grid">SCANNING...</div>
 
 <div class="pagination-container">
     <div class="pagination-bar" id="pagination-bar"></div>
