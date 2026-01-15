@@ -1,35 +1,44 @@
 const fetch = require('node-fetch');
 
+// --- THE NEXUS SHIELD (Global Cache) ---
+let cachedStore = null;
+let lastUpdate = 0;
+const CACHE_LIFESPAN = 1000 * 60 * 60; // 1 Hour
+
 exports.handler = async (event, context) => {
   const API_KEY = process.env.PRINTFUL_API_KEY;
   const STORE_ID = '17419146';
+  const now = Date.now();
+
+  // 1. If we have a fresh cache, serve it instantly (Speed: ~50ms)
+  if (cachedStore && (now - lastUpdate < CACHE_LIFESPAN)) {
+    return {
+      statusCode: 200,
+      headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" },
+      body: JSON.stringify(cachedStore),
+    };
+  }
 
   try {
     let allSyncProducts = [];
     let offset = 0;
-    const limit = 100; // Max allowed per request
+    const limit = 100;
     let hasMore = true;
 
-    // 1. Fetch ALL products using pagination
+    // 2. Fetch products list
     while (hasMore) {
       const response = await fetch(
         `https://api.printful.com/store/products?store_id=${STORE_ID}&offset=${offset}&limit=${limit}`, 
         { headers: { 'Authorization': `Bearer ${API_KEY}` } }
       );
-      
       const data = await response.json();
       const products = data.result || [];
       allSyncProducts = [...allSyncProducts, ...products];
-
-      // Check if there are more products to fetch
-      if (products.length < limit) {
-        hasMore = false;
-      } else {
-        offset += limit;
-      }
+      hasMore = (products.length === limit);
+      offset += limit;
     }
 
-    // 2. Map through every product found to get multi-angle mockups
+    // 3. Parallel fetch detail for mockups (This is the heavy part)
     const productsWithMockups = await Promise.all(allSyncProducts.map(async (p) => {
       try {
         const detailRes = await fetch(`https://api.printful.com/store/products/${p.id}`, {
@@ -37,42 +46,36 @@ exports.handler = async (event, context) => {
         });
         const detailData = await detailRes.json();
         
-        // Extracting all unique preview images (Front, Back, etc.)
+        // Get unique multi-angle previews
         const variantImages = detailData.result.sync_variants.flatMap(v => 
           v.files.filter(f => f.type === 'preview').map(f => f.preview_url)
         );
 
-        const uniqueImages = [...new Set(variantImages)];
-
         return {
           id: p.id,
           name: p.name,
-          images: uniqueImages.length > 0 ? uniqueImages : [p.thumbnail_url],
-          price: "95.00" // Hardcoded as per your request
-        };
-      } catch (err) {
-        // If one product fails, return a basic version so the whole store doesn't crash
-        return {
-          id: p.id,
-          name: p.name,
-          images: [p.thumbnail_url],
+          images: variantImages.length > 0 ? [...new Set(variantImages)] : [p.thumbnail_url],
           price: "95.00"
         };
+      } catch (err) {
+        return { id: p.id, name: p.name, images: [p.thumbnail_url], price: "95.00" };
       }
     }));
 
+    // 4. Update the Nexus Cache
+    cachedStore = productsWithMockups;
+    lastUpdate = now;
+
     return {
       statusCode: 200,
-      headers: { 
-        "Content-Type": "application/json", 
-        "Access-Control-Allow-Origin": "*" 
-      },
+      headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" },
       body: JSON.stringify(productsWithMockups),
     };
   } catch (error) {
-    return { 
-      statusCode: 500, 
-      body: JSON.stringify({ error: error.message }) 
-    };
+    // 5. Emergency Fallback: If Printful is down, serve the last known cache if it exists
+    if (cachedStore) {
+        return { statusCode: 200, body: JSON.stringify(cachedStore) };
+    }
+    return { statusCode: 500, body: JSON.stringify({ error: error.message }) };
   }
 };
