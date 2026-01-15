@@ -4,20 +4,21 @@ on:
     - cron: '0 */6 * * *'
   workflow_dispatch: 
 
+# THIS IS THE MISSING KEY
+permissions:
+  contents: write
+
 jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
       - name: Setup Node.js 20
         uses: actions/setup-node@v4
         with:
-          node-version: '20' # This is the magic line that enables 'fetch'
-          
+          node-version: '20'
       - name: Run Artemis 1
         run: node artemis-1.js
-        
       - name: Push Manifest
         run: |
           git config --global user.name "Artemis-Bot"
