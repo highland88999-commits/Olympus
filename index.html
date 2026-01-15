@@ -7,75 +7,76 @@
     <style>
         :root { 
             --fire-glow: #ffae00; --fire-core: #ff4500;
-            --header-h: 60px; --search-h: 65px; --action-h: 85px;
+            --header-h: 50px; --search-h: 55px; --pagi-h: 45px;
         }
 
         body, html { 
             margin: 0; padding: 0; width: 100%; height: 100%; 
             background: #000; font-family: 'Courier New', monospace; color: white;
-            overflow: hidden; touch-action: manipulation;
+            overflow: hidden; 
         }
 
         canvas#fractalCanvas { position: fixed; top: 0; left: 0; z-index: 0; pointer-events: none; }
 
-        header { position: relative; z-index: 10; height: var(--header-h); display: flex; align-items: center; justify-content: center; }
-        h1 { letter-spacing: 10px; color: var(--fire-glow); text-shadow: 0 0 15px var(--fire-core); font-size: clamp(1rem, 4vw, 1.4rem); margin: 0; font-weight: 200; }
+        header { position: relative; z-index: 10; height: var(--header-h); display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.5); }
+        h1 { letter-spacing: 5px; color: var(--fire-glow); text-shadow: 0 0 10px var(--fire-core); font-size: 1.1rem; margin: 0; font-weight: 200; }
 
         .search-container { position: relative; z-index: 20; height: var(--search-h); display: flex; align-items: center; }
         #search-input { 
-            width: 90%; max-width: 600px; margin: 0 auto; padding: 12px; 
+            width: 90%; margin: 0 auto; padding: 8px; 
             background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 69, 0, 0.5); 
-            color: var(--fire-glow); outline: none; box-sizing: border-box;
-            backdrop-filter: blur(2px); border-radius: 0;
+            color: var(--fire-glow); outline: none; box-sizing: border-box; font-size: 14px;
         }
 
-        /* ADAPTIVE SQUARE GRID */
+        /* WRAPPER TO CLIP TO 500px iFrame */
+        .content-wrapper {
+            position: relative; z-index: 5;
+            height: calc(100vh - var(--header-h) - var(--search-h));
+            display: flex; flex-direction: column;
+        }
+
         #store-grid { 
-            position: relative; z-index: 5; 
-            height: calc(100vh - var(--header-h) - var(--search-h) - 80px);
+            flex-grow: 1;
             display: grid; grid-template-columns: repeat(2, 1fr); 
-            grid-auto-rows: min-content; gap: 15px; width: 95%; max-width: 1200px; margin: 0 auto;
+            grid-auto-rows: min-content; gap: 10px; width: 95%; margin: 0 auto;
             overflow-y: auto; scrollbar-width: none;
         }
         #store-grid::-webkit-scrollbar { display: none; }
 
-        @media (min-width: 768px) { #store-grid { grid-template-columns: repeat(3, 1fr); } }
-        @media (min-width: 1100px) { #store-grid { grid-template-columns: repeat(4, 1fr); } }
-
         .card { 
-            position: relative; background: transparent; border: 1px solid rgba(255, 69, 0, 0.2); 
+            position: relative; background: rgba(0,0,0,0.3); border: 1px solid rgba(255, 69, 0, 0.2); 
             cursor: pointer; overflow: hidden; aspect-ratio: 1 / 1; display: flex; flex-direction: column;
         }
 
+        /* PAGINATION PINNED DIRECTLY BENEATH */
+        .pagination-container { 
+            height: var(--pagi-h); 
+            display: flex; align-items: center; justify-content: center;
+            background: rgba(0,0,0,0.8); border-top: 1px solid rgba(255, 69, 0, 0.3);
+        }
+        .pagination-bar { 
+            display: flex; gap: 15px; overflow-x: auto; max-width: 90%; 
+            scrollbar-width: none; white-space: nowrap; padding: 5px;
+        }
+        .pagination-bar::-webkit-scrollbar { display: none; }
+
+        .page-num { font-size: 1rem; color: rgba(255, 255, 255, 0.3); cursor: pointer; min-width: 25px; text-align: center; }
+        .page-num.active { color: var(--fire-glow); text-shadow: 0 0 8px var(--fire-core); font-weight: bold; }
+
+        /* EXPANDED VIEW */
         .card.expanded { 
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 100; 
-            display: flex; flex-direction: column; background: rgba(0, 0, 0, 0.98); aspect-ratio: auto;
+            display: flex; flex-direction: column; background: #000;
         }
-        
         .slider-container { width: 100%; flex-grow: 1; position: relative; overflow: hidden; }
         .mockup-viewport { display: flex; height: 100%; overflow: hidden; scroll-behavior: smooth; }
-        .mockup-viewport img { height: 100%; width: 100%; object-fit: contain; mix-blend-mode: lighten; }
+        .mockup-viewport img { height: 100%; width: 100%; object-fit: contain; }
 
-        .action-row { 
-            height: var(--action-h); display: none; grid-template-columns: 1fr 1.2fr 1.2fr; 
-            gap: 10px; padding: 15px; border-top: 1px solid rgba(255, 69, 0, 0.5); 
-        }
-        .card.expanded .action-row { display: grid; max-width: 800px; margin: 0 auto; width: 100%; }
-
-        .buy-btn { background: rgba(255, 255, 255, 0.05); border: 1px solid var(--fire-glow); color: white; font-size: 0.7rem; font-weight: bold; }
-        .buy-btn.crypto { border-color: #f7931a; color: #f7931a; }
-        .size-select { background: rgba(0,0,0,0.8); color: white; border: 1px solid #444; border-radius: 0; }
-
-        .pagination-container { position: relative; z-index: 10; height: 50px; display: flex; align-items: center; justify-content: center; }
-        .pagination-bar { display: flex; gap: 20px; overflow-x: auto; max-width: 80%; scrollbar-width: none; }
-
-        .page-num { font-size: 1.2rem; color: rgba(255, 255, 255, 0.3); cursor: pointer; min-width: 30px; text-align: center; }
-        .page-num.active { color: var(--fire-glow); text-shadow: 0 0 10px var(--fire-core); font-weight: bold; transform: scale(1.2); }
-
-        .close-btn { position: absolute; top: 15px; right: 20px; font-size: 2.5rem; color: var(--fire-glow); z-index: 110; display: none; }
+        .action-row { height: 70px; display: none; grid-template-columns: 1fr 1fr 1fr; gap: 5px; padding: 10px; }
+        .card.expanded .action-row { display: grid; }
+        .close-btn { position: absolute; top: 10px; right: 15px; font-size: 2rem; color: var(--fire-glow); z-index: 110; display: none; }
         .card.expanded .close-btn { display: block; }
-        
-        .grid-label { position: absolute; bottom: 0; width: 100%; background: rgba(0,0,0,0.6); text-align: center; font-size: 0.55rem; color: var(--fire-glow); padding: 6px 0; text-transform: uppercase; }
+        .grid-label { position: absolute; bottom: 0; width: 100%; background: rgba(0,0,0,0.7); text-align: center; font-size: 0.5rem; color: var(--fire-glow); padding: 4px 0; }
     </style>
 </head>
 <body>
@@ -84,106 +85,79 @@
 <header><h1>OLYMPIAN HOODIES</h1></header>
 <div class="search-container"><input type="text" id="search-input" placeholder="SCANNING ARCHIVE..." oninput="handleSearch()"></div>
 
-<div id="store-grid">
-    <div class="card"><div class="grid-label">INITIALIZING...</div></div>
-    <div class="card"><div class="grid-label">INITIALIZING...</div></div>
+<div class="content-wrapper">
+    <div id="store-grid">
+        </div>
+    <div class="pagination-container">
+        <div class="pagination-bar" id="pagination-bar"></div>
+    </div>
 </div>
 
-<div class="pagination-container"><div class="pagination-bar" id="pagination-bar"></div></div>
-
 <script>
-// --- FRACTAL ENGINE ---
+// --- FRACTAL ENGINE (Same as before) ---
 const canvas = document.getElementById('fractalCanvas');
 const ctx = canvas.getContext('2d');
 let w, h, worldY = 0, lastTreeY = 0, time = 0, treeSegments = [], particles = [];
-const scrollSpeed = 8.0; 
-
 function resize() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
 window.addEventListener('resize', resize);
-
-class FlameSpike {
-    constructor(x, y, vx, vy) {
-        this.x = x; this.y = y; this.vx = vx; this.vy = vy;
-        this.life = 1.0; this.size = Math.random() * 4 + 2;
-        this.decay = Math.random() * 0.04 + 0.02;
-    }
-    update() { this.x += this.vx + Math.sin(time * 0.5) * 2; this.y += this.vy; this.life -= this.decay; }
-    draw() {
-        const sy = this.y - worldY;
-        ctx.fillStyle = this.life > 0.6 ? "#fff" : (this.life > 0.3 ? "#ffae00" : "#ff4500");
-        ctx.beginPath(); ctx.moveTo(this.x, sy);
-        ctx.lineTo(this.x + this.size, sy + this.size * 3); ctx.lineTo(this.x - this.size, sy + this.size * 3);
-        ctx.fill();
-    }
-}
-
 function generateTree(x, y, angle, len, depth) {
     if (depth > 8) return;
-    const x2 = x + Math.cos(angle) * len;
-    const y2 = y + Math.sin(angle) * len;
+    const x2 = x + Math.cos(angle) * len; const y2 = y + Math.sin(angle) * len;
     treeSegments.push({ x1: x, y1: y, x2: x2, y2: y2, depth: depth });
-    const nLen = len * 0.75;
-    if (Math.random() > 0.1) generateTree(x2, y2, angle - 0.4 + Math.random()*0.2, nLen, depth + 1);
-    if (Math.random() > 0.1) generateTree(x2, y2, angle + 0.4 - Math.random()*0.2, nLen, depth + 1);
+    if (Math.random() > 0.1) generateTree(x2, y2, angle - 0.4 + Math.random()*0.2, len * 0.75, depth + 1);
+    if (Math.random() > 0.1) generateTree(x2, y2, angle + 0.4 - Math.random()*0.2, len * 0.75, depth + 1);
 }
-
 function loop() {
-    time++; worldY -= scrollSpeed;
-    if (lastTreeY > worldY - h) {
-        generateTree(w/2 + Math.sin(worldY*0.001)*200, lastTreeY, -Math.PI/2, 130, 0);
-        lastTreeY -= 400;
-    }
+    time++; worldY -= 8;
+    if (lastTreeY > worldY - h) { generateTree(w/2 + Math.sin(worldY*0.001)*200, lastTreeY, -Math.PI/2, 130, 0); lastTreeY -= 400; }
     ctx.fillStyle = "#000"; ctx.fillRect(0, 0, w, h);
     treeSegments.forEach(s => {
         const sy1 = s.y1 - worldY; const sy2 = s.y2 - worldY;
         if (sy1 < h + 100 && sy2 > -100) {
-            ctx.strokeStyle = `rgb(255, ${50 - s.depth*5}, 0)`;
-            ctx.lineWidth = Math.max(1, 8 - s.depth);
+            ctx.strokeStyle = `rgb(255, ${50 - s.depth*5}, 0)`; ctx.lineWidth = Math.max(1, 8 - s.depth);
             ctx.beginPath(); ctx.moveTo(s.x1, sy1); ctx.lineTo(s.x2, sy2); ctx.stroke();
-            if (Math.random() > 0.7) particles.push(new FlameSpike(s.x1 + (s.x2-s.x1)*Math.random(), s.y1 + (s.y2-s.y1)*Math.random(), 0, -5));
         }
     });
-    particles = particles.filter(p => p.life > 0);
-    particles.forEach(p => { p.update(); p.draw(); });
-    if(treeSegments.length > 800) treeSegments.splice(0, 50);
+    if(treeSegments.length > 500) treeSegments.splice(0, 20);
     requestAnimationFrame(loop);
 }
 
-// --- NEXUS DATA LOGIC ---
+// --- ARTEMIS DATA ENGINE ---
 let allProducts = [], filteredProducts = [], currentPage = 0;
-let itemsPerPage = 4;
+let itemsPerPage = 4; let totalArchiveCount = 0; let isHarvesting = false;
 
-async function fetchStore() {
+async function fetchStore(page = 0) {
     try {
-        const controller = new AbortController();
-        const tid = setTimeout(() => controller.abort(), 5000);
-        // Using the pretty URL from netlify.toml
-        const res = await fetch('/api/get-products', { signal: controller.signal });
-        clearTimeout(tid);
-        allProducts = await res.json();
-    } catch (e) {
-        // High-Speed Fallback
-        allProducts = Array.from({length: 12}, (_, i) => ({ id: i, name: `ARCHIVE v${i+1}`, images: ["https://via.placeholder.com/600/000"], price: "95.00" }));
-    }
-    filteredProducts = allProducts;
-    renderGrid();
+        const res = await fetch(`/api/get-products?page=${page}`);
+        const data = await res.json();
+        allProducts = [...allProducts, ...data.products];
+        totalArchiveCount = data.total;
+        if (page === 0) { filteredProducts = allProducts; renderGrid(); if (!isHarvesting) startArtemisHarvest(1); }
+        else { renderPagination(); if(document.getElementById('search-input').value) handleSearch(); }
+    } catch (e) { console.error("Link Interrupted"); }
+}
+
+async function startArtemisHarvest(nextPage) {
+    isHarvesting = true;
+    const maxPages = Math.ceil(totalArchiveCount / 4);
+    if (nextPage >= maxPages) { isHarvesting = false; return; }
+    await fetchStore(nextPage);
+    setTimeout(() => startArtemisHarvest(nextPage + 1), 300);
 }
 
 function renderGrid() {
     const grid = document.getElementById('store-grid');
-    const cols = window.innerWidth > 1100 ? 4 : (window.innerWidth > 768 ? 3 : 2);
-    itemsPerPage = cols * 2; 
-
     const items = filteredProducts.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
     grid.innerHTML = items.map(p => `
         <div class="card" onclick="expandCard(this)">
             <div class="close-btn" onclick="event.stopPropagation(); shrinkCard(this.parentElement)">×</div>
             <div class="slider-container" onclick="event.stopPropagation()">
-                <div class="mockup-viewport" id="slider-${p.id}">${p.images.map(img => `<img src="${img}">`).join('')}</div>
+                <div class="mockup-viewport">${p.images.map(img => `<img src="${img}">`).join('')}</div>
             </div>
             <div class="action-row" onclick="event.stopPropagation()">
-                <select class="size-select"><option>SIZE</option><option>S</option><option>M</option><option>L</option></select>
-                <button class="buy-btn">FIAT</button><button class="buy-btn crypto">CRYPTO</button>
+                <select style="background:#000;color:#fff;border:1px solid #444"><option>SIZE</option><option>S</option><option>M</option><option>L</option></select>
+                <button style="border:1px solid var(--fire-glow);background:none;color:white;font-size:10px">FIAT</button>
+                <button style="border:1px solid #f7931a;background:none;color:#f7931a;font-size:10px">CRYPTO</button>
             </div>
             <div class="grid-label">${p.name}</div>
         </div>
@@ -197,19 +171,16 @@ function renderPagination() {
     bar.innerHTML = Array.from({length: pageCount}, (_, i) => `<div class="page-num ${i === currentPage ? 'active' : ''}" onclick="goToPage(${i})">${i + 1}</div>`).join('');
 }
 
-function goToPage(page) {
-    currentPage = page; renderGrid();
-    const bar = document.getElementById('pagination-bar');
-    const active = bar.children[page];
-    if(active) bar.scrollTo({ left: active.offsetLeft - bar.offsetWidth / 2 + active.offsetWidth / 2, behavior: 'smooth' });
-}
-
+function goToPage(page) { currentPage = page; renderGrid(); }
 function expandCard(card) { card.classList.add('expanded'); }
 function shrinkCard(card) { card.classList.remove('expanded'); }
-function handleSearch() { currentPage = 0; const term = document.getElementById('search-input').value.toLowerCase(); filteredProducts = allProducts.filter(p => p.name.toLowerCase().includes(term)); renderGrid(); }
+function handleSearch() { 
+    const term = document.getElementById('search-input').value.toLowerCase(); 
+    filteredProducts = allProducts.filter(p => p.name.toLowerCase().includes(term)); 
+    currentPage = 0; renderGrid(); 
+}
 
-// --- BOOT ---
-resize(); lastTreeY = h; generateTree(w/2, h, -Math.PI/2, 120, 0); loop(); fetchStore();
+resize(); lastTreeY = h; generateTree(w/2, h, -Math.PI/2, 120, 0); loop(); fetchStore(0);
 </script>
 </body>
 </html>
