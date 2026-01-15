@@ -104,21 +104,22 @@
 let allProducts = [], cart = [], currentPage = 0, itemsPerPage = 24;
 let selectedSize = null, activeProduct = null, modalQty = 1;
 
-// PRE-BUILT ARTEMIS 2 FETCHER
+// VERCEL-OPTIMIZED FETCHER
 async function fetchStore() {
     try {
         const statusText = document.getElementById('gather-status');
         statusText.innerText = "ACCESSING OLYMPUS MANIFEST...";
         
-        // Pull consolidated data from Artemis 2
-        const res = await fetch('/.netlify/functions/artemis-2');
+        // UPDATED: Pointing to the new Vercel /api path
+        const res = await fetch('/api/artemis-2');
         if (!res.ok) throw new Error("Artemis Unreachable");
         
         const manifest = await res.json();
         
         if (manifest && manifest.products) {
-            allProducts = manifest.products; // Already in strict numerical order
-            statusText.innerText = `SYNCED | ${allProducts.length} DESIGNS FOUND`;
+            allProducts = manifest.products; 
+            // UPDATED: Using manifest.totalItems for accuracy
+            statusText.innerText = `SYNCED | ${manifest.totalItems || allProducts.length} DESIGNS FOUND`;
             renderGrid();
         }
     } catch (e) {
@@ -131,7 +132,6 @@ function renderGrid() {
     const grid = document.getElementById('store-grid');
     if (!allProducts.length) return;
     
-    // Slice only the 24 items for the current page
     const start = currentPage * itemsPerPage;
     const end = Math.min(start + itemsPerPage, allProducts.length);
     const items = allProducts.slice(start, end);
