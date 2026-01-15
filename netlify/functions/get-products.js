@@ -1,4 +1,4 @@
-const axios = require('axios');
+const fetch = require('node-fetch');
 
 exports.handler = async (event) => {
   // Capture the page number from the frontend request (defaults to 0)
@@ -6,24 +6,31 @@ exports.handler = async (event) => {
   const offset = page * 100; 
 
   try {
-    const response = await axios.get('https://api.printful.com/store/products', {
+    const response = await fetch(`https://api.printful.com/store/products?offset=${offset}&limit=100`, {
       headers: {
         'Authorization': `Bearer ${process.env.PRINTFUL_API_KEY}`
-      },
-      params: {
-        offset: offset,
-        limit: 100
       }
     });
 
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || 'Failed to fetch from Printful');
+    }
+
     return {
       statusCode: 200,
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        products: response.data.result,
-        total: response.data.paging.total // This tells the frontend there are 586 total
+        products: data.result,
+        total: data.paging.total // This allows the frontend to know there are 586 total
       })
     };
   } catch (error) {
-    return { statusCode: 500, body: error.toString() };
+    console.error("AXIOM HARVEST ERROR:", error);
+    return { 
+      statusCode: 500, 
+      body: JSON.stringify({ error: error.message }) 
+    };
   }
 };
