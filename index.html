@@ -104,37 +104,25 @@
 let allProducts = [], cart = [], currentPage = 0, itemsPerPage = 24;
 let selectedSize = null, activeProduct = null, modalQty = 1;
 
-// THE SEQUENTIAL HARVESTER - CORRECTED FOR 01-10 FILENAMES
 async function fetchStore() {
     for (let i = 1; i <= 10; i++) {
+        const sectorId = i.toString().padStart(2, '0');
         try {
-            // Converts 1 into "01", 2 into "02", etc.
-            const sectorId = i.toString().padStart(2, '0');
             document.getElementById('gather-status').innerText = `HARVESTING SECTOR ${sectorId}...`;
-            
-            // Calls the padded filename: get-products-01, 02, etc.
             const res = await fetch(`/.netlify/functions/get-products-${sectorId}`);
-            if (!res.ok) {
-                console.warn(`Sector ${sectorId} is offline or empty.`);
-                continue; // Keep going to next sector
-            }
+            if (!res.ok) continue;
             
             const data = await res.json();
-            
-            if (data.products && data.products.length > 0) {
+            // Ensure data contains products before pushing
+            if (data && data.products) {
                 allProducts = [...allProducts, ...data.products];
-                renderGrid(); // Refresh grid instantly as sectors arrive
+                renderGrid();
             }
 
-            const total = data.total || 0;
-            document.getElementById('gather-status').innerText = `AXIOM ARCHIVE: ${allProducts.length} / ${total || 'Scanning...'}`;
-
-            // Small breathing room for smooth performance
-            await new Promise(r => setTimeout(r, 300));
-
+            document.getElementById('gather-status').innerText = `AXIOM ARCHIVE: ${allProducts.length} ITEMS`;
+            await new Promise(r => setTimeout(r, 200));
         } catch (e) { 
-            console.error("Link Interrupted:", e);
-            document.getElementById('gather-status').innerText = "SKIPPING UNSTABLE SECTOR...";
+            console.error(`Sector ${sectorId} error:`, e);
         }
     }
     document.getElementById('gather-status').innerText = "ARCHIVE SYNC COMPLETE";
@@ -142,12 +130,14 @@ async function fetchStore() {
 
 function renderGrid() {
     const grid = document.getElementById('store-grid');
+    if (!allProducts.length) return;
+    
     const start = currentPage * itemsPerPage;
     const end = Math.min(start + itemsPerPage, allProducts.length);
     const items = allProducts.slice(start, end);
     
     grid.innerHTML = items.map(p => `
-        <div class="card" onclick="openModal('${p.name}', '${p.images[0]}')">
+        <div class="card" onclick="openModal('${p.name.replace(/'/g, "\\'")}', '${p.images[0]}')">
             <img src="${p.images[0]}">
             <div class="grid-label">${p.name}</div>
         </div>
@@ -160,7 +150,7 @@ function renderPagination() {
     const pageCount = Math.ceil(allProducts.length / itemsPerPage);
     if (pageCount <= 1) { bar.innerHTML = ""; return; }
     bar.innerHTML = Array.from({length: pageCount}, (_, i) => 
-        `<div class="page-num ${i === currentPage ? 'active' : ''}" onclick="event.stopPropagation(); goToPage(${i})">${i + 1}</div>`
+        `<div class="page-num ${i === currentPage ? 'active' : ''}" onclick="goToPage(${i})">${i + 1}</div>`
     ).join('');
 }
 
