@@ -2,9 +2,38 @@ name: Artemis 6-Hour Sync
 on:
   schedule:
     - cron: '0 */6 * * *'
-  workflow_dispatch: # Keeps the manual button
+  workflow_dispatch: # Allows you to keep the manual "Run" button
   push:
     branches:
-      - main  # AUTOMATIC: Runs whenever you commit to the main branch
+      - main
     paths:
-      - 'artemis-1.js' # OPTIONAL: Only run if this specific file changes
+      - 'artemis-1.js' # The sync will trigger the moment you save this file
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run Artemis 1
+        env:
+          PRINTFUL_API_KEY: ${{ secrets.PRINTFUL_API_KEY }}
+        run: node artemis-1.js
+
+      - name: Push Manifest
+        run: |
+          git config --global user.name "Artemis-Bot"
+          git config --global user.email "bot@axiom.com"
+          git add api/archive-map.json
+          git commit -m "Auto-Sync: 253 Hoodies Archived [Vercel Path]" || echo "No changes to commit"
+          git push
