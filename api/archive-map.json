@@ -1,2257 +1,2030 @@
 {
-  "status": "SYNCED",
-  "lastSync": "2026-01-15T18:20:25.149Z",
-  "totalItems": 250,
+  "status": "ONLINE",
+  "totalItems": 253,
   "products": [
     {
       "id": 414257239,
-      "external_id": "6967ee153ec964",
       "name": "Unisex Hoodie - Prompt: Ocean Eyes; Jelly Fish! AKA Immortality Caused By No Brains lol",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/716/716e7616a9ed7e56b220b041c3468e1e_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/716/716e7616a9ed7e56b220b041c3468e1e_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 414256989,
-      "external_id": "6967eda31aeed8",
       "name": "Unisex Hoodie - Prompt: Ocean Eyes; String Ray Music",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/b6c/b6c8a4eaa3537415320bed5f97067af4_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/b6c/b6c8a4eaa3537415320bed5f97067af4_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 414256718,
-      "external_id": "6967ed1e695012",
       "name": "Unisex Hoodie - Prompt: Ocean Eyes; Dolphins Are Smarter Than Us",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/bef/bef3875e5e856853b45ae579ab24c539_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/bef/bef3875e5e856853b45ae579ab24c539_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 414256227,
-      "external_id": "6967ec1650dde6",
       "name": "Unisex Hoodie - Prompt: The Diamond in the Rough",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/a8b/a8b693aaffff6f9cc218b9fc89eff2b2_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/a8b/a8b693aaffff6f9cc218b9fc89eff2b2_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 414255942,
-      "external_id": "6967ebab29d079",
       "name": "Unisex Hoodie - Prompt: Toon World",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/52a/52a375eaf9dbde3e4f509320c68399cc_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/52a/52a375eaf9dbde3e4f509320c68399cc_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 414255580,
-      "external_id": "6967ead7d1a592",
       "name": "Unisex Hoodie - Prompt: Toon World",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/7ca/7caed04030fc246f9c1b45e25645d2d3_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/7ca/7caed04030fc246f9c1b45e25645d2d3_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 414255325,
-      "external_id": "6967ea4c574ca4",
       "name": "Unisex Hoodie - Prompt: Dark Knight of the Soul",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/6c3/6c35f99a48ade23a730617d5a1d8d50e_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/6c3/6c35f99a48ade23a730617d5a1d8d50e_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 414255120,
-      "external_id": "6967e9be503541",
       "name": "Unisex Hoodie - Prompt: Sunshine and Rainbows Ahead",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/dfa/dfad384a29e79d01c3044725b867c71c_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/dfa/dfad384a29e79d01c3044725b867c71c_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 414254923,
-      "external_id": "6967e9308d4477",
       "name": "Unisex Hoodie - Prompt: Animated Earth",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/3ed/3edf872043e6f5358a0171ec99bb13bf_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/3ed/3edf872043e6f5358a0171ec99bb13bf_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 414254680,
-      "external_id": "6967e89ceb0ee6",
       "name": "Unisex Hoodie - Prompt: Run Me Like A River",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/b78/b78652d49b9206a4628bc513f5e32d32_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/b78/b78652d49b9206a4628bc513f5e32d32_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 414254517,
-      "external_id": "6967e82319c2b3",
       "name": "Unisex Hoodie - Prompt: Dark Knight of the Soul",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/6aa/6aa042fa422ee229790be3a753719cd4_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/6aa/6aa042fa422ee229790be3a753719cd4_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 414254313,
-      "external_id": "6967e7aeb80765",
       "name": "Unisex Hoodie - Prompt: Ancient Greece; Birth of Civilization",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/666/6669e2c66ef4d1b9cfa1102eee2a3cdb_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/666/6669e2c66ef4d1b9cfa1102eee2a3cdb_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 414254072,
-      "external_id": "6967e735bdca69",
       "name": "Unisex Hoodie - Prompt: Jupiter Ascending",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/ef6/ef66139c2667cf913f37fd1a7d4f4e4b_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/ef6/ef66139c2667cf913f37fd1a7d4f4e4b_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 414253842,
-      "external_id": "6967e6b5ca1245",
       "name": "Unisex Hoodie - Prompt: Monsterverse",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/751/75172ce978c6b6cb37c0aa442e310918_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/751/75172ce978c6b6cb37c0aa442e310918_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 414253675,
-      "external_id": "6967e64686b424",
       "name": "Unisex Hoodie - Prompt: Monsterverse",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/c46/c46ce06438d3e892875a30b3e20e5631_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/c46/c46ce06438d3e892875a30b3e20e5631_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 414253424,
-      "external_id": "6967e5e8849432",
       "name": "Unisex Hoodie - Prompt: Monsterverse",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/6b0/6b0670e5cb46f9894d1b831e69999d8c_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/6b0/6b0670e5cb46f9894d1b831e69999d8c_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 414253099,
-      "external_id": "6967e5656e0406",
       "name": "Unisex Hoodie - Prompt: Monsterverse",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/c1c/c1caf179ce969ad6fed8efa9d721ade4_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/c1c/c1caf179ce969ad6fed8efa9d721ade4_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 414252751,
-      "external_id": "6967e4d7581729",
       "name": "Unisex Hoodie - Prompt: Monsterverse",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/5f6/5f6d745e1ef2220944bf0c2963a1ac0b_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/5f6/5f6d745e1ef2220944bf0c2963a1ac0b_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 414252589,
-      "external_id": "6967e45d618b43",
       "name": "The Architect; Unisex Hoodie - Prompt: Monsterverse",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/b77/b77011551c58f6c8d9ee2d478587c6bc_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/b77/b77011551c58f6c8d9ee2d478587c6bc_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 414252417,
-      "external_id": "6967e3e6e08924",
       "name": "Unisex Hoodie - Prompt: Monsterverse",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/efd/efd187d603fc4a81e575d3eb85bb0618_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/efd/efd187d603fc4a81e575d3eb85bb0618_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 414252261,
-      "external_id": "6967e35a2251e6",
       "name": "Unisex Hoodie - Prompt: Monsterverse",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/0a3/0a36ae6fa6ca9de14e219a483fe514b4_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/0a3/0a36ae6fa6ca9de14e219a483fe514b4_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 414252062,
-      "external_id": "6967e2cf474ba5",
       "name": "Unisex Hoodie - Prompt: Monsterverse",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/72a/72a192321f4b1c5c39f830fb8078fd4b_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/72a/72a192321f4b1c5c39f830fb8078fd4b_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 414251688,
-      "external_id": "6967e2270458e6",
       "name": "Unisex Hoodie - Prompt: Monsterverse",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/801/80126ae1c8a51c00a216a6ade40d6a9c_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/801/80126ae1c8a51c00a216a6ade40d6a9c_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 414251391,
-      "external_id": "6967e19d84a338",
       "name": "Unisex Hoodie - Prompt: Monsterverse",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/3e5/3e544b5462d2b7da486ad3bae3a128fb_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/3e5/3e544b5462d2b7da486ad3bae3a128fb_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 414251206,
-      "external_id": "6967e135353637",
       "name": "Unisex Hoodie - Prompt: Monsterverse",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/ff9/ff99ca570277dd3471280cb19240308c_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/ff9/ff99ca570277dd3471280cb19240308c_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 414251039,
-      "external_id": "6967e0afba3839",
       "name": "Unisex Hoodie - Prompt: Monsterverse",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/c0c/c0c1b4f4b0a86f668904e0158103d1e0_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/c0c/c0c1b4f4b0a86f668904e0158103d1e0_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 414250826,
-      "external_id": "6967e01fcd7169",
       "name": "Unisex Hoodie - Prompt: Monsterverse",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/c23/c239716f670fcdf401710e1aeabaf349_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/c23/c239716f670fcdf401710e1aeabaf349_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 414250341,
-      "external_id": "6967df501bec57",
       "name": "Unisex Hoodie - Prompt: Monsterverse",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/f1c/f1cf4778633e9c60ae18ce2570b82362_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/f1c/f1cf4778633e9c60ae18ce2570b82362_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 414250162,
-      "external_id": "6967def75bc3f4",
       "name": "Unisex Hoodie - Prompt: Monsterverse",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/843/8436272700f72ae89cccb40fa725f330_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/843/8436272700f72ae89cccb40fa725f330_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 414249859,
-      "external_id": "6967de765e96d1",
       "name": "Unisex Hoodie - Prompt: Monsterverse, Magic the Gathering",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/729/729fb5932fd59c0708d7b36c96b6c081_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/729/729fb5932fd59c0708d7b36c96b6c081_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 414249634,
-      "external_id": "6967de1239c2b2",
       "name": "Unisex zip hoodie - Prompt: The Titanic",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/be2/be2dd49dbd950cf97a790aaf639571e6_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/be2/be2dd49dbd950cf97a790aaf639571e6_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 414249503,
-      "external_id": "6967ddb6a89977",
       "name": "Unisex Hoodie - Prompt: Monsterverse",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/36a/36a33f5c635d9fd61b86c1c6edb571bd_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/36a/36a33f5c635d9fd61b86c1c6edb571bd_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 414249359,
-      "external_id": "6967dd6a867a96",
       "name": "Unisex zip hoodie - Prompt: Monsterverse",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/e67/e6753b28f714e3780162d576255ab45a_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/e67/e6753b28f714e3780162d576255ab45a_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 414249223,
-      "external_id": "6967dd2371e827",
       "name": "Unisex zip hoodie - Prompt: Monsterverse",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/5ab/5ab715f5b74884ff8dcfb4fb90f963f0_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/5ab/5ab715f5b74884ff8dcfb4fb90f963f0_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 414249125,
-      "external_id": "6967dcdaa623f3",
       "name": "Unisex zip hoodie - Prompt: Monsterverse",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/a72/a724a190cb388a82dcce17ca32b936f4_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/a72/a724a190cb388a82dcce17ca32b936f4_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 414248906,
-      "external_id": "6967dc4c2e63e1",
       "name": "Unisex Hoodie - Prompt: Monsterverse",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/517/5179b5a6019d5c8c0de5d14900340e1f_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/517/5179b5a6019d5c8c0de5d14900340e1f_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 414247926,
-      "external_id": "6967da66de2685",
       "name": "Unisex Hoodie - Prompt: Monsterverse",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/96c/96c7092482c5b529de6de5d797e8b79e_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/96c/96c7092482c5b529de6de5d797e8b79e_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 414247734,
-      "external_id": "6967da1f52ccf5",
       "name": "Unisex Hoodie - Prompt: Monsterverse",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/893/89373e5e13584a4ba57a53764905597b_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/893/89373e5e13584a4ba57a53764905597b_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 414247470,
-      "external_id": "6967d9ca4126a1",
       "name": "Olympian Unisex Hoodie - Master of the Monsterverse",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/5d0/5d0125e3211f64f853784c1ab3d841e4_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/5d0/5d0125e3211f64f853784c1ab3d841e4_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 414247180,
-      "external_id": "6967d94d1bc1a9",
       "name": "Unisex Hoodie - Prompt: Monsterverse, Kaboom",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/e72/e72ed23c15c7a02d31c492cc0d58dca6_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/e72/e72ed23c15c7a02d31c492cc0d58dca6_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 414246976,
-      "external_id": "6967d9080e1089",
       "name": "Unisex Hoodie - Prompt: Asteroids, Space",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/838/838a365efac2c324b17ea88fa3dc3b20_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/838/838a365efac2c324b17ea88fa3dc3b20_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 414246813,
-      "external_id": "6967d8c92468b7",
       "name": "Unisex Hoodie - Prompt: The Void",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/52d/52d30b94f1e029c26fcf0f4b7b46cee8_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/52d/52d30b94f1e029c26fcf0f4b7b46cee8_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 414246540,
-      "external_id": "6967d884053a44",
       "name": "Unisex Hoodie - Prompt: The Void",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/40e/40eed7a30c6dd0f0dc1aeef8a893e35d_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/40e/40eed7a30c6dd0f0dc1aeef8a893e35d_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 414246273,
-      "external_id": "6967d83c35d5d4",
       "name": "Unisex Hoodie - Prompt: The Void",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/f15/f158f7e2df7055688132d1ea9662a777_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/f15/f158f7e2df7055688132d1ea9662a777_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 414246168,
-      "external_id": "6967d800800ac4",
       "name": "Unisex zip hoodie - Prompt: Monsterverse, Loki, Mischief, Jim Carey, The Mask",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/735/73533203a92dfbdb02cf888ce9a73b4a_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/735/73533203a92dfbdb02cf888ce9a73b4a_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 414245882,
-      "external_id": "6967d7c8adca67",
       "name": "Unisex zip hoodie - Prompt: Monsterverse, Loki, The Mask, Jim Carey",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/32a/32a7fba6507cc28e49b8b0e2129ffdf4_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/32a/32a7fba6507cc28e49b8b0e2129ffdf4_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 414245652,
-      "external_id": "6967d78b455cf6",
       "name": "Unisex zip hoodie - Prompt: Monsterverse, Loki, The Mask, Mischief, Jim Carey",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/716/71698b418b4531cf4a57b6b412fdb9d3_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/716/71698b418b4531cf4a57b6b412fdb9d3_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 414245451,
-      "external_id": "6967d741ce59b8",
       "name": "Unisex zip hoodie - Prompt: Monsterverse",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/872/872ba4a891959002b9ab095ab995f2d8_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/872/872ba4a891959002b9ab095ab995f2d8_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 414244903,
-      "external_id": "6967d69cc9e097",
       "name": "Unisex Hoodie - Prompt: Monsterverse",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/7ab/7abd36082ef36bfffdd6b253d9549d22_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/7ab/7abd36082ef36bfffdd6b253d9549d22_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 414244519,
-      "external_id": "6967d648eeba85",
       "name": "Unisex Hoodie - Prompt: Holographic",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/056/0560b47ea585a97efc56a73ed2d7f58f_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/056/0560b47ea585a97efc56a73ed2d7f58f_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 414244170,
-      "external_id": "6967d61219ec45",
       "name": "Unisex Hoodie - Prompt: Holographic",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/742/742a523a4b828568a62cf1b4680a541e_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/742/742a523a4b828568a62cf1b4680a541e_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 414243789,
-      "external_id": "6967d5c96bdc54",
       "name": "Unisex Hoodie - Prompt: Thor",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/7e5/7e526b233aad75569f59999b3277fcac_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/7e5/7e526b233aad75569f59999b3277fcac_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 414243656,
-      "external_id": "6967d59ad7e6d1",
       "name": "Unisex Hoodie - Prompt: Thor Vs Superman",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/004/004beca026f444075bf3a13dd041751e_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/004/004beca026f444075bf3a13dd041751e_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 414243543,
-      "external_id": "6967d571ef3273",
       "name": "Unisex zip hoodie, Monsterverse (Magic The Gathering)",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/6b7/6b7c569ad08f5362eb96740b910fa1b2_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/6b7/6b7c569ad08f5362eb96740b910fa1b2_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 414243355,
-      "external_id": "6967d5340ab516",
       "name": "Unisex Hoodie - Prompt: The Dawn of Civilization, Ancient Greece",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/cc7/cc79924a1e9043766190cb7f7194d2f5_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/cc7/cc79924a1e9043766190cb7f7194d2f5_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 414243225,
-      "external_id": "6967d511eba8c9",
       "name": "Unisex Hoodie - Prompt: Enter The Dragon, Monsterverse",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/de1/de1706d6dc161a40d5c061aaed7073a4_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/de1/de1706d6dc161a40d5c061aaed7073a4_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 414243027,
-      "external_id": "6967d4dc326411",
       "name": "Unisex Hoodie - Prompt: Break The Matrix",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/cab/cab014d2d460ed5e4f3febb691987caa_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/cab/cab014d2d460ed5e4f3febb691987caa_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 414242905,
-      "external_id": "6967d4b52ae198",
       "name": "Unisex Hoodie - Prompt: On Another Timeline",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/bf2/bf2b30ae1df70ad54b8f52709fb259db_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/bf2/bf2b30ae1df70ad54b8f52709fb259db_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 414242851,
-      "external_id": "6967d4913f6d08",
       "name": "Unisex Hoodie - Prompt: The Last Melon",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/edb/edbd495b01508562f3ee183c44716990_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/edb/edbd495b01508562f3ee183c44716990_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 414242777,
-      "external_id": "6967d46365c8f7",
       "name": "Unisex Hoodie - Prompt: Drowning, Breathing Underwater, Zen, Peace",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/eaa/eaa223ed25ad79e47c5312386f389cd7_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/eaa/eaa223ed25ad79e47c5312386f389cd7_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 413252165,
-      "external_id": "695f5781c3f219",
       "name": "Unisex Hoodie - Prompt: Band Art - Delusions of Grandeur ",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/532/532086479cf0bf0e63dcb10c70cd4324_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/532/532086479cf0bf0e63dcb10c70cd4324_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 412899695,
-      "external_id": "695c7b3e1df606",
       "name": "Unisex Hoodie - Prompt: Colorful Asteroids in Space",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/ba4/ba4325dfe0f66bfdbce6bba1a62f4648_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/ba4/ba4325dfe0f66bfdbce6bba1a62f4648_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 412899522,
-      "external_id": "695c7ae5c37594",
       "name": "Unisex Hoodie - Prompt: Abra Cadavers, Magic Words",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/fec/fec4c555b419a790cb298cfaa01c274b_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/fec/fec4c555b419a790cb298cfaa01c274b_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 412899236,
-      "external_id": "695c7a4c8538d3",
       "name": "Unisex Hoodie - Prompt: Enter The Void",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/0d5/0d5c06d2da4e9d46b16d0dffc6034465_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/0d5/0d5c06d2da4e9d46b16d0dffc6034465_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 412899096,
-      "external_id": "695c79f7e556a7",
       "name": "Unisex Hoodie - Prompt: Comic Art",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/8b8/8b892f9ab431559df67cfb2655fbd2e0_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/8b8/8b892f9ab431559df67cfb2655fbd2e0_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 412898997,
-      "external_id": "695c799c615ab2",
       "name": "Unisex Hoodie - Prompt: The World, Panama",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/d33/d33c2db6da28a37a855a0f70ba970eb1_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/d33/d33c2db6da28a37a855a0f70ba970eb1_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 412898747,
-      "external_id": "695c7912168aa4",
       "name": "Unisex Hoodie - Prompt: On Another Timeline",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/3d2/3d249de96b141afa7e3a4fbe76b9e016_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/3d2/3d249de96b141afa7e3a4fbe76b9e016_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 412898663,
-      "external_id": "695c78b2841c13",
       "name": "Unisex Hoodie - Prompt: Bippity Boppity Boo, Magic Words",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/965/9657b5bfdf0e1d87cfc46cc43b707fbb_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/965/9657b5bfdf0e1d87cfc46cc43b707fbb_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 412898349,
-      "external_id": "695c7816618d81",
       "name": "Unisex Hoodie - Prompt: Drowning, Breathing Underwater, Zen, Peace",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/142/142dacca1096cd7a3d0de4a830f6dd15_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/142/142dacca1096cd7a3d0de4a830f6dd15_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 412898285,
-      "external_id": "695c77c7aa0f32",
       "name": "Unisex Hoodie - Prompt: Hocus Locusts, Magic Words",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/503/503762bb4f9e2636e02e9a600c89b984_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/503/503762bb4f9e2636e02e9a600c89b984_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 412898166,
-      "external_id": "695c776f9ac617",
       "name": "Unisex Hoodie - Prompt: Drowning, Breathing Underwater, Zen, Peace",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/5df/5df629cc09271832ab61aefb1deec47f_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/5df/5df629cc09271832ab61aefb1deec47f_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 412898103,
-      "external_id": "695c772f4c1717",
       "name": "Unisex Hoodie - Prompt: The Last Melon",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/edb/edbd495b01508562f3ee183c44716990_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/edb/edbd495b01508562f3ee183c44716990_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 412898016,
-      "external_id": "695c76efc6cf64",
       "name": "Unisex Hoodie - Prompt: Monsterverse, There&#39;s Always a Bigger Fish",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/44e/44ebe9b031fda58613f5881096d9080a_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/44e/44ebe9b031fda58613f5881096d9080a_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 412897934,
-      "external_id": "695c76c0a0ebd6",
       "name": "Unisex Hoodie - Prompt: Coming and Going",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/522/52218a7b8a12fd7bf15502754d205274_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/522/52218a7b8a12fd7bf15502754d205274_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 412897818,
-      "external_id": "695c76663c9762",
       "name": "Unisex Hoodie - Prompt: - The Crow",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/d54/d549990dd21c5824bd17154ff07f7d40_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/d54/d549990dd21c5824bd17154ff07f7d40_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 412897718,
-      "external_id": "695c763f733633",
       "name": "Unisex Hoodie - Prompt: The Lions Roar",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/52d/52de406cb1af447633af392c1b314d82_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/52d/52de406cb1af447633af392c1b314d82_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 412897621,
-      "external_id": "695c75eee1be22",
       "name": "Unisex Hoodie - Prompt: Monsterverse, A Thousand Gorillas",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/f88/f88794913b692bc1408c406d3a47523a_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/f88/f88794913b692bc1408c406d3a47523a_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 412897449,
-      "external_id": "695c75b9a786b1",
       "name": "Unisex Hoodie - Prompt: BC Ferries",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/0c1/0c14fb4b867703fd70318ac379943755_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/0c1/0c14fb4b867703fd70318ac379943755_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 412897406,
-      "external_id": "695c758fa08563",
       "name": "Unisex Hoodie - Prompt: Pixel Land",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/965/965a49bbea60819af532cbd4f5e5eb20_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/965/965a49bbea60819af532cbd4f5e5eb20_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 412897330,
-      "external_id": "695c7568ddf854",
       "name": "Unisex Hoodie - Prompt: Monsterverse, The Universe Devours the Sun",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/7fb/7fbb9c67764ecceb4a8a58116e247dda_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/7fb/7fbb9c67764ecceb4a8a58116e247dda_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 412897231,
-      "external_id": "695c752d081d78",
       "name": "Unisex Hoodie - Prompt: Amazing, The Maze",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/40b/40b4e1f48507c134264e946629daf68d_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/40b/40b4e1f48507c134264e946629daf68d_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 412897172,
-      "external_id": "695c74ff4390b4",
       "name": "Unisex Hoodie - Prompt: The Spiders Web",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/de1/de1e35f095211b022b7e40fedd394e51_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/de1/de1e35f095211b022b7e40fedd394e51_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 412897115,
-      "external_id": "695c74dc730114",
       "name": "Unisex Hoodie - Prompt: Amazing, Maze",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/b4c/b4c83fdf9521beb320bb2742e528550f_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/b4c/b4c83fdf9521beb320bb2742e528550f_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409607287,
-      "external_id": "69507736d39b53",
       "name": "Unisex Hoodie - Prompt: The Nucleus",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/0de/0de75ac0d252135f852eaf20901ed280_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/0de/0de75ac0d252135f852eaf20901ed280_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409607092,
-      "external_id": "695076efeb8d35",
       "name": "Unisex Hoodie - Prompt: Monsterverse, Trash in the Ocean",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/da2/da2b31fb9b44eee2609f390e5bb7d4ca_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/da2/da2b31fb9b44eee2609f390e5bb7d4ca_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409606903,
-      "external_id": "695076a2eb7817",
       "name": "Unisex Hoodie - Prompt: The Zodiacs",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/0b4/0b436e295ff4a5aeeef208e8f53db57e_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/0b4/0b436e295ff4a5aeeef208e8f53db57e_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409606678,
-      "external_id": "69507660c8a7b6",
       "name": "Unisex Hoodie - Prompt: The Zodiacs",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/e32/e321d06c86fa9d1d0a561777f03e7bc7_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/e32/e321d06c86fa9d1d0a561777f03e7bc7_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409606507,
-      "external_id": "6950761a46fbe3",
       "name": "Unisex Hoodie - Prompt: The Zodiacs",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/8dc/8dc3aaedb5b71b58b1f504f396804e15_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/8dc/8dc3aaedb5b71b58b1f504f396804e15_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409606376,
-      "external_id": "695075d8354461",
       "name": "Unisex Hoodie - Prompt: Energy Attraction",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/14c/14c78f04ee8fc589dceb6ed31f571bd7_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/14c/14c78f04ee8fc589dceb6ed31f571bd7_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409606244,
-      "external_id": "6950759b94cf65",
       "name": "Unisex Hoodie - Prompt: The Zodiacs",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/43a/43ad724af7d00c46dce68179355b39cc_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/43a/43ad724af7d00c46dce68179355b39cc_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409606094,
-      "external_id": "6950755b488aa3",
       "name": "Unisex Hoodie - Prompt: Monsterverse",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/58c/58cb70b5c4b7f198c416ded7ba4d3bed_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/58c/58cb70b5c4b7f198c416ded7ba4d3bed_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409606013,
-      "external_id": "69507524747862",
       "name": "Unisex Hoodie - Prompt: Moons Collide",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/f70/f70c14a80a67f19bf57fb753a28ee8e5_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/f70/f70c14a80a67f19bf57fb753a28ee8e5_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409605901,
-      "external_id": "695074dfaf2358",
       "name": "Unisex Hoodie - Prompt: Sandstorm",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/1dc/1dc95addd7cf7d62ddd7b0e84fc92fc7_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/1dc/1dc95addd7cf7d62ddd7b0e84fc92fc7_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409605744,
-      "external_id": "695074aaac0304",
       "name": "Unisex Hoodie - Prompt: Gods Awaken",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/94e/94ea3b0503e855ec5fe2ff34885a3c7d_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/94e/94ea3b0503e855ec5fe2ff34885a3c7d_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409605504,
-      "external_id": "695074645a6ea1",
       "name": "Unisex Hoodie - Prompt: Anubis",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/3b5/3b5588564a9b661b67e0cddef6048774_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/3b5/3b5588564a9b661b67e0cddef6048774_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409605240,
-      "external_id": "69507401b6c312",
       "name": "Unisex Hoodie - Prompt: Gods Awaken",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/fb3/fb3f6a1ea4554f5c16b2c21e5ceb1844_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/fb3/fb3f6a1ea4554f5c16b2c21e5ceb1844_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409605140,
-      "external_id": "695073ca6efaf7",
       "name": "Unisex Hoodie - Prompt: Anubis",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/cfd/cfd4bc039fb9a51731a083aa2d06f722_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/cfd/cfd4bc039fb9a51731a083aa2d06f722_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409604866,
-      "external_id": "69507344d90b74",
       "name": "Unisex Hoodie - Prompt: BC Ferries",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/0c1/0c14fb4b867703fd70318ac379943755_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/0c1/0c14fb4b867703fd70318ac379943755_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409604828,
-      "external_id": "69507317f06af2",
       "name": "Unisex Hoodie - Prompt: Geographically Tswassen",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/0ca/0ca17425eb77b61e44152cff22fcf26c_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/0ca/0ca17425eb77b61e44152cff22fcf26c_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409604730,
-      "external_id": "695072f0d3d919",
       "name": "Unisex Hoodie - Prompt: Alien Invasion",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/33d/33dd4fb81162f7c2b3c17615b1c19336_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/33d/33dd4fb81162f7c2b3c17615b1c19336_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409604555,
-      "external_id": "695072b778daa1",
       "name": "Unisex Hoodie - Prompt: God Mode",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/8db/8db367e485ca7aa59993055db9ccf8d6_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/8db/8db367e485ca7aa59993055db9ccf8d6_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409604376,
-      "external_id": "69507269b93702",
       "name": "Unisex Hoodie - Prompt: God Mode",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/584/584b4d8694354acad88f1d070765de5c_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/584/584b4d8694354acad88f1d070765de5c_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409603966,
-      "external_id": "695071eba01ee1",
       "name": "Unisex Hoodie - Prompt: High Octane",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/50e/50e07abecbdd44f3fdbeabc269d1b310_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/50e/50e07abecbdd44f3fdbeabc269d1b310_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409603772,
-      "external_id": "695071b1a45704",
       "name": "Unisex Hoodie - Prompt: Villainhood",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/91d/91df315f628542556e7f0ee36957cd56_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/91d/91df315f628542556e7f0ee36957cd56_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409603634,
-      "external_id": "69507182b11568",
       "name": "Unisex Hoodie - Prompt: Destroyer of Worlds",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/fbf/fbf934e02b4f6431ad6dee55409cf96a_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/fbf/fbf934e02b4f6431ad6dee55409cf96a_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409211214,
-      "external_id": "694cee0ee87fd9",
       "name": "Unisex Hoodie - Prompt: Gemini ",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/9a4/9a4ad09384c867da98a99c61b4656922_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/9a4/9a4ad09384c867da98a99c61b4656922_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409211189,
-      "external_id": "694ced9ae432d4",
       "name": "Unisex Hoodie - Prompt: Proof You Have Heart",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/737/737761b53cc353039937436dafc9cde5_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/737/737761b53cc353039937436dafc9cde5_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409211151,
-      "external_id": "694ced26ea4cd6",
       "name": "Unisex Hoodie - Prompt: Resilience",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/0dd/0ddad3d75bfacd3b5e285378b80e4ef1_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/0dd/0ddad3d75bfacd3b5e285378b80e4ef1_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409211104,
-      "external_id": "694cecbaa240a2",
       "name": "Unisex Hoodie - Prompt: Mordor Delivers!",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/86e/86e08b9fe0ee07473a19b0f90fb74761_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/86e/86e08b9fe0ee07473a19b0f90fb74761_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409211060,
-      "external_id": "694cec4db17463",
       "name": "Unisex Hoodie - Prompt: Adaptability",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/1f9/1f96da4fd5928dd57f0def1d097eba92_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/1f9/1f96da4fd5928dd57f0def1d097eba92_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409211002,
-      "external_id": "694cebc5a9cef4",
       "name": "Unisex Hoodie - Prompt: Strong Swimmer",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/d16/d16fdd28e229583d96092530143eb98b_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/d16/d16fdd28e229583d96092530143eb98b_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409210954,
-      "external_id": "694ceb5ca2aed8",
       "name": "Unisex Hoodie - Prompt: The Destroyer",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/a3b/a3bac76b6bdc3be37e3ecdcadba8ea9d_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/a3b/a3bac76b6bdc3be37e3ecdcadba8ea9d_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409210888,
-      "external_id": "694cead62f9a49",
       "name": "Unisex Hoodie - Prompt: Hakuna Matata",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/884/884fcb02f3e3512d108141e554f6397c_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/884/884fcb02f3e3512d108141e554f6397c_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409210859,
-      "external_id": "694cea6828e924",
       "name": "Unisex Hoodie - Prompt: Strongest Swimmer",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/a0d/a0dc5c8a15fbd7380d84f0a7f7946ed7_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/a0d/a0dc5c8a15fbd7380d84f0a7f7946ed7_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409210814,
-      "external_id": "694cea00ca08f1",
       "name": "Unisex Hoodie - Prompt: Help Wanted",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/dd0/dd0865c2a6ec2b09d34f5c46bde9aa32_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/dd0/dd0865c2a6ec2b09d34f5c46bde9aa32_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409210794,
-      "external_id": "694ce9a7069a39",
       "name": "Unisex Hoodie - Prompt: Pumba, Disney",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/778/7788bd93c07ce566d2287340be8eca3d_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/778/7788bd93c07ce566d2287340be8eca3d_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409210757,
-      "external_id": "694ce93536fbe3",
       "name": "Unisex Hoodie - Prompt: Survive the Sharks",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/202/202b66ab52118d6e6fe17228012d273a_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/202/202b66ab52118d6e6fe17228012d273a_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409210724,
-      "external_id": "694ce8dad70024",
       "name": "Unisex Hoodie - Prompt: Loyal Allies",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/d85/d85ba33ed085bfee353f5081810162b2_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/d85/d85ba33ed085bfee353f5081810162b2_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409210676,
-      "external_id": "694ce85b7851d1",
       "name": "Unisex Hoodie - Prompt: Monsterverse, Antarctican Ice Spiders",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/6a9/6a99568c4bdc2ddad6a202ca017dde56_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/6a9/6a99568c4bdc2ddad6a202ca017dde56_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409210628,
-      "external_id": "694ce807f239a5",
       "name": "Unisex Hoodie - Prompt: Make Some Hurricanes Blow",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/df0/df0b699c762ab95d9bf479db86107e4f_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/df0/df0b699c762ab95d9bf479db86107e4f_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409210586,
-      "external_id": "694ce7ad70a652",
       "name": "Unisex Hoodie - Prompt: Heart",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/4c1/4c1ee1ecac660dde1107f426cc0f1a74_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/4c1/4c1ee1ecac660dde1107f426cc0f1a74_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409210551,
-      "external_id": "694ce75c158e48",
       "name": "Unisex Hoodie - Prompt: Heart",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/ae9/ae9a5ab70f2f3df3215c93d6592f7fda_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/ae9/ae9a5ab70f2f3df3215c93d6592f7fda_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409210524,
-      "external_id": "694ce7031dbce4",
       "name": "Unisex Hoodie - Prompt: Cheetah! Meow",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/34a/34a29f2e0aaf3154afcda402ee1070b9_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/34a/34a29f2e0aaf3154afcda402ee1070b9_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409210490,
-      "external_id": "694ce6bb1b8743",
       "name": "Unisex Hoodie - Prompt: End Global Wars",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/598/598d63051f655c2bc40a71ec6b955b1f_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/598/598d63051f655c2bc40a71ec6b955b1f_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409210442,
-      "external_id": "694ce66c820c57",
       "name": "Unisex Hoodie - Prompt: All Aboard!",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/d3d/d3d712809d50e1b8304254fe36708511_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/d3d/d3d712809d50e1b8304254fe36708511_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409210425,
-      "external_id": "694ce614e265c7",
       "name": "Unisex Hoodie - Prompt: End Global Wars",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/dd8/dd8d6e4e7f8cc823472d584ac69f8922_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/dd8/dd8d6e4e7f8cc823472d584ac69f8922_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409210404,
-      "external_id": "694ce5cbdd6592",
       "name": "Unisex Hoodie - Prompt: End Global Wars!",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/e9b/e9b8e202bd70ba187ea618e852d0804f_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/e9b/e9b8e202bd70ba187ea618e852d0804f_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409210373,
-      "external_id": "694ce57869f3b5",
       "name": "Unisex Hoodie - Prompt: Build Skyscrapers",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/1a4/1a4b1dbf191ce11fe3aab9570f90e5c1_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/1a4/1a4b1dbf191ce11fe3aab9570f90e5c1_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409210343,
-      "external_id": "694ce51755d531",
       "name": "Unisex Hoodie - Prompt: End Global Wars!",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/678/678425d756e0fd0f07e642875b78ad2f_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/678/678425d756e0fd0f07e642875b78ad2f_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409210316,
-      "external_id": "694ce4b896c975",
       "name": "Unisex Hoodie - Prompt: End Global Wars!",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/4f5/4f511837a77f721df24571cf4e17112a_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/4f5/4f511837a77f721df24571cf4e17112a_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409210308,
-      "external_id": "694ce476cdf826",
       "name": "Unisex Hoodie - Prompt: End Global Wars!",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/c5a/c5ad730ffc17bdb46ccfb0acbf50ec11_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/c5a/c5ad730ffc17bdb46ccfb0acbf50ec11_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409210281,
-      "external_id": "694ce432c60ae6",
       "name": "Unisex Hoodie - Prompt: End Global Wars!",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/cd0/cd08351018176bc30825d3bbff4304f7_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/cd0/cd08351018176bc30825d3bbff4304f7_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409210253,
-      "external_id": "694ce3f341eb93",
       "name": "Unisex Hoodie - Prompt: End Global Wars!",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/3f8/3f8257951c9617cc0ec906e9e86c7e8e_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/3f8/3f8257951c9617cc0ec906e9e86c7e8e_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409210244,
-      "external_id": "694ce3a022ed55",
       "name": "Unisex Hoodie - Prompt: End Global Wars",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/44f/44f315bf60bfef1aab17ca4f88b2f2a5_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/44f/44f315bf60bfef1aab17ca4f88b2f2a5_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409210226,
-      "external_id": "694ce363cbbff8",
       "name": "Unisex Hoodie - Prompt: The Milky Way",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/ed1/ed1e7beb29c8a70bfe8f538f3739119b_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/ed1/ed1e7beb29c8a70bfe8f538f3739119b_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409210215,
-      "external_id": "694ce32a488cb4",
       "name": "Unisex Hoodie - Prompt: Smartnado",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/47e/47eac1e9b1b123105f95291d0bba6f57_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/47e/47eac1e9b1b123105f95291d0bba6f57_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409210202,
-      "external_id": "694ce2f48961c2",
       "name": "Unisex Hoodie - Prompt: Rise Like Chinese Lanterns",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/0df/0df0411eef9517d890922f65f46b259a_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/0df/0df0411eef9517d890922f65f46b259a_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409210165,
-      "external_id": "694ce29f5d8856",
       "name": "Unisex Hoodie - Prompt: Purple Islands",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/7f4/7f4a3d0ab0b1cbe971cb32d45ad4ef06_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/7f4/7f4a3d0ab0b1cbe971cb32d45ad4ef06_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409210146,
-      "external_id": "694ce260bc5632",
       "name": "Unisex Hoodie - Prompt:  The Doorway",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/8ad/8ad72e4dfbc8e6d79548e7876887ff09_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/8ad/8ad72e4dfbc8e6d79548e7876887ff09_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409210128,
-      "external_id": "694ce22b6b4156",
       "name": "Unisex Hoodie - Prompt: Jigsaw ",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/77e/77e7d2142bbab194f59b64108de9bb3e_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/77e/77e7d2142bbab194f59b64108de9bb3e_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409210111,
-      "external_id": "694ce1f4724c36",
       "name": "Unisex Hoodie - Prompt: Jigsaw",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/3dd/3ddffa13368693fec2eb262340c6ef9f_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/3dd/3ddffa13368693fec2eb262340c6ef9f_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409210070,
-      "external_id": "694ce192a07948",
       "name": "Unisex Hoodie - Prompt: Freddy Krueger",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/009/009433aeca577c1f27f3f4876eea3056_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/009/009433aeca577c1f27f3f4876eea3056_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409210061,
-      "external_id": "694ce15d474358",
       "name": "Unisex Hoodie - Prompt: All Black Hoodie",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/f13/f132d962876ab3f974b02a9a7aadf54a_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/f13/f132d962876ab3f974b02a9a7aadf54a_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409210042,
-      "external_id": "694ce116ca0eb3",
       "name": "Unisex Hoodie - Prompt: One Piece",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/53c/53caae595b6e74fb53c05dd98e0db768_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/53c/53caae595b6e74fb53c05dd98e0db768_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409210013,
-      "external_id": "694ce0ee2787d8",
       "name": "Unisex Hoodie - Prompt: The Zodiacs",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/767/76799eb0741245514a1b4899fd57f2a5_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/767/76799eb0741245514a1b4899fd57f2a5_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409210000,
-      "external_id": "694ce0ba1324e6",
       "name": "Unisex Hoodie - Prompt: Exodus",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/b4a/b4a774f4bfbd464b77cbc771151aa0bd_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/b4a/b4a774f4bfbd464b77cbc771151aa0bd_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409209971,
-      "external_id": "694ce08ba951f6",
       "name": "Unisex Hoodie - Prompt: Exodus",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/c34/c3406c54a77549916fd001bd53eb7290_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/c34/c3406c54a77549916fd001bd53eb7290_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409209931,
-      "external_id": "694ce03cada933",
       "name": "Unisex Hoodie - Prompt: Exodus",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/b26/b26c240d8d8609e039b73c8b31ad5e56_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/b26/b26c240d8d8609e039b73c8b31ad5e56_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409209913,
-      "external_id": "694ce018bd6203",
       "name": "Unisex Hoodie - Prompt: Exodus",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/451/451c5c37832268452ca4512bed490905_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/451/451c5c37832268452ca4512bed490905_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409209907,
-      "external_id": "694cdfe2bde129",
       "name": "Unisex Hoodie - Prompt: Exodus",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/d96/d96d44184c011a2ee068232ea159f160_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/d96/d96d44184c011a2ee068232ea159f160_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409209893,
-      "external_id": "694cdfaa2e2d69",
       "name": "Unisex Hoodie - Prompt: Exodus",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/fb2/fb24a1998a6e54b59570bc4fb5f0bd18_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/fb2/fb24a1998a6e54b59570bc4fb5f0bd18_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409208780,
-      "external_id": "694cd817da3925",
       "name": "Unisex Hoodie - Prompt: Exodus",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/7ca/7ca3f1957ecf5a20381bc627204b0230_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/7ca/7ca3f1957ecf5a20381bc627204b0230_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409208235,
-      "external_id": "694cd62689a853",
       "name": "Unisex Hoodie - Prompt: One Piece",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/ac6/ac610d0598939c40852bdd115e92bc75_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/ac6/ac610d0598939c40852bdd115e92bc75_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409208057,
-      "external_id": "694cd56ff01eb9",
       "name": "Unisex Hoodie - Prompt: Satellites",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/76c/76cfd737cdd7c80a75ce51974e1763d5_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/76c/76cfd737cdd7c80a75ce51974e1763d5_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409207658,
-      "external_id": "694cd4fb03ce62",
       "name": "Unisex Hoodie - Prompt: Satellites",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/e4b/e4bb4d5eb80a9a95e8680a40cf60cc03_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/e4b/e4bb4d5eb80a9a95e8680a40cf60cc03_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409205945,
-      "external_id": "694cd38d99b5b5",
       "name": "Unisex Hoodie - Prompt: Satellites",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/b56/b5629a0758a6b4b05aafd32cc08387f1_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/b56/b5629a0758a6b4b05aafd32cc08387f1_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409205647,
-      "external_id": "694cd312277bf9",
       "name": "Unisex Hoodie - Prompt: Satellites",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/cbc/cbc2375b5350eca0799d84b7d79595cd_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/cbc/cbc2375b5350eca0799d84b7d79595cd_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409205587,
-      "external_id": "694cd27d7b37f3",
       "name": "Unisex Hoodie - Prompt: Satellites",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/3c6/3c6ef86867bd1242d520a96fcc267d7e_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/3c6/3c6ef86867bd1242d520a96fcc267d7e_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409205531,
-      "external_id": "694cd1e78b3452",
       "name": "Unisex Hoodie - Prompt: Exodus",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/e50/e500f8da1910f27ff4f6cbb00b275b89_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/e50/e500f8da1910f27ff4f6cbb00b275b89_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409205502,
-      "external_id": "694cd1867e4768",
       "name": "Unisex Hoodie - Prompt: Desert Dunes",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/812/8120ba345782443629fea6a7c949e883_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/812/8120ba345782443629fea6a7c949e883_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409205386,
-      "external_id": "694cd1114a5202",
       "name": "Unisex Hoodie - Prompt: Exodus",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/46e/46e13ec62db6bc39b6672ceacb08bf68_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/46e/46e13ec62db6bc39b6672ceacb08bf68_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409205312,
-      "external_id": "694cd084995a37",
       "name": "Unisex Hoodie - Prompt: Emojicon",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/b89/b8937f219ffe2bf1b84281ddc939ec34_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/b89/b8937f219ffe2bf1b84281ddc939ec34_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409205253,
-      "external_id": "694cd01c385149",
       "name": "Unisex Hoodie - Prompt: Exodus",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/1d1/1d1708d088d4a07d5b424547d47b3500_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/1d1/1d1708d088d4a07d5b424547d47b3500_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409205214,
-      "external_id": "694ccfb8911767",
       "name": "Unisex Hoodie - Prompt: Exodus",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/ef8/ef893ee2b2b95df9c801d84097257e44_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/ef8/ef893ee2b2b95df9c801d84097257e44_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409205144,
-      "external_id": "694ccf67384bf6",
       "name": "Unisex Hoodie - Prompt: Exodus",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/9dd/9dd0b3b607951475bf8a2a4565f7b050_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/9dd/9dd0b3b607951475bf8a2a4565f7b050_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409205092,
-      "external_id": "694ccf0c66b161",
       "name": "Unisex Hoodie - Prompt: Emojicon",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/d50/d500160f3927286c1c2a68e83c22fdbe_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/d50/d500160f3927286c1c2a68e83c22fdbe_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409205046,
-      "external_id": "694ccead8abc54",
       "name": "Unisex Hoodie - Prompt: Emojicon",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/4b3/4b3275ca1988183350a36342e8d337e4_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/4b3/4b3275ca1988183350a36342e8d337e4_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409205012,
-      "external_id": "694cce5d9af1e3",
       "name": "Unisex Hoodie - Prompt: Emojicon",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/e9c/e9c10cbb51b11f7a389de5d2e1ee3372_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/e9c/e9c10cbb51b11f7a389de5d2e1ee3372_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409204662,
-      "external_id": "694ccdf94be291",
       "name": "Unisex Hoodie - Prompt: Emojicon",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/8ed/8ed68c38af6488064ec0242fac96e113_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/8ed/8ed68c38af6488064ec0242fac96e113_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409204083,
-      "external_id": "694ccd68d6fe81",
       "name": "Unisex Hoodie - Prompt: Emojicon",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/3c1/3c18dd1b198cff1be0b5bcb5c47c4c3e_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/3c1/3c18dd1b198cff1be0b5bcb5c47c4c3e_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409203755,
-      "external_id": "694cccfd7a9507",
       "name": "Unisex Hoodie - Prompt: Emojicon",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/b89/b8937f219ffe2bf1b84281ddc939ec34_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/b89/b8937f219ffe2bf1b84281ddc939ec34_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409203712,
-      "external_id": "694ccc89dc9926",
       "name": "Unisex Hoodie - Prompt: Emojicon",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/191/19190636b598dccce2eaad0ffdc12768_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/191/19190636b598dccce2eaad0ffdc12768_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409203593,
-      "external_id": "694ccbcf86bd28",
       "name": "Unisex Hoodie - Prompt: Emojicon",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/2d5/2d509719ef7eb2aabe2420367199a6de_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/2d5/2d509719ef7eb2aabe2420367199a6de_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409203565,
-      "external_id": "694ccb8778d5b1",
       "name": "Unisex Hoodie - Prompt: Emojicon",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/e1b/e1bf4b34064605e9dc94770d3c861535_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/e1b/e1bf4b34064605e9dc94770d3c861535_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409203534,
-      "external_id": "694ccb2e0a0cd6",
       "name": "Unisex Hoodie - Prompt: Emojicon",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/acd/acd14337e0b31cdf92ebd6ee8bdb41ba_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/acd/acd14337e0b31cdf92ebd6ee8bdb41ba_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409203495,
-      "external_id": "694ccae0980db3",
       "name": "Unisex Hoodie - Prompt: Emojicon",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/087/0871653916d206fc0c893b9d466518d2_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/087/0871653916d206fc0c893b9d466518d2_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409203474,
-      "external_id": "694cca98572e81",
       "name": "Unisex Hoodie - Prompt: Emojicon",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/01d/01dc916d2516272df2e4a7904c4debc8_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/01d/01dc916d2516272df2e4a7904c4debc8_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409203423,
-      "external_id": "694cca50927bf2",
       "name": "Unisex Hoodie - Prompt: Emojicon",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/c48/c48942c753f8c9ca2963dc2aa00e073f_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/c48/c48942c753f8c9ca2963dc2aa00e073f_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409203370,
-      "external_id": "694cca04af00c8",
       "name": "Unisex Hoodie - Prompt: Emojicon",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/4c7/4c786d7caa58060f7e2f9080dada39d5_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/4c7/4c786d7caa58060f7e2f9080dada39d5_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409203294,
-      "external_id": "694cc9b384f817",
       "name": "Unisex Hoodie - Prompt: Emojicon",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/8ea/8eac87ee5e4b20700e68253f6c89766b_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/8ea/8eac87ee5e4b20700e68253f6c89766b_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409203228,
-      "external_id": "694cc96a36f042",
       "name": "Unisex Hoodie - Prompt: House of Cards",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/71d/71db7f940690ecde99023a254f581ca3_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/71d/71db7f940690ecde99023a254f581ca3_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409203194,
-      "external_id": "694cc924b8d8b9",
       "name": "Unisex Hoodie - Prompt: Emojicon",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/f73/f73081ff6c2286544412248da80f405a_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/f73/f73081ff6c2286544412248da80f405a_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409203166,
-      "external_id": "694cc8eb1bd7a1",
       "name": "Unisex Hoodie - Prompt: Emojicon",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/e40/e40643fc0a7f2f67623fc4625c8c7da7_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/e40/e40643fc0a7f2f67623fc4625c8c7da7_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409203150,
-      "external_id": "694cc8b24ff368",
       "name": "Unisex Hoodie - Prompt: Emojicon",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/273/2737e3dd7fa3cf819567223fc0aaef38_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/273/2737e3dd7fa3cf819567223fc0aaef38_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409203128,
-      "external_id": "694cc86472e022",
       "name": "Unisex Hoodie - Prompt: House of Cards",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/fd7/fd7737d1752d717c275eaa0bc5cc30d2_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/fd7/fd7737d1752d717c275eaa0bc5cc30d2_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409203091,
-      "external_id": "694cc7f9c351c7",
       "name": "Unisex Hoodie - Prompt: House of Cards",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/488/48883c26eee03ce82da0fb516d083b31_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/488/48883c26eee03ce82da0fb516d083b31_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409203073,
-      "external_id": "694cc7c8b14a08",
       "name": "Unisex Hoodie - Prompt: House of Cards",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/843/843d2dbab2e29552863f568ba5dad216_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/843/843d2dbab2e29552863f568ba5dad216_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409203029,
-      "external_id": "694cc79f4febf3",
       "name": "Unisex Hoodie - Prompt: House of Cards",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/63c/63c01a00cc261d6894ddafb4ea645279_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/63c/63c01a00cc261d6894ddafb4ea645279_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409203009,
-      "external_id": "694cc7640c6207",
       "name": "Unisex Hoodie - Prompt: House of Cards",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/2bb/2bbfc0ad3fe571096898a5f47d037d48_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/2bb/2bbfc0ad3fe571096898a5f47d037d48_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409202986,
-      "external_id": "694cc73465fbd3",
       "name": "Unisex Hoodie - Prompt: Night Terrors in the Museum",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/3a4/3a4fcb9cb7878867bb43ab47eb61ea57_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/3a4/3a4fcb9cb7878867bb43ab47eb61ea57_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409202967,
-      "external_id": "694cc705c0c893",
       "name": "Unisex Hoodie - Prompt: Night Terrors",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/d95/d954917a1bbc6f10dccce5e3457664ba_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/d95/d954917a1bbc6f10dccce5e3457664ba_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409202958,
-      "external_id": "694cc6d1698bb1",
       "name": "Unisex Hoodie - Prompt: Night Terrors",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/809/809404939829657fd33f96ca051de9eb_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/809/809404939829657fd33f96ca051de9eb_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409202944,
-      "external_id": "694cc6a6a52477",
       "name": "Unisex Hoodie - Prompt: Night Terrors",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/36a/36a5638261d50cdf3a9ccc86935eeaab_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/36a/36a5638261d50cdf3a9ccc86935eeaab_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409202933,
-      "external_id": "694cc67def3655",
       "name": "Unisex Hoodie - Prompt: Synthwave Madness",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/0e7/0e750159bb85ac7b82fb43172b4d3cdd_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/0e7/0e750159bb85ac7b82fb43172b4d3cdd_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409202914,
-      "external_id": "694cc659dc2bb1",
       "name": "Unisex Hoodie - Prompt: Victory",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/1fd/1fd26943704385849d21ade5f24d3263_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/1fd/1fd26943704385849d21ade5f24d3263_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409202906,
-      "external_id": "694cc62f9da0a7",
       "name": "Unisex Hoodie - Prompt: Sanscript",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/947/947c0e6476ecff0edc400f927871878a_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/947/947c0e6476ecff0edc400f927871878a_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409202888,
-      "external_id": "694cc602c78327",
       "name": "Unisex Hoodie - Prompt: Prometheus",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/5f9/5f9e5a84d6676dc089abf349958f8d06_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/5f9/5f9e5a84d6676dc089abf349958f8d06_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409202874,
-      "external_id": "694cc5e25bc769",
       "name": "Unisex Hoodie - Prompt: Night Terrors",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/e06/e068149c698abf8a48583a2961208e0d_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/e06/e068149c698abf8a48583a2961208e0d_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409202871,
-      "external_id": "694cc5bf9db781",
       "name": "Unisex Hoodie - Prompt: Synthwave Madness",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/387/38711f40d5224f570a82d5adf020b75c_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/387/38711f40d5224f570a82d5adf020b75c_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409202833,
-      "external_id": "694cc59bb56676",
       "name": "Unisex Hoodie - Prompt: Synthwave Madness",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/e74/e74ee98afe64d3e15ce1f4827f2b8011_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/e74/e74ee98afe64d3e15ce1f4827f2b8011_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409202825,
-      "external_id": "694cc57d108684",
       "name": "Unisex Hoodie - Prompt: Synthwave Madness",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/e7f/e7f43aa07193705b9b64cbf5810b3dd1_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/e7f/e7f43aa07193705b9b64cbf5810b3dd1_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409202797,
-      "external_id": "694cc55bec7cc1",
       "name": "Unisex Hoodie - Prompt: Synthwave Madness",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/a34/a34850426e6931a9e33a26cb3f0e9207_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/a34/a34850426e6931a9e33a26cb3f0e9207_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409071005,
-      "external_id": "694b3949099de4",
       "name": "Unisex Hoodie - Prompt: Synthetic Madness",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/ba2/ba2e0451117112b89a51361c93813f81_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/ba2/ba2e0451117112b89a51361c93813f81_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409070924,
-      "external_id": "694b38f90df3d7",
       "name": "Unisex Hoodie - Prompt: Synthwave Madness",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/25b/25b5e1edabdb4f40b18d5b4def908883_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/25b/25b5e1edabdb4f40b18d5b4def908883_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409070842,
-      "external_id": "694b389130da66",
       "name": "Unisex Hoodie - Prompt: Freeze",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/efb/efb72b152df34cb994cf6b0a65dfcee9_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/efb/efb72b152df34cb994cf6b0a65dfcee9_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409070771,
-      "external_id": "694b3850d60f83",
       "name": "Unisex Hoodie - Prompt: Synthwave Madness",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/ffd/ffd71675cb6c0572392179b53faa2829_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/ffd/ffd71675cb6c0572392179b53faa2829_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409070629,
-      "external_id": "694b37e88e38a6",
       "name": "Unisex Hoodie - Synthwave Madness",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/368/3688575db65d59b347a247d52889087a_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/368/3688575db65d59b347a247d52889087a_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409070489,
-      "external_id": "694b378bd436f5",
       "name": "Unisex Hoodie - Prompt: Synthwave Madness",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/db5/db52b5f9a53ffd3acf171111d5a6734b_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/db5/db52b5f9a53ffd3acf171111d5a6734b_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409070397,
-      "external_id": "694b3751196592",
       "name": "Unisex Hoodie - Prompt: Synthwave Madness",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/62a/62a8c4a428ac861337f8c3bf1139f1af_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/62a/62a8c4a428ac861337f8c3bf1139f1af_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409070338,
-      "external_id": "694b371c995ac3",
       "name": "Unisex Hoodie - Prompt: Synthwave Madness",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/e4a/e4a832391dae4a755b2da1c71d63355d_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/e4a/e4a832391dae4a755b2da1c71d63355d_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409070311,
-      "external_id": "694b36e3a82892",
       "name": "Unisex Hoodie - Prompt: Synthwave Madness",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/d91/d9191af3fa8b48896e79b54ced00a2ee_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/d91/d9191af3fa8b48896e79b54ced00a2ee_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409070233,
-      "external_id": "694b36aa1afb36",
       "name": "Unisex Hoodie - Prompt: Chains",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/345/345f86ecc19ad4acb32923ea981092aa_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/345/345f86ecc19ad4acb32923ea981092aa_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409070179,
-      "external_id": "694b366e745046",
       "name": "Unisex Hoodie - Prompt: Caution",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/d60/d602f16628641daf7ec5209cff615faf_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/d60/d602f16628641daf7ec5209cff615faf_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409070130,
-      "external_id": "694b362e9c57c1",
       "name": "Unisex Hoodie - Prompt: Synthwave Madness",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/602/6027ac9730718c7c12359b3be132ba44_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/602/6027ac9730718c7c12359b3be132ba44_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409070047,
-      "external_id": "694b35d44b1825",
       "name": "Unisex Hoodie - Prompt: Synthwave Madness",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/2a0/2a048efc21a7ee7bf5943f3c91cef0c2_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/2a0/2a048efc21a7ee7bf5943f3c91cef0c2_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409070006,
-      "external_id": "694b35a8f363d3",
       "name": "Unisex Hoodie - Prompt: Synthwave Madness",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/475/4759c53dcd8adffe6e5df59e32dd6c56_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/475/4759c53dcd8adffe6e5df59e32dd6c56_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409069962,
-      "external_id": "694b35645acc46",
       "name": "Unisex Hoodie - Prompt: Four Horseman of the Apocalypse",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/c1b/c1b4ab20a2a6a98ca6593a333b6a5ec4_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/c1b/c1b4ab20a2a6a98ca6593a333b6a5ec4_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409069921,
-      "external_id": "694b35316296d3",
       "name": "Unisex Hoodie - Prompt: Four Horseman of the Apocalypse",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/a68/a6850d6c37859d1e5ea093e2bd008800_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/a68/a6850d6c37859d1e5ea093e2bd008800_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409069892,
-      "external_id": "694b350917b254",
       "name": "Unisex Hoodie - Prompt: Four Horseman of the Apocalypse",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/4f8/4f85939b6325231a4ad3679ff85e6439_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/4f8/4f85939b6325231a4ad3679ff85e6439_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409069859,
-      "external_id": "694b34e2b1bd11",
       "name": "Unisex Hoodie - Prompt: Four Horseman of the Apocalypse",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/026/02656af14f292b930ba20a7a071d9bcb_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/026/02656af14f292b930ba20a7a071d9bcb_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409069828,
-      "external_id": "694b34bd1213c4",
       "name": "Unisex Hoodie - Prompt: Four Horseman of the Apocalypse",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/d29/d29815f3dc569996215381039df862a4_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/d29/d29815f3dc569996215381039df862a4_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409069796,
-      "external_id": "694b3497bb1275",
       "name": "Unisex Hoodie - Prompt: Synthwave Madness",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/0da/0da3cbcac96570418ce3ed0e4f909595_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/0da/0da3cbcac96570418ce3ed0e4f909595_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 409069765,
-      "external_id": "694b346e7655b7",
       "name": "Unisex Hoodie - Prompt: Smoking Gun",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/ab6/ab694feec0fcca4eec81ff158b483530_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/ab6/ab694feec0fcca4eec81ff158b483530_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 408994089,
-      "external_id": "694a2c0a7bbb82",
       "name": "Unisex Hoodie - Prompt: Synthwave Madness",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/189/189c413ddb6a6b770b9b460e2046c13a_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/189/189c413ddb6a6b770b9b460e2046c13a_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 408993826,
-      "external_id": "694a2be20d10b6",
       "name": "Unisex Hoodie - Prompt: Synthwave Madness",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/44e/44e8a748bfdf64fd9c2174ddd804dc93_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/44e/44e8a748bfdf64fd9c2174ddd804dc93_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 408993564,
-      "external_id": "694a2bb7927bb5",
       "name": "Unisex Hoodie - Prompt: Synthwave Madness",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/a68/a6850d6c37859d1e5ea093e2bd008800_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/a68/a6850d6c37859d1e5ea093e2bd008800_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 408993316,
-      "external_id": "694a2b8c748216",
       "name": "Unisex Hoodie - Prompt: Synthwave Madness",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/e74/e749f7cf0e905ddf7d39df92895b9589_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/e74/e749f7cf0e905ddf7d39df92895b9589_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 408993111,
-      "external_id": "694a2b515ad2c4",
       "name": "Unisex Hoodie - Prompt: Synthwave Madness",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/acd/acd7d5436356eef33831e42c6bc632b1_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/acd/acd7d5436356eef33831e42c6bc632b1_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 408993060,
-      "external_id": "694a2b2593a1a2",
       "name": "Unisex Hoodie - Prompt: Synthwave Madness",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/de0/de0d7682bc75458cb572dfaaa1c6fbc9_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/de0/de0d7682bc75458cb572dfaaa1c6fbc9_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 408993021,
-      "external_id": "694a2b00299c94",
       "name": "Unisex Hoodie - Prompt: Synthwave Madness",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/332/332563356837ad35ec95087a35985cf3_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/332/332563356837ad35ec95087a35985cf3_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 408991239,
-      "external_id": "694a21c245db39",
       "name": "Unisex Hoodie - Prompt: Synthwave Madness",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/e05/e052622fc83ce30d7b81d489447de30a_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/e05/e052622fc83ce30d7b81d489447de30a_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 408991224,
-      "external_id": "694a219adbcbb8",
       "name": "Unisex Hoodie - Prompt: Synthwave Madness",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/585/585846306e7ab79b7669b8bf41710ded_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/585/585846306e7ab79b7669b8bf41710ded_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 408991149,
-      "external_id": "694a21729bdc06",
       "name": "Unisex Hoodie - Prompt: Synthwave Madness",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/482/482b6998dc810a4d73486747837a72a5_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/482/482b6998dc810a4d73486747837a72a5_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 408991021,
-      "external_id": "694a20a0ac0c63",
       "name": "Unisex Hoodie - Prompt: YIN/YEN",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/272/2723bef19b68582784bc0378b2c4b4e3_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/272/2723bef19b68582784bc0378b2c4b4e3_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 408990988,
-      "external_id": "694a2076dc1e64",
       "name": "Unisex Hoodie - Prompt: Peace",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/024/024482b9c1b8a95ab74c6c3ac052a988_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/024/024482b9c1b8a95ab74c6c3ac052a988_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 408990968,
-      "external_id": "694a204ea9d745",
       "name": "Unisex Hoodie - Prompt: Trump",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/1df/1df7b736178699d4ac09f6c55978bf25_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/1df/1df7b736178699d4ac09f6c55978bf25_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 408990923,
-      "external_id": "694a201a094355",
       "name": "Unisex Hoodie - Prompt: Synthwave Madness",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/2bb/2bb5c59c51ed857546e803d42b08c016_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/2bb/2bb5c59c51ed857546e803d42b08c016_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 408990916,
-      "external_id": "694a1ff0ae4693",
       "name": "Unisex Hoodie - Prompt: Exodus",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/0df/0dfcb21794cc39806aec2f3a803ece27_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/0df/0dfcb21794cc39806aec2f3a803ece27_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 408990899,
-      "external_id": "694a1fc62c3028",
       "name": "Unisex Hoodie - Prompt: Exodus",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/2fd/2fd950ac441046f088f86fab471041d9_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/2fd/2fd950ac441046f088f86fab471041d9_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 408990877,
-      "external_id": "694a1f9ec17ff3",
       "name": "Unisex Hoodie - Prompt: Walking Advertising",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/43d/43d62d83d2ef80773bd24dcb8045087e_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/43d/43d62d83d2ef80773bd24dcb8045087e_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 408990857,
-      "external_id": "694a1f77e2ecb8",
       "name": "Unisex Hoodie - Prompt: Newfoundland",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/774/774beb0160c5672021bd48df7975a82e_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/774/774beb0160c5672021bd48df7975a82e_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 408990826,
-      "external_id": "694a1f48db85d3",
       "name": "Unisex Hoodie - Prompt: Exodus",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/cbc/cbc65dde6b6fb6a4f8ff13c839b59840_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/cbc/cbc65dde6b6fb6a4f8ff13c839b59840_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 408990778,
-      "external_id": "694a1f1ba9ba81",
       "name": "Unisex Hoodie - Prompt: Exodus",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/0c7/0c760e5622092f247f06a82969f8b0de_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/0c7/0c760e5622092f247f06a82969f8b0de_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 408800172,
-      "external_id": "6947cb04ad2418",
       "name": "Unisex Hoodie",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/475/47583437f9c9a2368a1a71827a374d59_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/475/47583437f9c9a2368a1a71827a374d59_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 408800077,
-      "external_id": "6947cad5df5779",
       "name": "Unisex Hoodie",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/d8e/d8eca8886b188c4dfb486e8e9c8f9dfc_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/d8e/d8eca8886b188c4dfb486e8e9c8f9dfc_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 408800035,
-      "external_id": "6947ca9c7572a4",
       "name": "Unisex Hoodie",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/8ed/8ed7285ad379e45aaba6f8748a65bc90_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/8ed/8ed7285ad379e45aaba6f8748a65bc90_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 408800006,
-      "external_id": "6947ca7226f551",
       "name": "Unisex Hoodie",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/0fc/0fc665e97e658f2aebdbf2cc579d0932_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/0fc/0fc665e97e658f2aebdbf2cc579d0932_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 408799944,
-      "external_id": "6947ca44da9fb7",
       "name": "Unisex Hoodie",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/9b3/9b315393ef47ccff541021fc25de8c61_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/9b3/9b315393ef47ccff541021fc25de8c61_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 408799907,
-      "external_id": "6947ca086dcee4",
       "name": "Unisex Hoodie",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/cc9/cc966ad9a66af5598b63ecaa724ee0b2_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/cc9/cc966ad9a66af5598b63ecaa724ee0b2_preview.png"
+      ],
+      "price": 95
     },
     {
       "id": 408799858,
-      "external_id": "6947c9d5a1b2d8",
       "name": "Unisex Hoodie",
-      "variants": 11,
-      "synced": 11,
-      "thumbnail_url": "https://files.cdn.printful.com/files/c33/c3325938d2043ea1a2a4e42fe906de92_preview.png",
-      "is_ignored": false
+      "images": [
+        "https://files.cdn.printful.com/files/c33/c3325938d2043ea1a2a4e42fe906de92_preview.png"
+      ],
+      "price": 95
+    },
+    {
+      "id": 408799815,
+      "name": "Unisex Hoodie",
+      "images": [
+        "https://files.cdn.printful.com/files/123/12397c8cba0feefc961d19eaa106ec3e_preview.png"
+      ],
+      "price": 95
+    },
+    {
+      "id": 408799788,
+      "name": "Unisex Hoodie",
+      "images": [
+        "https://files.cdn.printful.com/files/37a/37ae7dfb1b10681e666bd8eb7c3355dc_preview.png"
+      ],
+      "price": 95
+    },
+    {
+      "id": 408799726,
+      "name": "Unisex Hoodie",
+      "images": [
+        "https://files.cdn.printful.com/files/b28/b2823f0e0b52a57fa688512cf587ce0a_preview.png"
+      ],
+      "price": 95
     }
   ]
 }
