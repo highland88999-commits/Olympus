@@ -10,8 +10,8 @@ async function runHarvest() {
         console.log(`[ACTION] Harvesting Sector ${sectorId}...`);
 
         try {
-            // Updated to point to your new API structure
-            const response = await fetch(`https://2c30e.netlify.app/api/get-products-${sectorId}`);
+            // FIX: Pointing back to the original source so totalItems isn't 0
+            const response = await fetch(`https://2c30e.netlify.app/.netlify/functions/get-products-${sectorId}`);
             
             if (response.ok) {
                 const data = await response.json();
@@ -36,7 +36,7 @@ async function runHarvest() {
         products: masterArchive 
     };
 
-    // THE CRITICAL FIX: Saving to the /api folder so Vercel can see it
+    // SAVING TO VERCEL FOLDER: This ensures the 253 items show up on the new site
     fs.writeFileSync('./api/archive-map.json', JSON.stringify(manifest, null, 2));
     console.log(`ARCHIVE SECURED: ${masterArchive.length} items stored in the /api folder.`);
 }
