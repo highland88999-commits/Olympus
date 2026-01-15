@@ -13,11 +13,13 @@
         h1 { letter-spacing: 5px; color: var(--fire-glow); text-shadow: 0 0 10px var(--fire-core); font-size: 0.9rem; margin: 0; }
         #cart-trigger { cursor: pointer; color: var(--fire-glow); border: 1px solid var(--fire-glow); padding: 8px 15px; font-size: 0.8rem; background: rgba(255,174,0,0.1); }
 
+        /* SCROLLABLE GRID */
         #store-grid { flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 95%; margin: 15px auto; overflow-y: auto; height: calc(100vh - 165px); padding-bottom: 120px; z-index: 5; position: relative; scrollbar-width: none; }
         .card { position: relative; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 174, 0, 0.1); aspect-ratio: 1/1; cursor: pointer; }
         .card img { width: 100%; height: 100%; object-fit: contain; }
         .grid-label { position: absolute; bottom: 0; width: 100%; background: rgba(0,0,0,0.7); font-size: 0.5rem; text-align: center; padding: 5px 0; color: var(--fire-glow); }
 
+        /* PRODUCT MODAL */
         #modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1000; display: none; background: transparent; }
         .modal-content { width: 95%; max-width: 450px; margin: 20px auto; background: rgba(0, 0, 0, 0.2); border: 2px solid var(--fire-glow); position: relative; box-shadow: 0 0 100px rgba(255, 69, 0, 0.5); backdrop-filter: blur(4px); padding-bottom: 20px; }
         
@@ -28,6 +30,7 @@
         .qty-controls { display: flex; align-items: center; gap: 20px; margin: 10px 0; border: 1px solid var(--fire-glow); width: fit-content; padding: 8px 15px; background: rgba(0,0,0,0.8); }
         .add-to-cart-btn { width: 100%; padding: 20px; background: var(--fire-glow); color: #000; font-weight: bold; border: none; cursor: pointer; text-transform: uppercase; letter-spacing: 2px; }
 
+        /* MANIFEST SIDEBAR */
         #side-cart { position: fixed; top: 0; right: -100%; width: 85%; max-width: 400px; height: 100%; background: rgba(5, 5, 5, 0.98); border-left: 1px solid var(--fire-glow); z-index: 2000; transition: 0.4s; display: flex; flex-direction: column; }
         #side-cart.open { right: 0; }
         .cart-items { flex: 1; overflow-y: auto; padding: 20px; }
@@ -35,6 +38,7 @@
         .fiat { background: #fff; color: #000; }
         .crypto { background: var(--fire-core); color: #fff; }
 
+        /* FOOTER / PAGINATION */
         .pagination-container { position: fixed; bottom: 0; width: 100%; height: var(--pagi-h); background: rgba(0,0,0,0.9); z-index: 150; display: flex; flex-direction: column; align-items: center; justify-content: center; border-top: 1px solid var(--fire-core); }
         .page-num { font-size: 1.1rem; color: rgba(255, 255, 255, 0.2); cursor: pointer; min-width: 35px; text-align: center; }
         .page-num.active { color: var(--fire-glow); font-weight: bold; }
@@ -103,35 +107,37 @@
 let allProducts = [], cart = [], currentPage = 0, itemsPerPage = 24;
 let selectedSize = null, activeProduct = null, modalQty = 1;
 
-// THE MULTI-PULL HARVESTER
+// THE MULTI-PULL HARVESTER LOGIC
 async function fetchStore(page = 0) {
     try {
         const res = await fetch(`/.netlify/functions/get-products?page=${page}`);
         const data = await res.json();
         
-        // Safety: Only add if products exist in the pull
+        if (page === 0) allProducts = [];
+        
         if (data.products && data.products.length > 0) {
             allProducts = [...allProducts, ...data.products];
             renderGrid();
         }
 
-        document.getElementById('gather-status').innerText = `AXIOM ARCHIVE: ${allProducts.length} / ${data.total || '???'}`;
+        const total = data.total || 0;
+        document.getElementById('gather-status').innerText = `AXIOM ARCHIVE: ${allProducts.length} / ${total}`;
 
-        // CHAIN COMMAND: Pull next 100 if we haven't hit the total or 1000 limit
-        if (allProducts.length < data.total && allProducts.length < 1000) {
+        // Chain to the next set of 100 if more exist
+        if (allProducts.length < total && allProducts.length < 1000) {
             setTimeout(() => fetchStore(page + 1), 350);
         } else {
-            document.getElementById('gather-status').innerText = `SYNC COMPLETE: ${allProducts.length} DESIGNS`;
+            document.getElementById('gather-status').innerText = "SYNC COMPLETE";
         }
-    } catch (e) { document.getElementById('gather-status').innerText = "LINK INTERRUPTED"; }
+    } catch (e) { 
+        document.getElementById('gather-status').innerText = "LINK INTERRUPTED"; 
+    }
 }
 
 function renderGrid() {
     const grid = document.getElementById('store-grid');
-    // Ensure we only slice what we actually have in memory
-    const totalAvailable = allProducts.length;
     const start = currentPage * itemsPerPage;
-    const end = Math.min(start + itemsPerPage, totalAvailable);
+    const end = Math.min(start + itemsPerPage, allProducts.length);
     
     const items = allProducts.slice(start, end);
     grid.innerHTML = items.map(p => `
@@ -181,7 +187,7 @@ function updateCartUI() {
     const container = document.getElementById('cart-items-container');
     document.getElementById('cart-trigger').innerText = `MANIFEST (${cart.reduce((s, i) => s + i.qty, 0)})`;
     container.innerHTML = cart.map(i => `
-        <div class="cart-item">
+        <div class="cart-item" style="display:flex; gap:10px; margin-bottom:15px; align-items:center;">
             <img src="${i.img}" style="width:50px; height:50px;">
             <div style="flex:1;">
                 <div style="font-size:0.75rem;">${i.name}</div>
@@ -194,7 +200,7 @@ function updateCartUI() {
     document.getElementById('cart-total').innerText = `$${cart.reduce((s, i) => s + (i.qty * 95), 0)}.00`;
 }
 
-// FRACTAL ENGINE (Visuals)
+// FRACTAL ENGINE
 const canvas = document.getElementById('fractalCanvas');
 const ctx = canvas.getContext('2d');
 let w, h, worldY = 0, lastTreeY = 0, time = 0, treeSegments = [], particles = [];
