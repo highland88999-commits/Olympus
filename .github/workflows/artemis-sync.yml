@@ -26,3 +26,4 @@ jobs:
           git add api/archive-map.json
           git commit -m "Auto-Update Archive Manifest [Vercel Path]" || echo "No changes"
           git push
+
