@@ -1,7 +1,7 @@
 const fetch = require('node-fetch');
 
 exports.handler = async (event) => {
-  // Capture requested page; Page 0 = items 0-100, Page 1 = items 101-200, etc.
+  // The 'page' parameter acts as our set selector (Set 0, Set 1, Set 2...)
   const page = event.queryStringParameters.page || 0;
   const offset = page * 100; 
 
@@ -14,22 +14,15 @@ exports.handler = async (event) => {
 
     const data = await response.json();
 
-    if (!response.ok) {
-      throw new Error(data.error || 'Printful link severed');
-    }
-
     return {
       statusCode: 200,
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         products: data.result,
-        total: data.paging.total // Sends '253' so the frontend knows to keep digging
+        total: data.paging.total // The backend reports the real count (e.g. 586)
       })
     };
   } catch (error) {
-    return { 
-      statusCode: 500, 
-      body: JSON.stringify({ error: error.message }) 
-    };
+    return { statusCode: 500, body: JSON.stringify({ error: error.message }) };
   }
 };
