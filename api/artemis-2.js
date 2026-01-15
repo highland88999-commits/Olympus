@@ -2,26 +2,38 @@ const fs = require('fs');
 const path = require('path');
 
 export default async function handler(req, res) {
-    // Set headers to allow your website to talk to the API
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Content-Type', 'application/json');
+    // 1. Locate the Manifest in the /api folder
+    const manifestPath = path.join(process.cwd(), 'api', 'archive-map.json');
 
     try {
-        // This finds your 253-hoodie manifest in the same folder
-        const filePath = path.join(process.cwd(), 'api', 'archive-map.json');
-        
-        if (!fs.existsSync(filePath)) {
-            console.error("Path missing:", filePath);
-            return res.status(404).json({ error: "Archive map not found." });
+        // 2. Read the 253 hoodies
+        if (!fs.existsSync(manifestPath)) {
+            return res.status(404).json({ error: "Manifest not found. Run Artemis 1 first." });
         }
 
-        const fileData = fs.readFileSync(filePath, 'utf8');
-        const manifest = JSON.parse(fileData);
+        const rawData = fs.readFileSync(manifestPath, 'utf8');
+        const manifest = JSON.parse(rawData);
 
-        // Success: Sends the data to your 24-item grid
-        return res.status(200).json(manifest);
+        // 3. Handle Pagination (The "Chapters" of 24)
+        const page = parseInt(req.query.page) || 1;
+        const limit = 24;
+        const startIndex = (page - 1) * limit;
+        const endIndex = page * limit;
+
+        const paginatedProducts = manifest.products.slice(startIndex, endIndex);
+
+        // 4. Send the data to your website
+        res.setHeader('Access-Control-Allow-Origin', '*'); // Allows your site to talk to this API
+        res.status(200).json({
+            status: "ONLINE",
+            totalItems: manifest.totalItems,
+            currentPage: page,
+            totalPages: Math.ceil(manifest.totalItems / limit),
+            products: paginatedProducts
+        });
+
     } catch (error) {
-        console.error("VIEWER ERROR:", error);
-        return res.status(500).json({ error: "The Axiom Archive is currently rebuilding." });
+        console.error("ARTEMIS 2 ERROR:", error.message);
+        res.status(500).json({ error: "Internal System Error" });
     }
 }
