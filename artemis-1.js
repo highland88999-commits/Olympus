@@ -1,46 +1,43 @@
-// artemis-1.js (Save this in your ROOT folder, not netlify/functions)
 const fs = require('fs');
 
 async function runHarvest() {
-    console.log("ARTEMIS PROTOCOL: Initializing Persistent Sequential Harvest...");
-    const results = [];
-    let totalItemsFound = 0;
+    console.log("ARTEMIS PROTOCOL: Sequential Storytelling Sync Initialized...");
+    
+    // This array will hold everything in the exact order we pull it
+    let masterArchive = [];
 
+    // 1. Pulling in strict numerical order (01 -> 10)
     for (let i = 1; i <= 10; i++) {
         const sectorId = i.toString().padStart(2, '0');
-        console.log(`ARTEMIS: Checking Sector ${sectorId}...`);
+        console.log(`HARVESTING SECTOR ${sectorId}...`);
 
         try {
-            // It checks its own live site to see if the data is there
             const response = await fetch(`https://2c30e.netlify.app/.netlify/functions/get-products-${sectorId}`);
-            
             if (response.ok) {
                 const data = await response.json();
-                const count = data.products?.length || 0;
-                results.push({ sector: sectorId, status: "Success", count: count });
-                totalItemsFound += count;
-            } else {
-                results.push({ sector: sectorId, status: "Empty", count: 0 });
+                
+                if (data.products && Array.isArray(data.products)) {
+                    // We add them to the master list exactly as they come out of the sector
+                    masterArchive = masterArchive.concat(data.products);
+                    console.log(`Added ${data.products.length} items from Sector ${sectorId}`);
+                }
             }
         } catch (error) {
-            results.push({ sector: sectorId, status: "Offline", count: 0 });
+            console.error(`CRITICAL: Sector ${sectorId} skip in sequence!`, error);
         }
     }
 
-    // THE CRITICAL STEP: Writing the Manifest
+    // 2. The Final Storage
     const manifest = {
-        status: "ONLINE",
-        directory: "AXIOM_O1",
-        totalSectors: 10,
-        itemsPerPage: 24,
-        totalItems: totalItemsFound,
+        status: "SYNCED",
         lastSync: new Date().toISOString(),
-        scanDetails: results
+        totalItems: masterArchive.length,
+        // The front-end will now receive one array in the order of Sector 01 -> Sector 10
+        products: masterArchive 
     };
 
-    // Save this so Artemis 2 can read it
     fs.writeFileSync('./netlify/functions/archive-map.json', JSON.stringify(manifest, null, 2));
-    console.log("ARTEMIS: Manifest updated with " + totalItemsFound + " items.");
+    console.log(`SUCCESS: Storyline preserved. ${masterArchive.length} items archived.`);
 }
 
 runHarvest();
