@@ -3,22 +3,26 @@ const fetch = require('node-fetch');
 // NEXUS SHIELD MEMORY
 let productListCache = null;
 let lastListFetch = 0;
-const detailCache = new Map(); // Stores the expensive image data for each product ID
-const LIST_TTL = 1000 * 60 * 15; // List refresh: 15 mins (Artemis keeps it warm)
+const detailCache = new Map(); 
+const LIST_TTL = 1000 * 60 * 15; 
 
 exports.handler = async (event) => {
   const API_KEY = process.env.PRINTFUL_API_KEY;
   const { page = 0 } = event.queryStringParameters || {};
-  const limit = 4;
+  
+  // FIX: Increased limit to 20 so your scroll bar shows more items at once
+  const limit = 20; 
   const offset = parseInt(page) * limit;
 
   try {
     const now = Date.now();
     
-    // 1. MASTER LIST RECOVERY (Recent -> Oldest)
+    // 1. MASTER LIST RECOVERY
     if (!productListCache || (now - lastListFetch > LIST_TTL)) {
       console.log("NEXUS SHIELD: REFRESHING MASTER ARCHIVE...");
-      const res = await fetch(`https://api.printful.com/store/products`, {
+      
+      // FIX: Added limit=100 here so the API actually "sees" all 20 of your hoodies
+      const res = await fetch(`https://api.printful.com/store/products?limit=100`, {
         headers: { 'Authorization': `Bearer ${API_KEY}` }
       });
       const data = await res.json();
@@ -32,19 +36,20 @@ exports.handler = async (event) => {
     if (slice.length === 0) {
       return { 
         statusCode: 200, 
-        headers: { "Access-Control-Allow-Origin": "*" },
+        headers: { 
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "application/json" 
+        },
         body: JSON.stringify({ products: [], total: productListCache.length }) 
       };
     }
 
-    // 3. DEEP HARVEST (With Individual Item Shielding)
+    // 3. DEEP HARVEST
     const detailedProducts = await Promise.all(slice.map(async (p) => {
-      // Check if this specific hoodie is already in the Detail Shield
       if (detailCache.has(p.id)) {
         return detailCache.get(p.id);
       }
 
-      // If not, fetch it (Artemis usually triggers this in the background)
       const detailRes = await fetch(`https://api.printful.com/store/products/${p.id}`, {
         headers: { 'Authorization': `Bearer ${API_KEY}` }
       });
@@ -58,10 +63,9 @@ exports.handler = async (event) => {
         id: p.id,
         name: p.name,
         images: [...new Set(variantImages)],
-        price: "95.00" // Hardcoded as per your AXIOM standard
+        price: "95.00" 
       };
 
-      // Store in Detail Shield for next time
       detailCache.set(p.id, productInfo);
       return productInfo;
     }));
