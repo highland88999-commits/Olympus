@@ -7,83 +7,135 @@
     <style>
         :root { 
             --neon: #00f2ff; --bg: #050505; --crypto: #f7931a; 
-            --gold: #ffd700; --silver-blue: #a5c9e1; 
+            --synth-pink: #ff00ff; --synth-purple: #7000ff; --synth-orange: #ff8a00;
+            --silver-blue: #a5c9e1; 
         }
         
-        html, body { height: 100%; background: var(--bg); margin: 0; color: white; font-family: 'Segoe UI', sans-serif; overflow-x: hidden; }
-        
-        /* SEARCH BAR STYLING */
-        .search-container {
-            position: relative; z-index: 10; width: 90%; max-width: 400px; margin: 20px auto;
+        /* SYNTHWAVE FLAME BACKGROUND ANIMATION */
+        @keyframes flameGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
-        #search-input {
-            width: 100%; padding: 12px 20px; background: rgba(0,0,0,0.6); border: 1px solid #333;
-            color: var(--neon); font-family: 'Segoe UI', sans-serif; letter-spacing: 2px;
-            text-transform: uppercase; outline: none; transition: 0.3s; border-radius: 2px;
-        }
-        #search-input:focus { border-color: var(--neon); box-shadow: 0 0 15px rgba(0, 242, 255, 0.2); }
 
-        /* SLIDING PAGINATION BAR */
-        .pagination-wrapper {
-            width: 90%; max-width: 500px; margin: 0 auto 100px auto; position: relative; z-index: 5;
+        html, body { 
+            height: 100%; margin: 0; color: white; font-family: 'Segoe UI', sans-serif; 
+            background: linear-gradient(-45deg, #050505, #1a0033, #330033, #050505);
+            background-size: 400% 400%;
+            animation: flameGradient 15s ease infinite;
+            overflow-x: hidden;
         }
-        .pagination { 
-            display: flex; gap: 10px; overflow-x: auto; padding: 10px 0;
-            scrollbar-width: thin; scrollbar-color: var(--neon) transparent;
-            scroll-behavior: smooth; -webkit-overflow-scrolling: touch;
-        }
-        /* Custom Scrollbar for Chrome/Safari */
-        .pagination::-webkit-scrollbar { height: 3px; }
-        .pagination::-webkit-scrollbar-thumb { background: var(--neon); border-radius: 10px; }
 
-        .page-btn { 
-            flex: 0 0 60px; height: 40px; background: none; border: 1px solid #333; 
-            color: white; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center;
-        }
-        .page-btn.active { border-color: var(--neon); color: var(--neon); box-shadow: inset 0 0 5px var(--neon); }
+        canvas#sparkCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 2; }
 
-        /* [Existing CSS for Grid, Cards, and Sparks remains the same] */
-        #sparkCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
-        .video-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; opacity: 0.3; }
-        .video-bg iframe { width: 100vw; height: 56.25vw; min-height: 100vh; min-width: 177.77vh; transform: translate(-50%, -50%); position: absolute; top: 50%; left: 50%; }
-        header { position: relative; z-index: 10; text-align: center; padding: 40px 0; background: rgba(0,0,0,0.8); border-bottom: 1px solid #222; }
+        header { position: relative; z-index: 10; text-align: center; padding: 40px 0; backdrop-filter: blur(10px); border-bottom: 1px solid rgba(0, 242, 255, 0.2); }
         h1 { letter-spacing: 12px; color: var(--neon); text-shadow: 0 0 20px var(--neon); margin: 0; font-weight: 200; }
+
+        /* SEARCH BAR */
+        .search-container { position: relative; z-index: 10; width: 90%; max-width: 400px; margin: 20px auto; }
+        #search-input { width: 100%; padding: 12px; background: rgba(0,0,0,0.7); border: 1px solid var(--neon); color: var(--neon); text-transform: uppercase; outline: none; }
+
+        /* 4-ITEM GRID */
         .grid { position: relative; z-index: 5; display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; width: 90%; max-width: 1100px; margin: 30px auto; }
-        .card { background: rgba(10, 10, 10, 0.85); border: 1px solid #222; padding: 20px; cursor: pointer; position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: center; }
-        .card.expanded { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 85vw; height: 80vh; z-index: 100; flex-direction: row; padding: 50px; background: rgba(5, 5, 5, 0.98); border: 1px solid var(--neon); cursor: default; }
-        .close-btn { position: absolute; top: 20px; right: 30px; font-size: 2rem; color: var(--silver-blue); cursor: pointer; display: none; z-index: 110; }
+
+        .card { 
+            background: rgba(0, 0, 0, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); 
+            padding: 15px; cursor: pointer; position: relative; overflow: hidden; 
+            transition: 0.4s; backdrop-filter: blur(5px);
+        }
+        .card:hover { border-color: var(--neon); box-shadow: 0 0 20px rgba(0, 242, 255, 0.3); }
+
+        /* EXPANDED CARD */
+        .card.expanded {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 90vw; height: 85vh; z-index: 100; flex-direction: row; display: flex;
+            background: linear-gradient(-45deg, #0a0a0a, #20002c, #001a1a);
+            background-size: 400% 400%; animation: flameGradient 10s ease infinite;
+            border: 2px solid var(--neon); padding: 40px; cursor: default;
+        }
+
+        .close-btn { position: absolute; top: 20px; right: 30px; font-size: 2.5rem; color: var(--neon); cursor: pointer; display: none; z-index: 110; }
         .card.expanded .close-btn { display: block; }
-        .mockup-viewport { display: flex; overflow: hidden; scroll-behavior: smooth; border: 1px solid #222; width: 100%; }
-        .mockup-viewport img { flex: 0 0 100%; width: 100%; aspect-ratio: 1 / 1; object-fit: cover; background: #000; }
+
+        /* SQUARE MOCKUP AREA */
+        .slider-container { width: 100%; position: relative; background: rgba(0,0,0,0.4); }
+        .card.expanded .slider-container { width: 50%; }
+
+        .mockup-viewport { display: flex; overflow: hidden; scroll-behavior: smooth; aspect-ratio: 1/1; }
+        .mockup-viewport img { flex: 0 0 100%; width: 100%; object-fit: cover; mix-blend-mode: screen; position: relative; z-index: 3; }
+
+        /* PAGINATION BAR */
+        .pagination-wrapper { width: 90%; max-width: 500px; margin: 0 auto 50px auto; z-index: 5; position: relative; }
+        .pagination { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px; scrollbar-width: thin; scrollbar-color: var(--neon) transparent; }
+        .page-btn { flex: 0 0 50px; height: 40px; background: none; border: 1px solid #444; color: white; cursor: pointer; }
+        .page-btn.active { border-color: var(--neon); color: var(--neon); }
+
+        /* DETAILS */
         .details { display: none; flex-direction: column; justify-content: center; width: 50%; padding-left: 40px; }
         .card.expanded .details { display: flex; }
-        .price { font-size: 2.5rem; color: var(--neon); margin: 15px 0; font-weight: bold; }
-        .buy-btn { padding: 15px; margin-bottom: 10px; background: none; border: 1px solid var(--neon); color: white; font-weight: bold; text-transform: uppercase; cursor: pointer; width: 100%; }
+        .price { font-size: 3rem; color: var(--neon); margin: 10px 0; font-weight: bold; }
+
+        .buy-btn { padding: 18px; margin-bottom: 10px; background: none; border: 1px solid var(--neon); color: white; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .buy-btn:hover { background: var(--neon); color: black; }
         .buy-btn.crypto { border-color: var(--crypto); color: var(--crypto); }
     </style>
 </head>
 <body>
 
     <canvas id="sparkCanvas"></canvas>
-    <div class="video-bg">
-        <iframe src="https://www.youtube.com/embed/gv1VD4b4vpA?autoplay=1&loop=1&mute=1&controls=0&showinfo=0&rel=0&playlist=gv1VD4b4vpA" frameborder="0"></iframe>
-    </div>
 
     <header><h1>OLYMPIAN HOODIES</h1></header>
 
     <div class="search-container">
-        <input type="text" id="search-input" placeholder="SEARCH REPOSITORY..." oninput="handleSearch()">
+        <input type="text" id="search-input" placeholder="SEARCH ARCHIVE..." oninput="handleSearch()">
     </div>
 
-    <div class="grid" id="store-grid">INITIALIZING ARCHIVE...</div>
+    <div class="grid" id="store-grid">INITIALIZING SYSTEM...</div>
 
     <div class="pagination-wrapper">
         <div class="pagination" id="pagination"></div>
     </div>
 
     <script>
-        // [Spark Engine remains active here]
-        
+        // --- SPARK ENGINE ---
+        const canvas = document.getElementById('sparkCanvas');
+        const ctx = canvas.getContext('2d');
+        let sparks = [];
+
+        function initCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+
+        class Spark {
+            constructor() { this.reset(); }
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = canvas.height + 10;
+                this.size = Math.random() * 2.5;
+                this.speedY = Math.random() * -2 - 1;
+                this.speedX = (Math.random() - 0.5) * 2;
+                this.opacity = Math.random() * 0.5 + 0.5;
+                this.color = Math.random() > 0.5 ? '#00f2ff' : '#ff00ff';
+            }
+            update() {
+                this.y += this.speedY; this.x += this.speedX; this.opacity -= 0.003;
+                if (this.opacity <= 0 || this.y < -10) this.reset();
+            }
+            draw() {
+                ctx.globalAlpha = this.opacity; ctx.fillStyle = this.color;
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < 80; i++) sparks.push(new Spark());
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            sparks.forEach(s => { s.update(); s.draw(); });
+            requestAnimationFrame(animate);
+        }
+        window.addEventListener('resize', initCanvas);
+        initCanvas(); animate();
+
+        // --- STORE LOGIC ---
         let allProducts = [];
         let filteredProducts = [];
         let currentPage = 0;
@@ -93,82 +145,83 @@
             try {
                 const res = await fetch('/.netlify/functions/get-products');
                 allProducts = await res.json();
-                filteredProducts = allProducts; // Default to all
+                filteredProducts = allProducts;
                 renderGrid();
             } catch (e) { document.getElementById('store-grid').innerHTML = "OFFLINE"; }
         }
 
-        // SEARCH LOGIC
         function handleSearch() {
             const term = document.getElementById('search-input').value.toLowerCase();
             filteredProducts = allProducts.filter(p => p.name.toLowerCase().includes(term));
-            currentPage = 0; // Reset to page 1 on new search
+            currentPage = 0;
             renderGrid();
         }
 
         function renderGrid() {
             const grid = document.getElementById('store-grid');
-            const start = currentPage * itemsPerPage;
-            const items = filteredProducts.slice(start, start + itemsPerPage);
+            const items = filteredProducts.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
 
-            if (items.length === 0) {
-                grid.innerHTML = "<div style='grid-column: 1/-1; text-align: center; color: #444;'>NO MATCHES FOUND IN ARCHIVE.</div>";
-            } else {
-                grid.innerHTML = items.map(p => `
-                    <div class="card" onclick="expandCard(this)" ondblclick="shrinkCard(this)">
-                        <div class="close-btn" onclick="event.stopPropagation(); shrinkCard(this.parentElement)">×</div>
-                        <div class="slider-container" onclick="event.stopPropagation()">
-                            <div class="mockup-viewport" id="slider-${p.id}">
-                                ${p.images.map(img => `<img src="${img}">`).join('')}
-                            </div>
+            grid.innerHTML = items.map(p => `
+                <div class="card" onclick="expandCard(this)" ondblclick="shrinkCard(this)">
+                    <div class="close-btn" onclick="event.stopPropagation(); shrinkCard(this.parentElement)">×</div>
+                    <div class="slider-container">
+                        <div class="mockup-viewport" id="slider-${p.id}">
+                            ${p.images.map(img => `<img src="${img}">`).join('')}
                         </div>
-                        <div class="details">
-                            <h2>${p.name}</h2>
-                            <div class="price">$95.00</div>
-                            <select id="size-${p.id}" class="buy-btn" style="background:#111; margin-bottom: 20px;">
-                                <option>S</option><option>M</option><option>L</option><option>XL</option>
-                            </select>
-                            <button class="buy-btn" onclick="payFiat('${p.id}', '${p.name}')">Buy with Fiat</button>
-                            <button class="buy-btn crypto" onclick="payCrypto('${p.id}', '${p.name}')">Buy with Crypto</button>
+                        <div style="display:flex; justify-content:center; gap:5px; padding:10px;">
+                            ${p.images.map((_, i) => `<div class="dot" style="width:6px;height:6px;background:#444;border-radius:50%;" onclick="event.stopPropagation(); slideTo('${p.id}', ${i})"></div>`).join('')}
                         </div>
-                        <div style="margin-top:10px; font-size:0.7rem; color:var(--silver-blue)">${p.name}</div>
                     </div>
-                `).join('');
-            }
+                    <div class="details">
+                        <h2>${p.name}</h2>
+                        <div class="price">$95.00</div>
+                        <select id="size-${p.id}" class="buy-btn" onclick="event.stopPropagation()" style="background:#111; margin-bottom:20px;">
+                            <option value="" disabled selected>SELECT SIZE</option>
+                            <option>S</option><option>M</option><option>L</option><option>XL</option><option>2XL</option>
+                        </select>
+                        <button class="buy-btn" onclick="payFiat('${p.id}', '${p.name}')">Buy with Fiat</button>
+                        <button class="buy-btn crypto" onclick="payCrypto('${p.id}', '${p.name}')">Buy with Crypto</button>
+                    </div>
+                    <div style="margin-top:10px; letter-spacing:2px; font-size:0.7rem; color:var(--neon);">${p.name}</div>
+                </div>
+            `).join('');
             renderPagination();
         }
 
-        function renderPagination() {
-            const nav = document.getElementById('pagination');
-            const pages = Math.ceil(filteredProducts.length / itemsPerPage);
-            
-            nav.innerHTML = Array.from({length: pages}, (_, i) => `
-                <button class="page-btn ${i === currentPage ? 'active' : ''}" 
-                        onclick="currentPage=${i}; renderGrid();">
-                    ${(i + 1).toString().padStart(2, '0')}
-                </button>
-            `).join('');
-        }
-
-        // Purchasing, Expanding, and Sliders logic from previous step remain the same...
         function expandCard(card) {
             if (card.classList.contains('expanded')) return;
             document.querySelectorAll('.card.expanded').forEach(c => c.classList.remove('expanded'));
             card.classList.add('expanded');
         }
+
         function shrinkCard(card) { card.classList.remove('expanded'); }
-        
+
+        function slideTo(id, index) {
+            const slider = document.getElementById(`slider-${id}`);
+            slider.scrollTo({ left: slider.offsetWidth * index, behavior: 'smooth' });
+        }
+
+        function renderPagination() {
+            const nav = document.getElementById('pagination');
+            const pages = Math.ceil(filteredProducts.length / itemsPerPage);
+            nav.innerHTML = Array.from({length: pages}, (_, i) => `
+                <button class="page-btn ${i === currentPage ? 'active' : ''}" onclick="currentPage=${i}; renderGrid();">
+                    ${(i + 1).toString().padStart(2, '0')}
+                </button>
+            `).join('');
+        }
+
         function payFiat(id, name) {
             event.stopPropagation();
             const size = document.getElementById(`size-${id}`).value;
-            if (!size) return alert("Select size");
+            if (!size) return alert("Select Size");
             window.location.href = `https://buy.stripe.com/4gMaEWdE3dha4GU6oo?client_reference_id=${id}&description=${encodeURIComponent(name + ' | ' + size)}`;
         }
 
         function payCrypto(id, name) {
             event.stopPropagation();
             const size = document.getElementById(`size-${id}`).value;
-            if (!size) return alert("Select size");
+            if (!size) return alert("Select Size");
             window.location.href = `https://commerce.coinbase.com/checkout/9f0dce50-bb09-4f23-beda-7288bdc15aa5?client_reference_id=${id}&description=${encodeURIComponent(name + ' | ' + size)}`;
         }
 
