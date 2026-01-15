@@ -26,7 +26,7 @@ async function runHarvest() {
             } else {
                 console.error(`[ERROR] Printful rejected Sector ${i}: ${response.statusText}`);
             }
-            
+             
             // Short delay to respect Printful's rate limits
             await new Promise(resolve => setTimeout(resolve, 1000));
 
