@@ -29,14 +29,12 @@
             backdrop-filter: blur(2px); border-radius: 0;
         }
 
-        /* ADAPTIVE GRID - Fits nice on all screens */
+        /* ADAPTIVE SQUARE GRID */
         #store-grid { 
             position: relative; z-index: 5; 
             height: calc(100vh - var(--header-h) - var(--search-h) - 80px);
-            display: grid; 
-            grid-template-columns: repeat(2, 1fr); /* Mobile default */
-            grid-auto-rows: min-content; 
-            gap: 15px; width: 95%; max-width: 1200px; margin: 0 auto;
+            display: grid; grid-template-columns: repeat(2, 1fr); 
+            grid-auto-rows: min-content; gap: 15px; width: 95%; max-width: 1200px; margin: 0 auto;
             overflow-y: auto; scrollbar-width: none;
         }
         #store-grid::-webkit-scrollbar { display: none; }
@@ -45,19 +43,13 @@
         @media (min-width: 1100px) { #store-grid { grid-template-columns: repeat(4, 1fr); } }
 
         .card { 
-            position: relative; background: transparent; 
-            border: 1px solid rgba(255, 69, 0, 0.2); 
-            cursor: pointer; overflow: hidden;
-            aspect-ratio: 1 / 1;
-            display: flex; flex-direction: column;
+            position: relative; background: transparent; border: 1px solid rgba(255, 69, 0, 0.2); 
+            cursor: pointer; overflow: hidden; aspect-ratio: 1 / 1; display: flex; flex-direction: column;
         }
 
-        /* EXPANDED DASHBOARD */
         .card.expanded { 
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; 
-            z-index: 100; display: flex; flex-direction: column; 
-            background: rgba(0, 0, 0, 0.95); padding: 0; 
-            aspect-ratio: auto; transition: transform 0.3s ease-out;
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 100; 
+            display: flex; flex-direction: column; background: rgba(0, 0, 0, 0.98); aspect-ratio: auto;
         }
         
         .slider-container { width: 100%; flex-grow: 1; position: relative; overflow: hidden; }
@@ -66,33 +58,24 @@
 
         .action-row { 
             height: var(--action-h); display: none; grid-template-columns: 1fr 1.2fr 1.2fr; 
-            gap: 10px; padding: 15px; background: transparent; 
-            border-top: 1px solid rgba(255, 69, 0, 0.5); box-sizing: border-box; 
+            gap: 10px; padding: 15px; border-top: 1px solid rgba(255, 69, 0, 0.5); 
         }
         .card.expanded .action-row { display: grid; max-width: 800px; margin: 0 auto; width: 100%; }
 
-        .buy-btn { height: 100%; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--fire-glow); color: white; font-size: 0.7rem; font-weight: bold; cursor: pointer; }
+        .buy-btn { background: rgba(255, 255, 255, 0.05); border: 1px solid var(--fire-glow); color: white; font-size: 0.7rem; font-weight: bold; }
         .buy-btn.crypto { border-color: #f7931a; color: #f7931a; }
-        .size-select { height: 100%; background: rgba(0,0,0,0.8); color: white; border: 1px solid #444; font-size: 0.8rem; border-radius: 0; }
+        .size-select { background: rgba(0,0,0,0.8); color: white; border: 1px solid #444; border-radius: 0; }
 
-        /* NUMBERED PAGINATION */
-        .pagination-container { position: relative; z-index: 10; height: 50px; width: 100%; display: flex; align-items: center; justify-content: center; }
-        .pagination-bar { display: flex; gap: 20px; overflow-x: auto; padding: 10px 20px; max-width: 80%; scrollbar-width: none; }
-        .pagination-bar::-webkit-scrollbar { display: none; }
+        .pagination-container { position: relative; z-index: 10; height: 50px; display: flex; align-items: center; justify-content: center; }
+        .pagination-bar { display: flex; gap: 20px; overflow-x: auto; max-width: 80%; scrollbar-width: none; }
 
-        .page-num { font-size: 1.2rem; color: rgba(255, 255, 255, 0.3); cursor: pointer; transition: 0.3s; min-width: 30px; text-align: center; }
+        .page-num { font-size: 1.2rem; color: rgba(255, 255, 255, 0.3); cursor: pointer; min-width: 30px; text-align: center; }
         .page-num.active { color: var(--fire-glow); text-shadow: 0 0 10px var(--fire-core); font-weight: bold; transform: scale(1.2); }
 
-        .close-btn { position: absolute; top: 15px; right: 20px; font-size: 2.5rem; color: var(--fire-glow); z-index: 110; display: none; cursor: pointer; }
+        .close-btn { position: absolute; top: 15px; right: 20px; font-size: 2.5rem; color: var(--fire-glow); z-index: 110; display: none; }
         .card.expanded .close-btn { display: block; }
         
-        .grid-label { 
-            position: absolute; bottom: 0; width: 100%; 
-            background: rgba(0,0,0,0.6); text-align: center; 
-            font-size: 0.55rem; color: var(--fire-glow); 
-            padding: 6px 0; text-transform: uppercase; 
-        }
-        .card.expanded .grid-label { display: none; }
+        .grid-label { position: absolute; bottom: 0; width: 100%; background: rgba(0,0,0,0.6); text-align: center; font-size: 0.55rem; color: var(--fire-glow); padding: 6px 0; text-transform: uppercase; }
     </style>
 </head>
 <body>
@@ -102,24 +85,21 @@
 <div class="search-container"><input type="text" id="search-input" placeholder="SCANNING ARCHIVE..." oninput="handleSearch()"></div>
 
 <div id="store-grid">
-    <div class="card"><div class="grid-label">LOADING...</div></div>
-    <div class="card"><div class="grid-label">LOADING...</div></div>
+    <div class="card"><div class="grid-label">INITIALIZING...</div></div>
+    <div class="card"><div class="grid-label">INITIALIZING...</div></div>
 </div>
 
 <div class="pagination-container"><div class="pagination-bar" id="pagination-bar"></div></div>
 
 <script>
-// --- BURNING FRACTAL ENGINE ---
+// --- FRACTAL ENGINE ---
 const canvas = document.getElementById('fractalCanvas');
 const ctx = canvas.getContext('2d');
 let w, h, worldY = 0, lastTreeY = 0, time = 0, treeSegments = [], particles = [];
 const scrollSpeed = 8.0; 
 
-function resize() {
-    w = canvas.width = window.innerWidth;
-    h = canvas.height = window.innerHeight;
-}
-window.addEventListener('resize', () => { resize(); });
+function resize() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
+window.addEventListener('resize', resize);
 
 class FlameSpike {
     constructor(x, y, vx, vy) {
@@ -135,15 +115,6 @@ class FlameSpike {
         ctx.lineTo(this.x + this.size, sy + this.size * 3); ctx.lineTo(this.x - this.size, sy + this.size * 3);
         ctx.fill();
     }
-}
-
-class RealEmber {
-    constructor(x, y) {
-        this.x = x; this.y = y; this.vx = (Math.random() - 0.5) * 10;
-        this.vy = -Math.random() * 15 - 10; this.life = 1.0;
-    }
-    update() { this.x += this.vx; this.y += this.vy; this.vy *= 0.96; this.vx *= 0.96; this.life -= 0.01; }
-    draw() { const sy = this.y - worldY; ctx.fillStyle = `rgba(255, 200, 0, ${this.life})`; ctx.fillRect(this.x, sy, 2, 4); }
 }
 
 function generateTree(x, y, angle, len, depth) {
@@ -170,7 +141,6 @@ function loop() {
             ctx.lineWidth = Math.max(1, 8 - s.depth);
             ctx.beginPath(); ctx.moveTo(s.x1, sy1); ctx.lineTo(s.x2, sy2); ctx.stroke();
             if (Math.random() > 0.7) particles.push(new FlameSpike(s.x1 + (s.x2-s.x1)*Math.random(), s.y1 + (s.y2-s.y1)*Math.random(), 0, -5));
-            if (Math.random() > 0.96) particles.push(new RealEmber(s.x2, s.y2));
         }
     });
     particles = particles.filter(p => p.life > 0);
@@ -179,19 +149,21 @@ function loop() {
     requestAnimationFrame(loop);
 }
 
-// --- DATA LOGIC ---
+// --- NEXUS DATA LOGIC ---
 let allProducts = [], filteredProducts = [], currentPage = 0;
 let itemsPerPage = 4;
 
 async function fetchStore() {
     try {
         const controller = new AbortController();
-        const tid = setTimeout(() => controller.abort(), 4000);
-        const res = await fetch('/.netlify/functions/get-products', { signal: controller.signal });
+        const tid = setTimeout(() => controller.abort(), 5000);
+        // Using the pretty URL from netlify.toml
+        const res = await fetch('/api/get-products', { signal: controller.signal });
         clearTimeout(tid);
         allProducts = await res.json();
     } catch (e) {
-        allProducts = Array.from({length: 20}, (_, i) => ({ id: i, name: `ARCHIVE v${i+1}`, images: ["https://via.placeholder.com/600/000"] }));
+        // High-Speed Fallback
+        allProducts = Array.from({length: 12}, (_, i) => ({ id: i, name: `ARCHIVE v${i+1}`, images: ["https://via.placeholder.com/600/000"], price: "95.00" }));
     }
     filteredProducts = allProducts;
     renderGrid();
@@ -199,7 +171,6 @@ async function fetchStore() {
 
 function renderGrid() {
     const grid = document.getElementById('store-grid');
-    // Adjust items per page based on columns for a "clean" look
     const cols = window.innerWidth > 1100 ? 4 : (window.innerWidth > 768 ? 3 : 2);
     itemsPerPage = cols * 2; 
 
@@ -223,9 +194,7 @@ function renderGrid() {
 function renderPagination() {
     const bar = document.getElementById('pagination-bar');
     const pageCount = Math.ceil(filteredProducts.length / itemsPerPage);
-    bar.innerHTML = Array.from({length: pageCount}, (_, i) => `
-        <div class="page-num ${i === currentPage ? 'active' : ''}" onclick="goToPage(${i})">${i + 1}</div>
-    `).join('');
+    bar.innerHTML = Array.from({length: pageCount}, (_, i) => `<div class="page-num ${i === currentPage ? 'active' : ''}" onclick="goToPage(${i})">${i + 1}</div>`).join('');
 }
 
 function goToPage(page) {
@@ -236,15 +205,11 @@ function goToPage(page) {
 }
 
 function expandCard(card) { card.classList.add('expanded'); }
-function shrinkCard(card) { card.classList.remove('expanded'); card.style.transform = `translateY(0px)`; }
+function shrinkCard(card) { card.classList.remove('expanded'); }
 function handleSearch() { currentPage = 0; const term = document.getElementById('search-input').value.toLowerCase(); filteredProducts = allProducts.filter(p => p.name.toLowerCase().includes(term)); renderGrid(); }
 
 // --- BOOT ---
-resize();
-lastTreeY = h;
-generateTree(w/2, h, -Math.PI/2, 120, 0);
-loop();
-fetchStore();
+resize(); lastTreeY = h; generateTree(w/2, h, -Math.PI/2, 120, 0); loop(); fetchStore();
 </script>
 </body>
 </html>
