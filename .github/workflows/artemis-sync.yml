@@ -1,29 +1,24 @@
 name: Artemis 6-Hour Sync
 on:
   schedule:
-    - cron: '0 */6 * * *'  # This triggers exactly every 6 hours
-  workflow_dispatch:        # This adds a "Run Now" button in GitHub for testing
+    - cron: '0 */6 * * *'
+  workflow_dispatch: 
 
 jobs:
-  build-and-sync:
+  sync:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
+      - uses: actions/checkout@v4
+      - name: Use Node.js 20
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-
+          node-version: '20.x' # Forces the version that has 'fetch' built-in
       - name: Run Artemis 1
-        run: node artemis-1.js  # This assumes your script is named artemis-1.js
-
-      - name: Commit and Push Changes
+        run: node artemis-1.js
+      - name: Push Manifest
         run: |
           git config --global user.name "Artemis-Bot"
-          git config --global user.email "artemis@axiom.com"
-          git add netlify/functions/*.js
+          git config --global user.email "bot@axiom.com"
           git add netlify/functions/archive-map.json
-          git commit -m "Auto-Sync: Archive Updated by Artemis 1" || echo "No changes to commit"
+          git commit -m "Auto-Update Archive Manifest" || echo "No changes"
           git push
