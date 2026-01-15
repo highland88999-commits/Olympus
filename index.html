@@ -43,15 +43,16 @@
         }
         #store-grid::-webkit-scrollbar { display: none; }
 
-        /* BURNING SKELETON SHELVES */
         @keyframes emberPulse {
-            0% { background: rgba(20, 0, 0, 1); border-color: rgba(255, 69, 0, 0.2); }
-            50% { background: rgba(60, 20, 0, 1); border-color: rgba(255, 174, 0, 0.6); box-shadow: 0 0 15px rgba(255, 69, 0, 0.2); }
-            100% { background: rgba(20, 0, 0, 1); border-color: rgba(255, 69, 0, 0.2); }
+            0% { background: rgba(20, 0, 0, 0.2); border-color: rgba(255, 69, 0, 0.2); }
+            50% { background: rgba(60, 20, 0, 0.4); border-color: rgba(255, 174, 0, 0.6); box-shadow: 0 0 15px rgba(255, 69, 0, 0.1); }
+            100% { background: rgba(20, 0, 0, 0.2); border-color: rgba(255, 69, 0, 0.2); }
         }
 
         .card { 
-            position: relative; background: rgba(0,0,0,0.3); border: 1px solid rgba(255, 69, 0, 0.2); 
+            position: relative; 
+            background: rgba(0,0,0,0.2); /* Transparent background */
+            border: 1px solid rgba(255, 69, 0, 0.2); 
             cursor: pointer; overflow: hidden; aspect-ratio: 1 / 1;
         }
 
@@ -70,6 +71,7 @@
         }
         .pagination-bar { 
             display: flex; gap: 15px; overflow-x: auto; max-width: 90%; 
+            min-height: 30px; /* Forces visibility on load */
             scrollbar-width: none; white-space: nowrap; padding: 5px;
         }
         .pagination-bar::-webkit-scrollbar { display: none; }
@@ -108,7 +110,7 @@
 </div>
 
 <script>
-// --- FRACTAL ENGINE (FLAMES RESTORED) ---
+// --- FRACTAL ENGINE ---
 const canvas = document.getElementById('fractalCanvas');
 const ctx = canvas.getContext('2d');
 let w, h, worldY = 0, lastTreeY = 0, time = 0, treeSegments = [], particles = [];
@@ -170,7 +172,6 @@ async function fetchStore(page = 0) {
         const res = await fetch(`/api/get-products?page=${page}`);
         const data = await res.json();
         
-        // Merge data
         allProducts = [...allProducts, ...data.products];
         totalArchiveCount = data.total;
 
@@ -195,16 +196,17 @@ async function startArtemisHarvest(nextPage) {
 
 function renderGrid() {
     const grid = document.getElementById('store-grid');
+    // Important: Only slice what we have available
     const items = filteredProducts.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
     
-    // Replace skeletons with actual cards
+    // Inject real data into the grid
     grid.innerHTML = items.map(p => `
         <div class="card" onclick="expandCard(this)">
             <div class="close-btn" onclick="event.stopPropagation(); shrinkCard(this.parentElement)">×</div>
             <div class="slider-container" onclick="event.stopPropagation()">
-                <div class="mockup-viewport">${p.images.map(img => `<img src="${img}">`).join('')}</div>
+                <div class="mockup-viewport">${p.images.map(img => `<img src="${img}" style="width:100%;height:100%;object-fit:contain;">`).join('')}</div>
             </div>
-            <div class="grid-label">${p.name}</div>
+            <div class="grid-label" style="background:rgba(0,0,0,0.8);">${p.name}</div>
         </div>
     `).join('');
     renderPagination();
@@ -213,7 +215,9 @@ function renderGrid() {
 function renderPagination() {
     const bar = document.getElementById('pagination-bar');
     const pageCount = Math.ceil(filteredProducts.length / itemsPerPage);
-    bar.innerHTML = Array.from({length: pageCount}, (_, i) => `<div class="page-num ${i === currentPage ? 'active' : ''}" onclick="goToPage(${i})">${i + 1}</div>`).join('');
+    // Always show at least page 1
+    const count = Math.max(1, pageCount);
+    bar.innerHTML = Array.from({length: count}, (_, i) => `<div class="page-num ${i === currentPage ? 'active' : ''}" onclick="goToPage(${i})">${i + 1}</div>`).join('');
 }
 
 function goToPage(page) { currentPage = page; renderGrid(); document.getElementById('store-grid').scrollTop = 0; }
