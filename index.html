@@ -11,7 +11,7 @@
             --silver-blue: #a5c9e1; 
         }
 
-        /* 1. SYNTHWAVE FLAME OPTIMIZATION */
+        /* 1. OPTIMIZED SYNTHWAVE FLAME */
         @keyframes flameFlow {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
@@ -25,77 +25,79 @@
             overflow-x: hidden;
         }
 
-        /* 2. SPARK ENGINE Z-INDEXING */
+        /* 2. SPARK ENGINE - LAYERED BEHIND CONTENT */
         #sparkCanvas { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            pointer-events: none; z-index: 1; /* Behind Mockups */
+            pointer-events: none; z-index: 1; 
         }
 
-        header { position: relative; z-index: 10; text-align: center; padding: 30px 0; }
-        h1 { letter-spacing: 12px; color: var(--neon); text-shadow: 0 0 20px var(--neon); margin: 0; font-weight: 200; }
+        header { position: relative; z-index: 10; text-align: center; padding: 20px 0; }
+        h1 { letter-spacing: 8px; color: var(--neon); text-shadow: 0 0 15px var(--neon); margin: 0; font-weight: 200; font-size: 1.8rem; }
 
         .search-container { position: relative; z-index: 10; width: 90%; max-width: 400px; margin: 10px auto; }
-        #search-input { width: 100%; padding: 12px; background: rgba(0,0,0,0.7); border: 1px solid var(--neon); color: var(--neon); outline: none; }
+        #search-input { 
+            width: 100%; padding: 12px; background: rgba(0,0,0,0.8); 
+            border: 1px solid var(--neon); color: var(--neon); outline: none; box-sizing: border-box;
+        }
 
         /* GRID SYSTEM */
-        .grid { position: relative; z-index: 5; display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; width: 95%; max-width: 1000px; margin: 20px auto; }
-        
-        .card { 
-            background: rgba(0, 0, 0, 0.4); /* Transparent enough to see sparks behind */
-            border: 1px solid rgba(255, 255, 255, 0.1); 
-            padding: 15px; cursor: pointer; transition: 0.4s; position: relative; 
-        }
+        .grid { position: relative; z-index: 5; display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; width: 95%; max-width: 1000px; margin: 20px auto; }
+        .card { background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 255, 255, 0.1); padding: 10px; cursor: pointer; position: relative; }
 
-        /* EXPANDED VIEW FRAME */
+        /* EXPANDED VIEW - RESPONSIVE FIX */
         .card.expanded {
-            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 90vw; height: 85vh; z-index: 100; flex-direction: column; display: flex;
-            background: rgba(10, 10, 10, 0.95); 
-            border: 2px solid var(--neon); padding: 30px; cursor: default;
+            position: fixed; top: 0; left: 0; transform: none;
+            width: 100vw; height: 100vh; z-index: 100; 
+            display: flex; flex-direction: column;
+            background: rgba(5, 5, 5, 0.98); border: none; padding: 20px; box-sizing: border-box;
+            overflow-y: auto;
         }
 
-        .close-btn { position: absolute; top: 15px; right: 25px; font-size: 2.5rem; color: var(--neon); cursor: pointer; display: none; z-index: 110; }
+        .close-btn { position: absolute; top: 15px; right: 20px; font-size: 2.5rem; color: var(--neon); cursor: pointer; display: none; z-index: 110; }
         .card.expanded .close-btn { display: block; }
 
-        /* MOCKUP AREA (Fit to Frame) */
-        .expanded-layout { display: flex; flex: 1; gap: 30px; min-height: 0; margin-bottom: 20px; }
-        .slider-container { flex: 1.2; position: relative; overflow: hidden; }
+        /* LAYOUT STACKING */
+        .expanded-layout { display: flex; flex-direction: column; gap: 15px; width: 100%; }
         
-        .mockup-viewport { display: flex; height: 100%; overflow: hidden; scroll-behavior: smooth; border: 1px solid #222; }
-        .mockup-viewport img { 
-            flex: 0 0 100%; width: 100%; object-fit: cover; 
-            mix-blend-mode: lighten; /* Allows sparks behind to show through mockup */
-        }
+        /* MOCKUP AREA (Centered Sparks Behind) */
+        .slider-container { width: 100%; position: relative; background: rgba(0,0,0,0.3); border: 1px solid #222; }
+        .mockup-viewport { display: flex; aspect-ratio: 1/1; overflow: hidden; scroll-behavior: smooth; }
+        .mockup-viewport img { flex: 0 0 100%; width: 100%; object-fit: cover; mix-blend-mode: lighten; }
 
         /* THUMBNAIL NAV */
-        .details-area { flex: 0.8; display: none; flex-direction: column; }
+        .details-area { width: 100%; display: none; flex-direction: column; }
         .card.expanded .details-area { display: flex; }
-        
-        .thumb-nav { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 20px; }
-        .thumb-nav img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border: 1px solid #333; cursor: pointer; opacity: 0.6; }
-        .thumb-nav img.active { border-color: var(--neon); opacity: 1; box-shadow: 0 0 10px var(--neon); }
+        .thumb-nav { display: flex; gap: 8px; overflow-x: auto; padding: 5px 0; }
+        .thumb-nav img { width: 60px; height: 60px; object-fit: cover; border: 1px solid #333; opacity: 0.6; flex-shrink: 0; }
+        .thumb-nav img.active { border-color: var(--neon); opacity: 1; box-shadow: 0 0 8px var(--neon); }
 
-        /* HORIZONTAL ACTION ROW (The Footer) */
+        /* ACTION ROW - HORIZONTAL BUTTONS */
         .action-row {
-            display: none; grid-template-columns: 1fr 1fr 1fr; gap: 15px;
-            padding: 20px 0; border-top: 1px solid #222; align-items: center;
+            display: none; grid-template-columns: 1fr 1fr 1fr; gap: 10px;
+            padding: 20px 0; margin-top: auto;
         }
         .card.expanded .action-row { display: grid; }
 
-        .price-label { font-size: 2.5rem; color: var(--neon); font-weight: bold; text-align: left; }
-        
         .buy-btn { 
-            padding: 15px; background: none; border: 1px solid var(--neon); 
-            color: white; font-weight: bold; text-transform: uppercase; cursor: pointer; transition: 0.3s;
+            padding: 12px 5px; background: none; border: 1px solid var(--neon); 
+            color: white; font-size: 0.7rem; font-weight: bold; text-transform: uppercase; cursor: pointer;
         }
-        .buy-btn:hover { background: var(--neon); color: black; }
         .buy-btn.crypto { border-color: var(--crypto); color: var(--crypto); }
-        .size-select { background: #111; color: white; border: 1px solid #444; padding: 15px; width: 100%; font-weight: bold; }
+        .size-select { background: #111; color: white; border: 1px solid #444; font-size: 0.7rem; padding: 10px; }
 
-        .pagination-wrapper { width: 90%; max-width: 500px; margin: 0 auto 40px auto; z-index: 5; position: relative; }
-        .pagination { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; }
-        .page-btn { flex: 0 0 45px; height: 35px; background: none; border: 1px solid #333; color: white; cursor: pointer; }
+        .pagination-wrapper { width: 95%; margin: 20px auto 40px auto; z-index: 5; position: relative; }
+        .pagination { display: flex; gap: 8px; overflow-x: auto; }
+        .page-btn { flex: 0 0 50px; height: 40px; background: none; border: 1px solid #333; color: white; }
         .page-btn.active { border-color: var(--neon); color: var(--neon); }
+
+        /* DESKTOP RE-ADJUSTMENT */
+        @media (min-width: 768px) {
+            .card.expanded { top: 50%; left: 50%; transform: translate(-50%, -50%); width: 85vw; height: 85vh; border: 1px solid var(--neon); }
+            .expanded-layout { flex-direction: row; height: 70%; }
+            .slider-container { flex: 1; }
+            .details-area { flex: 1; padding-left: 20px; }
+            .buy-btn { font-size: 0.9rem; }
+        }
     </style>
 </head>
 <body>
@@ -115,7 +117,7 @@
     </div>
 
     <script>
-        // --- SPARK ENGINE (Behind Mockups) ---
+        // --- SPARK ENGINE ---
         const canvas = document.getElementById('sparkCanvas');
         const ctx = canvas.getContext('2d');
         let sparks = [];
@@ -133,11 +135,11 @@
             update() { this.y += this.speedY; this.opacity -= 0.002; if(this.opacity <= 0) this.reset(); }
             draw() { ctx.globalAlpha = this.opacity; ctx.fillStyle = this.color; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI*2); ctx.fill(); }
         }
-        for(let i=0; i<70; i++) sparks.push(new Spark());
+        for(let i=0; i<60; i++) sparks.push(new Spark());
         function animate() { ctx.clearRect(0,0,canvas.width, canvas.height); sparks.forEach(s=>{s.update(); s.draw();}); requestAnimationFrame(animate); }
         window.addEventListener('resize', initCanvas); initCanvas(); animate();
 
-        // --- STORE LOGIC ---
+        // --- STORE & RENDER ---
         let allProducts = [];
         let filteredProducts = [];
         let currentPage = 0;
@@ -149,7 +151,7 @@
                 allProducts = await res.json();
                 filteredProducts = allProducts;
                 renderGrid();
-            } catch (e) { document.getElementById('store-grid').innerHTML = "SYSTEM ERROR"; }
+            } catch (e) { document.getElementById('store-grid').innerHTML = "OFFLINE"; }
         }
 
         function handleSearch() {
@@ -163,37 +165,30 @@
             const items = filteredProducts.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
 
             grid.innerHTML = items.map(p => `
-                <div class="card" onclick="expandCard(this)" ondblclick="shrinkCard(this)">
+                <div class="card" onclick="expandCard(this)">
                     <div class="close-btn" onclick="event.stopPropagation(); shrinkCard(this.parentElement)">×</div>
-                    
                     <div class="expanded-layout">
                         <div class="slider-container" onclick="event.stopPropagation()">
                             <div class="mockup-viewport" id="slider-${p.id}">
                                 ${p.images.map(img => `<img src="${img}">`).join('')}
                             </div>
                         </div>
-
                         <div class="details-area">
-                            <div style="font-size:0.7rem; color:var(--silver-blue); letter-spacing:4px; margin-bottom:10px;">${p.name}</div>
+                            <div style="font-size:0.7rem; color:var(--neon); letter-spacing:2px; margin-bottom:10px;">${p.name}</div>
                             <div class="thumb-nav">
-                                ${p.images.map((img, i) => `
-                                    <img src="${img}" class="${i===0?'active':''}" onclick="slideTo('${p.id}', ${i}, this)">
-                                `).join('')}
+                                ${p.images.map((img, i) => `<img src="${img}" class="${i===0?'active':''}" onclick="slideTo('${p.id}', ${i}, this)">`).join('')}
                             </div>
-                            <div style="margin-top:auto; font-size:0.6rem; color:#444;">ARCHIVE SERIAL: ${p.id}</div>
                         </div>
                     </div>
-
                     <div class="action-row" onclick="event.stopPropagation()">
                         <select id="size-${p.id}" class="size-select">
-                            <option value="" disabled selected>SELECT SIZE</option>
+                            <option value="" disabled selected>SIZE</option>
                             <option>S</option><option>M</option><option>L</option><option>XL</option><option>2XL</option>
                         </select>
-                        <button class="buy-btn" onclick="payFiat('${p.id}', '${p.name}')">Buy with Fiat</button>
-                        <button class="buy-btn crypto" onclick="payCrypto('${p.id}', '${p.name}')">Buy with Crypto</button>
+                        <button class="buy-btn" onclick="payFiat('${p.id}', '${p.name}')">BUY FIAT</button>
+                        <button class="buy-btn crypto" onclick="payCrypto('${p.id}', '${p.name}')">BUY CRYPTO</button>
                     </div>
-
-                    <div class="grid-label" style="text-align:center; font-size:0.7rem; color:var(--neon);">${p.name}</div>
+                    <div class="grid-label" style="text-align:center; font-size:0.6rem; color:var(--neon); margin-top:5px;">${p.name.substring(0,20)}...</div>
                 </div>
             `).join('');
             renderPagination();
@@ -211,9 +206,13 @@
             if (card.classList.contains('expanded')) return;
             document.querySelectorAll('.card.expanded').forEach(c => c.classList.remove('expanded'));
             card.classList.add('expanded');
+            document.body.style.overflow = 'hidden'; // Stop background scroll
         }
 
-        function shrinkCard(card) { card.classList.remove('expanded'); }
+        function shrinkCard(card) { 
+            card.classList.remove('expanded'); 
+            document.body.style.overflow = 'auto';
+        }
 
         function renderPagination() {
             const nav = document.getElementById('pagination');
@@ -225,7 +224,6 @@
             `).join('');
         }
 
-        // PURCHASE HANDLERS
         function payFiat(id, name) {
             const s = document.getElementById(`size-${id}`).value;
             if(!s) return alert("Select Size");
