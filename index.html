@@ -7,7 +7,7 @@
     <style>
         :root { 
             --fire-glow: #ffae00; --fire-core: #ff4500;
-            --header-h: 50px; --search-h: 55px; --pagi-h: 60px; /* Slightly taller for mobile thumbs */
+            --header-h: 50px; --search-h: 55px; --pagi-h: 60px;
         }
 
         body, html { 
@@ -40,7 +40,7 @@
             grid-auto-rows: min-content; gap: 10px; width: 95%; margin: 0 auto;
             overflow-y: auto; scrollbar-width: none;
             -webkit-overflow-scrolling: touch;
-            padding-bottom: 100px; /* FIX: Prevents bottom row cutoff */
+            padding-bottom: 100px; /* Prevents cutoff */
         }
         #store-grid::-webkit-scrollbar { display: none; }
 
@@ -50,7 +50,6 @@
             cursor: pointer; overflow: hidden; aspect-ratio: 1 / 1;
         }
 
-        /* PAGINATION BAR FIX */
         .pagination-container { 
             position: absolute; bottom: 0; width: 100%;
             height: var(--pagi-h); z-index: 30;
@@ -79,7 +78,7 @@
 
 <canvas id="fractalCanvas"></canvas>
 <header><h1>OLYMPIAN HOODIES</h1></header>
-<div class="search-container"><input type="text" id="id-search" placeholder="INITIALIZING 586 ARCHIVES..." oninput="handleSearch()"></div>
+<div class="search-container"><input type="text" id="id-search" placeholder="INITIALIZING ARCHIVE..." oninput="handleSearch()"></div>
 
 <div class="content-wrapper">
     <div id="store-grid"></div>
@@ -89,7 +88,7 @@
 </div>
 
 <script>
-// --- FRACTAL ENGINE (PRESERVED) ---
+// --- FRACTAL ENGINE ---
 const canvas = document.getElementById('fractalCanvas');
 const ctx = canvas.getContext('2d');
 let w, h, worldY = 0, lastTreeY = 0, time = 0, treeSegments = [], particles = [];
@@ -117,10 +116,10 @@ function loop() {
     requestAnimationFrame(loop);
 }
 
-// --- ARTEMIS DATA ENGINE (ULTRA-CAPACITY) ---
+// --- ARTEMIS DATA ENGINE ---
 let allProducts = [], filteredProducts = [], currentPage = 0;
-let itemsPerPage = 20; 
-let totalArchiveCount = 586; // Force the engine to recognize the large scale
+let itemsPerPage = 24; 
+let totalArchiveCount = 0;
 
 async function fetchStore(page = 0) {
     try {
@@ -131,13 +130,12 @@ async function fetchStore(page = 0) {
         totalArchiveCount = data.total; 
         filteredProducts = allProducts;
 
-        document.getElementById('id-search').placeholder = `SEARCHING ${allProducts.length}/${totalArchiveCount} HOODIES...`;
-        
+        document.getElementById('id-search').placeholder = `GATHERING ${allProducts.length}/${totalArchiveCount}...`;
         renderGrid();
 
-        // If there's more to harvest, keep going automatically
+        // Continue gathering if there are more
         if (allProducts.length < totalArchiveCount) {
-            setTimeout(() => fetchStore(page + 1), 200);
+            setTimeout(() => fetchStore(page + 1), 250);
         } else {
             document.getElementById('id-search').placeholder = "SEARCH ARCHIVE";
         }
@@ -163,7 +161,6 @@ function renderGrid() {
 function renderPagination() {
     const bar = document.getElementById('pagination-bar');
     const pageCount = Math.ceil(filteredProducts.length / itemsPerPage);
-    
     let html = '';
     for (let i = 0; i < pageCount; i++) {
         html += `<div class="page-num ${i === currentPage ? 'active' : ''}" onclick="goToPage(${i})">${i + 1}</div>`;
