@@ -104,43 +104,40 @@
 let allProducts = [], cart = [], currentPage = 0, itemsPerPage = 24;
 let selectedSize = null, activeProduct = null, modalQty = 1;
 
-// THE SEQUENTIAL HARVESTER - CALLING 1-10 IN ORDER
+// THE SEQUENTIAL HARVESTER - CORRECTED FOR 01-10 FILENAMES
 async function fetchStore() {
     for (let i = 1; i <= 10; i++) {
         try {
-            document.getElementById('gather-status').innerText = `HARVESTING SECTOR ${i}...`;
+            // Converts 1 into "01", 2 into "02", etc.
+            const sectorId = i.toString().padStart(2, '0');
+            document.getElementById('gather-status').innerText = `HARVESTING SECTOR ${sectorId}...`;
             
-            // Wait for the specific sector file to return
-            const res = await fetch(`/.netlify/functions/get-products-${i}`);
-            if (!res.ok) throw new Error(`Sector ${i} Offline`);
+            // Calls the padded filename: get-products-01, 02, etc.
+            const res = await fetch(`/.netlify/functions/get-products-${sectorId}`);
+            if (!res.ok) {
+                console.warn(`Sector ${sectorId} is offline or empty.`);
+                continue; // Keep going to next sector
+            }
             
             const data = await res.json();
             
             if (data.products && data.products.length > 0) {
-                // Add new sector products to the main archive
                 allProducts = [...allProducts, ...data.products];
-                renderGrid(); // Refresh grid as data flows in
+                renderGrid(); // Refresh grid instantly as sectors arrive
             }
 
             const total = data.total || 0;
-            document.getElementById('gather-status').innerText = `AXIOM ARCHIVE: ${allProducts.length} / ${total}`;
+            document.getElementById('gather-status').innerText = `AXIOM ARCHIVE: ${allProducts.length} / ${total || 'Scanning...'}`;
 
-            // If we've collected everything that exists, stop early
-            if (allProducts.length >= total && total > 0) {
-                document.getElementById('gather-status').innerText = "ARCHIVE SYNC COMPLETE";
-                return;
-            }
-
-            // A small pause to let the browser breathe between 100-item chunks
-            await new Promise(r => setTimeout(r, 400));
+            // Small breathing room for smooth performance
+            await new Promise(r => setTimeout(r, 300));
 
         } catch (e) { 
             console.error("Link Interrupted:", e);
-            document.getElementById('gather-status').innerText = "LINK INTERRUPTED AT SECTOR " + i;
-            break; 
+            document.getElementById('gather-status').innerText = "SKIPPING UNSTABLE SECTOR...";
         }
     }
-    document.getElementById('gather-status').innerText = "SYNC COMPLETE";
+    document.getElementById('gather-status').innerText = "ARCHIVE SYNC COMPLETE";
 }
 
 function renderGrid() {
