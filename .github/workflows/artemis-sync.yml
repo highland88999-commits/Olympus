@@ -9,12 +9,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Use Node.js 20
+      
+      - name: Setup Node.js 20
         uses: actions/setup-node@v4
         with:
-          node-version: '20.x' # Forces the version that has 'fetch' built-in
+          node-version: '20' # This is the magic line that enables 'fetch'
+          
       - name: Run Artemis 1
         run: node artemis-1.js
+        
       - name: Push Manifest
         run: |
           git config --global user.name "Artemis-Bot"
