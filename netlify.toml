@@ -1,16 +1,11 @@
 [build]
   functions = "netlify/functions"
 
+[functions]
+  node_bundler = "esbuild"
+  external_node_modules = ["node-fetch"]
+
 [[redirects]]
   from = "/api/*"
   to = "/.netlify/functions/:splat"
   status = 200
-
-[functions]
-  node_bundler = "esbuild"
-
-# --- ARTEMIS PROTOCOL SCHEDULE ---
-# This triggers the artemis function every 30 minutes
-# to harvest the 686 hoodies and keep the Nexus Shield warm.
-[functions."artemis"]
-  schedule = "*/30 * * * *"
