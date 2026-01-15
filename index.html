@@ -1,77 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>OLYMPIAN | AXIOM STORE</title>
-    <style>
-        :root { --fire-glow: #ffae00; --fire-core: #ff4500; }
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: #000; font-family: 'Courier New', monospace; color: white; overflow: hidden; }
-        canvas#fractalCanvas { position: fixed; top: 0; left: 0; z-index: 0; pointer-events: none; }
-        header { position: relative; z-index: 100; height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; background: rgba(0,0,0,0.8); border-bottom: 1px solid var(--fire-core); }
-        h1 { letter-spacing: 5px; color: var(--fire-glow); text-shadow: 0 0 10px var(--fire-core); font-size: 0.9rem; }
-        #cart-trigger { cursor: pointer; color: var(--fire-glow); border: 1px solid var(--fire-glow); padding: 8px 15px; font-size: 0.8rem; }
-        #store-grid { position: relative; z-index: 5; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 95%; margin: 15px auto; overflow-y: auto; height: calc(100vh - 170px); padding-bottom: 100px; scrollbar-width: none; }
-        
-        /* THE TRANSPARENT WINDOW UI */
-        .card { position: relative; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 174, 0, 0.2); aspect-ratio: 1/1; cursor: pointer; overflow: hidden; }
-        .card img { 
-            width: 100%; height: 100%; object-fit: contain; 
-            mix-blend-mode: screen; /* This allows the fire to show through the product */
-            filter: contrast(1.1) brightness(1.1); /* Ensures the 'window' is crisp */
-        }
-        
-        .grid-label { position: absolute; bottom: 0; width: 100%; background: rgba(0,0,0,0.85); font-size: 0.55rem; text-align: center; padding: 6px 0; color: var(--fire-glow); border-top: 1px solid var(--fire-core); }
-        #modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1000; display: none; background: rgba(0,0,0,0.95); backdrop-filter: blur(10px); align-items: center; justify-content: center; }
-        .modal-content { width: 90%; max-width: 400px; background: #000; border: 1px solid var(--fire-glow); position: relative; padding-bottom: 20px; }
-        
-        /* MODAL WINDOW UI */
-        #modal-img-container img { width: 100%; mix-blend-mode: screen; }
-        
-        .size-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; margin: 15px 20px; }
-        .size-btn { border: 1px solid var(--fire-glow); background: #000; color: #fff; padding: 10px 0; cursor: pointer; font-size: 0.7rem; }
-        .size-btn.selected { background: var(--fire-glow); color: #000; }
-        .pagination-container { position: fixed; bottom: 0; width: 100%; height: 80px; background: rgba(0,0,0,0.9); z-index: 150; display: flex; flex-direction: column; align-items: center; justify-content: center; border-top: 1px solid var(--fire-core); }
-        .sector-slider { width: 80%; accent-color: var(--fire-glow); }
-        #sector-display { font-size: 0.7rem; color: var(--fire-glow); margin-bottom: 5px; letter-spacing: 2px; }
-        #side-cart { position: fixed; top: 0; right: -100%; width: 85%; max-width: 350px; height: 100%; background: #050505; border-left: 1px solid var(--fire-glow); z-index: 2000; transition: 0.4s; display: flex; flex-direction: column; }
-        #side-cart.open { right: 0; }
-        .pay-link { display: block; width: 90%; margin: 10px auto; padding: 15px 0; text-align: center; font-size: 0.8rem; text-decoration: none; font-weight: bold; }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>OLYMPIAN | AXIOM STORE</title>
+    <style>
+        :root { --fire-glow: #ffae00; --fire-core: #ff4500; }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: #000; font-family: 'Courier New', monospace; color: white; overflow: hidden; }
+        canvas#fractalCanvas { position: fixed; top: 0; left: 0; z-index: 0; pointer-events: none; }
+        header { position: relative; z-index: 100; height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; background: rgba(0,0,0,0.8); border-bottom: 1px solid var(--fire-core); }
+        h1 { letter-spacing: 5px; color: var(--fire-glow); text-shadow: 0 0 10px var(--fire-core); font-size: 0.9rem; }
+        #cart-trigger { cursor: pointer; color: var(--fire-glow); border: 1px solid var(--fire-glow); padding: 8px 15px; font-size: 0.8rem; }
+        #store-grid { position: relative; z-index: 5; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 95%; margin: 15px auto; overflow-y: auto; height: calc(100vh - 170px); padding-bottom: 100px; scrollbar-width: none; }
+        
+        .card { position: relative; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 174, 0, 0.2); aspect-ratio: 1/1; cursor: pointer; overflow: hidden; }
+        .card img { 
+            width: 100%; height: 100%; object-fit: contain; 
+            mix-blend-mode: screen; 
+            filter: contrast(1.1) brightness(1.1); 
+        }
+        
+        .grid-label { position: absolute; bottom: 0; width: 100%; background: rgba(0,0,0,0.85); font-size: 0.55rem; text-align: center; padding: 6px 0; color: var(--fire-glow); border-top: 1px solid var(--fire-core); }
+        #modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1000; display: none; background: rgba(0,0,0,0.95); backdrop-filter: blur(10px); align-items: center; justify-content: center; }
+        .modal-content { width: 90%; max-width: 400px; background: #000; border: 1px solid var(--fire-glow); position: relative; padding-bottom: 20px; }
+        #modal-img-container img { width: 100%; mix-blend-mode: screen; }
+        
+        .size-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; margin: 15px 20px; }
+        .size-btn { border: 1px solid var(--fire-glow); background: #000; color: #fff; padding: 10px 0; cursor: pointer; font-size: 0.65rem; }
+        .size-btn.selected { background: var(--fire-glow); color: #000; font-weight: bold; }
+        
+        .pagination-container { position: fixed; bottom: 0; width: 100%; height: 80px; background: rgba(0,0,0,0.9); z-index: 150; display: flex; flex-direction: column; align-items: center; justify-content: center; border-top: 1px solid var(--fire-core); }
+        .sector-slider { width: 80%; accent-color: var(--fire-glow); }
+        #sector-display { font-size: 0.7rem; color: var(--fire-glow); margin-bottom: 5px; letter-spacing: 2px; }
+        #side-cart { position: fixed; top: 0; right: -100%; width: 85%; max-width: 350px; height: 100%; background: #050505; border-left: 1px solid var(--fire-glow); z-index: 2000; transition: 0.4s; display: flex; flex-direction: column; }
+        #side-cart.open { right: 0; }
+        .pay-link { display: block; width: 90%; margin: 10px auto; padding: 15px 0; text-align: center; font-size: 0.8rem; text-decoration: none; font-weight: bold; }
+    </style>
 </head>
 <body ondblclick="closeModal(); toggleCart(false)">
 <canvas id="fractalCanvas"></canvas>
 <header><h1>OLYMPIAN AXIOM</h1><div id="cart-trigger" onclick="toggleCart(true)">MANIFEST (0)</div></header>
 <div id="store-grid"></div>
 <div id="side-cart">
-    <div style="padding:20px; border-bottom:1px solid var(--fire-glow); display:flex; justify-content:space-between;"><span style="color:var(--fire-glow)">CURRENT MANIFEST</span><span onclick="toggleCart(false)" style="cursor:pointer;">×</span></div>
-    <div id="cart-items" style="flex:1; overflow-y:auto; padding:20px;"></div>
-    <div style="padding: 20px; border-top: 1px solid var(--fire-glow);">
-        <a href="https://buy.stripe.com/4gMaEWdE3dha4GUgBAcIE01" class="pay-link" style="background:#fff; color:#000;" target="_blank">STRIPE GATEWAY</a>
-        <a href="https://nowpayments.io/payment/?iid=6087329696" class="pay-link" style="background:var(--fire-core); color:#fff;" target="_blank">CRYPTO GATEWAY</a>
-    </div>
+    <div style="padding:20px; border-bottom:1px solid var(--fire-glow); display:flex; justify-content:space-between;"><span style="color:var(--fire-glow)">CURRENT MANIFEST</span><span onclick="toggleCart(false)" style="cursor:pointer;">×</span></div>
+    <div id="cart-items" style="flex:1; overflow-y:auto; padding:20px;"></div>
+    <div style="padding: 20px; border-top: 1px solid var(--fire-glow);">
+        <a href="https://buy.stripe.com/4gMaEWdE3dha4GUgBAcIE01" class="pay-link" style="background:#fff; color:#000;" target="_blank">STRIPE GATEWAY</a>
+        <a href="https://nowpayments.io/payment/?iid=6087329696" class="pay-link" style="background:var(--fire-core); color:#fff;" target="_blank">CRYPTO GATEWAY</a>
+    </div>
 </div>
-<div id="modal-overlay" onclick="closeModal()"><div class="modal-content" onclick="event.stopPropagation()"><div id="modal-img-container"></div><div style="padding:0 20px;"><div id="modal-title" style="color:var(--fire-glow); font-size:0.8rem; margin-bottom:10px;"></div><div class="size-grid"><button class="size-btn" onclick="selectSize(this, 'S')">S</button><button class="size-btn" onclick="selectSize(this, 'M')">M</button><button class="size-btn" onclick="selectSize(this, 'L')">L</button><button class="size-btn" onclick="selectSize(this, 'XL')">XL</button><button class="size-btn" onclick="selectSize(this, '2XL')">2XL</button></div><button onclick="addToCart()" style="width:100%; padding:15px; background:var(--fire-glow); border:none; font-weight:bold; cursor:pointer;">UPLOAD TO MANIFEST</button></div></div></div>
+<div id="modal-overlay" onclick="closeModal()"><div class="modal-content" onclick="event.stopPropagation()"><div id="modal-img-container"></div><div style="padding:0 20px;"><div id="modal-title" style="color:var(--fire-glow); font-size:0.8rem; margin-bottom:10px;"></div><div class="size-grid"><button class="size-btn" onclick="selectSize(this, 'S')">S</button><button class="size-btn" onclick="selectSize(this, 'M')">M</button><button class="size-btn" onclick="selectSize(this, 'L')">L</button><button class="size-btn" onclick="selectSize(this, 'XL')">XL</button><button class="size-btn" onclick="selectSize(this, '2XL')">2XL</button><button class="size-btn" onclick="selectSize(this, '3XL')">3XL</button><button class="size-btn" onclick="selectSize(this, '4XL')">4XL</button><button class="size-btn" onclick="selectSize(this, '5XL')">5XL</button><button class="size-btn" onclick="selectSize(this, '6XL')">6XL</button></div><button onclick="addToCart()" style="width:100%; padding:15px; background:var(--fire-glow); border:none; font-weight:bold; cursor:pointer;">UPLOAD TO MANIFEST</button></div></div></div>
 <div class="pagination-container"><div id="sector-display">INITIALIZING...</div><input type="range" id="sector-slider" class="sector-slider" min="1" max="1" value="1"></div>
 <script>
 let allProducts = [], cart = [], itemsPerPage = 20, selectedSize = null, activeProduct = null;
 async function fetchStore() {
-    try {
-        const res = await fetch('/api/artemis-2');
-        const data = await res.json();
-        if (data.products) { allProducts = data.products; setupNavigation(); renderGrid(1); }
-    } catch (e) { document.getElementById('sector-display').innerText = "LINK SEVERED"; }
+    try {
+        const res = await fetch('/api/artemis-2');
+        const data = await res.json();
+        if (data.products) { allProducts = data.products; setupNavigation(); renderGrid(1); }
+    } catch (e) { document.getElementById('sector-display').innerText = "LINK SEVERED"; }
 }
 function setupNavigation() {
-    const slider = document.getElementById('sector-slider'); const display = document.getElementById('sector-display');
-    const totalPages = Math.ceil(allProducts.length / itemsPerPage); slider.max = totalPages;
-    display.innerText = `SECTOR 01 / ${totalPages.toString().padStart(2, '0')}`;
-    slider.oninput = (e) => { display.innerText = `SECTOR ${e.target.value.padStart(2, '0')} / ${totalPages.toString().padStart(2, '0')}`; renderGrid(parseInt(e.target.value)); };
+    const slider = document.getElementById('sector-slider'); const display = document.getElementById('sector-display');
+    const totalPages = Math.ceil(allProducts.length / itemsPerPage); slider.max = totalPages;
+    display.innerText = `SECTOR 01 / ${totalPages.toString().padStart(2, '0')}`;
+    slider.oninput = (e) => { display.innerText = `SECTOR ${e.target.value.padStart(2, '0')} / ${totalPages.toString().padStart(2, '0')}`; renderGrid(parseInt(e.target.value)); };
 }
 function renderGrid(page) {
-    const grid = document.getElementById('store-grid'); const items = allProducts.slice((page-1)*itemsPerPage, page*itemsPerPage);
-    grid.innerHTML = items.map(p => `<div class="card" onclick="openModal('${p.name.replace(/'/g, "\\'")}', '${p.images[0]}')"><img src="${p.images[0]}" loading="lazy"><div class="grid-label">${p.name.split('Prompt:')[1] || 'OLYMPIAN'}</div></div>`).join('');
-    grid.scrollTop = 0;
+    const grid = document.getElementById('store-grid'); const items = allProducts.slice((page-1)*itemsPerPage, page*itemsPerPage);
+    grid.innerHTML = items.map(p => `<div class="card" onclick="openModal('${p.name.replace(/'/g, "\\'")}', '${p.images[0]}')"><img src="${p.images[0]}" loading="lazy"><div class="grid-label">${p.name.split('Prompt:')[1] || 'OLYMPIAN'}</div></div>`).join('');
+    grid.scrollTop = 0;
 }
 function openModal(name, img) { activeProduct = { name, img }; selectedSize = null; document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected')); document.getElementById('modal-title').innerText = name; document.getElementById('modal-img-container').innerHTML = `<img src="${img}">`; document.getElementById('modal-overlay').style.display = 'flex'; }
 function selectSize(btn, size) { selectedSize = size; document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected')); btn.classList.add('selected'); }
