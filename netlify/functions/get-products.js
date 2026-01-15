@@ -1,7 +1,6 @@
 const fetch = require('node-fetch');
 
 exports.handler = async (event) => {
-  // The 'page' parameter acts as our set selector (Set 0, Set 1, Set 2...)
   const page = event.queryStringParameters.page || 0;
   const offset = page * 100; 
 
@@ -19,7 +18,7 @@ exports.handler = async (event) => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         products: data.result,
-        total: data.paging.total // The backend reports the real count (e.g. 586)
+        total: data.paging.total 
       })
     };
   } catch (error) {
