@@ -104,28 +104,44 @@
 let allProducts = [], cart = [], currentPage = 0, itemsPerPage = 24;
 let selectedSize = null, activeProduct = null, modalQty = 1;
 
+// ARTEMIS-GUIDED SEQUENTIAL HARVESTER
 async function fetchStore() {
-    for (let i = 1; i <= 10; i++) {
-        const sectorId = i.toString().padStart(2, '0');
-        try {
-            document.getElementById('gather-status').innerText = `HARVESTING SECTOR ${sectorId}...`;
-            const res = await fetch(`/.netlify/functions/get-products-${sectorId}`);
-            if (!res.ok) continue;
+    try {
+        document.getElementById('gather-status').innerText = "CONSULTING ARTEMIS 2...";
+        
+        // 1. Get the Map from Artemis 2
+        const configRes = await fetch('/.netlify/functions/artemis-2');
+        if (!configRes.ok) throw new Error("Artemis Unreachable");
+        const config = await configRes.json();
+        
+        // 2. Prepare the Buckets
+        const sectorBuckets = new Array(config.totalSectors).fill(null);
+        itemsPerPage = config.itemsPerPage || 24;
+        
+        // 3. Sequential Pull from the Directory
+        for (let i = 1; i <= config.totalSectors; i++) {
+            const sectorId = i.toString().padStart(2, '0');
+            document.getElementById('gather-status').innerText = `SYNCING ${config.directory} | SECTOR ${sectorId}...`;
             
-            const data = await res.json();
-            // Ensure data contains products before pushing
-            if (data && data.products) {
-                allProducts = [...allProducts, ...data.products];
-                renderGrid();
+            const res = await fetch(`/.netlify/functions/get-products-${sectorId}`);
+            if (res.ok) {
+                const data = await res.json();
+                if (data && data.products) {
+                    // Slot into correct index to keep order
+                    sectorBuckets[i-1] = data.products;
+                    // Flatten buckets to update live list
+                    allProducts = sectorBuckets.filter(s => s !== null).flat();
+                    renderGrid();
+                }
             }
-
-            document.getElementById('gather-status').innerText = `AXIOM ARCHIVE: ${allProducts.length} ITEMS`;
-            await new Promise(r => setTimeout(r, 200));
-        } catch (e) { 
-            console.error(`Sector ${sectorId} error:`, e);
+            // Small gap to prevent browser hang
+            await new Promise(r => setTimeout(r, 120));
         }
+        document.getElementById('gather-status').innerText = "ARCHIVE SYNC COMPLETE";
+    } catch (e) {
+        console.error("Critical System Error:", e);
+        document.getElementById('gather-status').innerText = "ARTEMIS LINK SEVERED";
     }
-    document.getElementById('gather-status').innerText = "ARCHIVE SYNC COMPLETE";
 }
 
 function renderGrid() {
@@ -229,7 +245,8 @@ function loop() {
     requestAnimationFrame(loop);
 }
 
-resize(); lastTreeY = h; generateTree(w/2, h, -Math.PI/2, 120, 0); loop(); fetchStore();
+resize(); lastTreeY = h; generateTree(w/2, h, -Math.PI/2, 120, 0); loop(); 
+fetchStore(); // Triggering the Artemis-Guided Harvest
 </script>
 </body>
 </html>
