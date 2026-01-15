@@ -14,16 +14,8 @@
         #cart-trigger { cursor: pointer; color: var(--fire-glow); border: 1px solid var(--fire-glow); padding: 8px 15px; font-size: 0.8rem; background: rgba(255,174,0,0.1); }
 
         #store-grid { flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 95%; margin: 15px auto; overflow-y: auto; height: calc(100vh - 175px); padding-bottom: 120px; z-index: 5; position: relative; scrollbar-width: none; }
-        
         .card { position: relative; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 174, 0, 0.1); aspect-ratio: 1/1; cursor: pointer; transition: transform 0.3s; overflow: hidden; }
-        
-        /* TRANSPARENCY PARAMETERS - MOCKUPS FLOAT OVER FIRE */
-        .card img { 
-            width: 100%; height: 100%; object-fit: contain; 
-            mix-blend-mode: screen; 
-            filter: contrast(1.2) brightness(1.1);
-        }
-        
+        .card img { width: 100%; height: 100%; object-fit: contain; mix-blend-mode: screen; filter: contrast(1.2) brightness(1.1); }
         .grid-label { position: absolute; bottom: 0; width: 100%; background: rgba(0,0,0,0.8); font-size: 0.5rem; text-align: center; padding: 5px 0; color: var(--fire-glow); border-top: 1px solid var(--fire-core); }
 
         #modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1000; display: none; background: rgba(0,0,0,0.9); backdrop-filter: blur(10px); align-items: center; justify-content: center; }
@@ -100,16 +92,20 @@
 let allProducts = [], cart = [], itemsPerPage = 20;
 let selectedSize = null, activeProduct = null;
 
-// --- DYNAMIC DATA ENGINE ---
 async function fetchStore() {
     try {
-        // Updated to artemis-1 to match your recent push
         const res = await fetch('/api/artemis-1');
         const manifest = await res.json();
-        if (manifest && manifest.products) {
-            allProducts = manifest.products;
+        
+        // --- DATA-AGNOSTIC EXTRACTION ---
+        let data = Array.isArray(manifest) ? manifest : (manifest.result || manifest.products || Object.values(manifest).find(Array.isArray));
+
+        if (data && data.length > 0) {
+            allProducts = data;
             setupNavigation();
             renderGrid(1);
+        } else {
+            document.getElementById('sector-display').innerText = "MANIFEST EMPTY";
         }
     } catch (e) {
         document.getElementById('sector-display').innerText = "LINK SEVERED";
@@ -136,11 +132,11 @@ function renderGrid(page) {
     const items = allProducts.slice(start, start + itemsPerPage);
     
     grid.innerHTML = items.map(p => {
-        // Cleans technical prompt text from the label for better UI
         const label = p.name.split('- Prompt:')[1] || p.name;
+        const imgSrc = (p.images && p.images[0]) ? p.images[0] : p.thumbnail_url || '';
         return `
-        <div class="card" onclick="openModal('${p.name.replace(/'/g, "\\'")}', '${p.images[0]}')">
-            <img src="${p.images[0]}" loading="lazy">
+        <div class="card" onclick="openModal('${p.name.replace(/'/g, "\\'")}', '${imgSrc}')">
+            <img src="${imgSrc}" loading="lazy">
             <div class="grid-label">${label}</div>
         </div>
         `;
@@ -148,7 +144,6 @@ function renderGrid(page) {
     grid.scrollTop = 0;
 }
 
-// --- MODAL & CART LOGIC ---
 function openModal(name, img) {
     activeProduct = { name, img }; selectedSize = null;
     document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected'));
@@ -156,14 +151,17 @@ function openModal(name, img) {
     document.getElementById('modal-img-container').innerHTML = `<img src="${img}">`;
     document.getElementById('modal-overlay').style.display = 'flex';
 }
+
 function selectSize(btn, size) { selectedSize = size; document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected')); btn.classList.add('selected'); }
 function closeModal() { document.getElementById('modal-overlay').style.display = 'none'; }
 function toggleCart(show) { document.getElementById('side-cart').classList.toggle('open', show); }
+
 function addToCart() {
     if (!selectedSize) { alert("SELECT SIZE"); return; }
     cart.push({...activeProduct, size: selectedSize, id: Date.now()});
     updateCartUI(); closeModal(); toggleCart(true);
 }
+
 function updateCartUI() {
     const container = document.getElementById('cart-items-container');
     document.getElementById('cart-trigger').innerText = `MANIFEST (${cart.length})`;
@@ -179,38 +177,5 @@ function updateCartUI() {
     document.getElementById('cart-total').innerText = `$${cart.length * 95}.00`;
 }
 
-// --- VISUAL ENGINE (FRACTAL FIRE) ---
+// --- VISUAL ENGINE ---
 const canvas = document.getElementById('fractalCanvas');
-const ctx = canvas.getContext('2d');
-let w, h, worldY = 0, lastTreeY = 0, treeSegments = [];
-function resize() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
-window.addEventListener('resize', resize);
-
-function generateTree(x, y, angle, len, depth) {
-    if (depth > 8) return;
-    const x2 = x + Math.cos(angle) * len; const y2 = y + Math.sin(angle) * len;
-    treeSegments.push({ x1: x, y1: y, x2: x2, y2: y2, depth });
-    generateTree(x2, y2, angle - 0.4 + Math.random()*0.2, len * 0.75, depth + 1);
-    generateTree(x2, y2, angle + 0.4 - Math.random()*0.2, len * 0.75, depth + 1);
-}
-
-function loop() {
-    worldY -= 5;
-    if (lastTreeY > worldY - h) { generateTree(w/2 + Math.sin(worldY*0.001)*150, lastTreeY, -Math.PI/2, 100, 0); lastTreeY -= 400; }
-    ctx.fillStyle = "black"; ctx.fillRect(0, 0, w, h);
-    ctx.lineWidth = 2;
-    treeSegments.forEach(s => {
-        const sy1 = s.y1 - worldY; const sy2 = s.y2 - worldY;
-        if (sy1 < h + 100 && sy2 > -100) {
-            ctx.strokeStyle = `rgb(255, ${100 - s.depth*10}, 0)`;
-            ctx.beginPath(); ctx.moveTo(s.x1, sy1); ctx.lineTo(s.x2, sy2); ctx.stroke();
-        }
-    });
-    if(treeSegments.length > 800) treeSegments.splice(0, 20);
-    requestAnimationFrame(loop);
-}
-
-resize(); lastTreeY = h; loop(); fetchStore();
-</script>
-</body>
-</html>
