@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>OLYMPIAN | 12-SECTOR</title>
+    <title>OLYMPIAN | AXIOM 24</title>
     <style>
         :root { --fire: #ff4500; --spark: #ffae00; --bio-low: #001a33; --bio-high: #00f2ff; }
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: #000; font-family: 'Courier New', monospace; color: white; overflow: hidden; }
@@ -12,60 +12,61 @@
         header { position: relative; z-index: 100; height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; background: rgba(0,0,0,0.85); border-bottom: 1px solid var(--bio-high); }
         h1 { letter-spacing: 5px; color: var(--bio-high); text-shadow: 0 0 15px var(--bio-high); font-size: 0.9rem; }
 
-        /* GRID: FIXED 12 ITEMS PER VIEW */
+        /* RESTORED TO 24-ITEM COMPATIBLE GRID */
         #store-grid { 
             position: relative; z-index: 5; 
             display: grid; 
-            grid-template-columns: repeat(2, 1fr); /* 2 wide for mobile readability */
-            gap: 20px; 
-            width: 90%; 
-            margin: 20px auto; 
+            grid-template-columns: repeat(2, 1fr); 
+            gap: 15px; 
+            width: 95%; 
+            margin: 15px auto; 
             height: calc(100vh - 180px); 
             overflow-y: auto; 
             scrollbar-width: none;
+            padding-bottom: 50px;
         }
 
-        /* BIOLUMINESCENT FRAME */
         .card { 
             position: relative; 
-            background: rgba(0, 242, 255, 0.05); 
-            border: 2px solid rgba(0, 242, 255, 0.3);
-            aspect-ratio: 0.85 / 1; /* Taller for hoodie shape */
+            background: rgba(0, 242, 255, 0.03); 
+            border: 1px solid rgba(0, 242, 255, 0.2);
+            aspect-ratio: 0.8 / 1; 
             cursor: pointer; 
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 0 15px var(--bio-low);
-            transition: 0.4s ease;
+            box-shadow: inset 0 0 15px var(--bio-low);
+            transition: 0.3s;
         }
-        .card:hover { border-color: var(--bio-high); box-shadow: 0 0 25px var(--bio-high); }
+        .card:hover { border-color: var(--bio-high); box-shadow: 0 0 20px var(--bio-high); }
 
-        /* MOCKUP IMAGE HANDLING */
         .card img { 
-            width: 90%; 
-            height: 90%; 
-            object-fit: contain; 
+            width: 85%; height: 85%; object-fit: contain; 
             mix-blend-mode: screen; 
-            filter: drop-shadow(0 0 10px rgba(0, 242, 255, 0.5)); /* The Biolume glow on the hoodie */
+            filter: drop-shadow(0 0 8px var(--bio-high)); 
         }
 
-        .grid-label { position: absolute; bottom: 0; width: 100%; background: rgba(0,26,51,0.9); font-size: 0.6rem; text-align: center; padding: 8px 0; color: var(--bio-high); border-top: 1px solid var(--bio-high); letter-spacing: 1px; }
+        .grid-label { position: absolute; bottom: 0; width: 100%; background: rgba(0,26,51,0.9); font-size: 0.55rem; text-align: center; padding: 6px 0; color: var(--bio-high); border-top: 1px solid var(--bio-high); }
 
-        /* MODAL / SINGLE VIEW */
-        #modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1000; display: none; background: rgba(0,0,0,0.95); backdrop-filter: blur(10px); align-items: center; justify-content: center; }
-        .modal-content { width: 90%; max-width: 450px; background: #000; border: 2px solid var(--bio-high); position: relative; padding-bottom: 20px; box-shadow: 0 0 50px var(--bio-low); }
-        .close-modal { position: absolute; top: 15px; right: 20px; font-size: 2rem; color: var(--bio-high); cursor: pointer; z-index: 10; }
+        /* BIOLUME SINGLE VIEW */
+        #modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1000; display: none; background: rgba(0,0,0,0.95); backdrop-filter: blur(12px); align-items: center; justify-content: center; }
+        .modal-content { 
+            width: 90%; max-width: 420px; background: #000; 
+            border: 2px solid var(--bio-high); 
+            position: relative; padding-bottom: 20px; 
+            box-shadow: 0 0 40px var(--bio-low);
+        }
+        .close-modal { position: absolute; top: 10px; right: 15px; font-size: 1.8rem; color: var(--bio-high); cursor: pointer; z-index: 100; }
         
-        .size-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 20px; }
-        .size-btn { border: 1px solid var(--bio-high); background: #000; color: #fff; padding: 12px 0; cursor: pointer; font-size: 0.7rem; transition: 0.2s; }
+        .size-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; margin: 15px 20px; }
+        .size-btn { border: 1px solid var(--bio-high); background: #000; color: #fff; padding: 12px 0; cursor: pointer; font-size: 0.65rem; }
         .size-btn.selected { background: var(--bio-high); color: #000; font-weight: bold; }
 
-        /* SECTOR NAVIGATION */
         .pagination-container { position: fixed; bottom: 0; width: 100%; height: 80px; background: rgba(0,0,0,0.9); z-index: 150; display: flex; flex-direction: column; align-items: center; justify-content: center; border-top: 1px solid var(--bio-high); }
-        .sector-slider { width: 70%; accent-color: var(--bio-high); }
-        #sector-display { font-size: 0.8rem; color: var(--bio-high); margin-bottom: 8px; letter-spacing: 3px; }
+        .sector-slider { width: 80%; accent-color: var(--bio-high); }
+        #sector-display { font-size: 0.7rem; color: var(--bio-high); margin-bottom: 5px; letter-spacing: 2px; }
 
-        #side-cart { position: fixed; top: 0; right: -100%; width: 85%; max-width: 350px; height: 100%; background: #000; border-left: 2px solid var(--bio-high); z-index: 2000; transition: 0.4s; }
+        #side-cart { position: fixed; top: 0; right: -100%; width: 85%; max-width: 350px; height: 100%; background: #000; border-left: 1px solid var(--bio-high); z-index: 2000; transition: 0.4s; }
         #side-cart.open { right: 0; }
         .pay-link { display: block; width: 90%; margin: 10px auto; padding: 15px 0; text-align: center; font-size: 0.8rem; text-decoration: none; font-weight: bold; }
     </style>
@@ -84,9 +85,9 @@
 <div id="modal-overlay" onclick="closeModal()">
     <div class="modal-content" onclick="event.stopPropagation()">
         <span class="close-modal" onclick="closeModal()">×</span>
-        <div id="modal-img-container" style="padding:20px; text-align:center;"></div>
+        <div id="modal-img-container" style="padding:10px;"></div>
         <div style="padding:0 20px;">
-            <div id="modal-title" style="color:var(--bio-high); font-size:0.9rem; margin-bottom:10px; text-align:center;"></div>
+            <div id="modal-title" style="color:var(--bio-high); font-size:0.8rem; margin-bottom:10px; text-transform:uppercase; text-align:center;"></div>
             <div class="size-grid">
                 <button class="size-btn" onclick="selectSize(this, 'S')">S</button>
                 <button class="size-btn" onclick="selectSize(this, 'M')">M</button>
@@ -98,7 +99,7 @@
                 <button class="size-btn" onclick="selectSize(this, '5XL')">5XL</button>
                 <button class="size-btn" onclick="selectSize(this, '6XL')">6XL</button>
             </div>
-            <button onclick="addToCart()" style="width:100%; padding:18px; background:var(--bio-high); border:none; font-weight:bold; cursor:pointer; color:#000; letter-spacing:2px;">UPLOAD TO MANIFEST</button>
+            <button onclick="addToCart()" style="width:100%; padding:15px; background:var(--bio-high); border:none; font-weight:bold; cursor:pointer; color:#000;">UPLOAD TO MANIFEST</button>
         </div>
     </div>
 </div>
@@ -113,12 +114,12 @@
 </div>
 
 <div class="pagination-container">
-    <div id="sector-display">LOADING SECTORS...</div>
+    <div id="sector-display">SYNCING...</div>
     <input type="range" id="sector-slider" class="sector-slider" min="1" max="1" value="1">
 </div>
 
 <script>
-let allProducts = [], cart = [], itemsPerPage = 12, selectedSize = null, activeProduct = null;
+let allProducts = [], cart = [], itemsPerPage = 24, selectedSize = null, activeProduct = null;
 
 async function fetchStore() {
     try {
@@ -129,7 +130,7 @@ async function fetchStore() {
             setupNavigation();
             renderGrid(1); 
         }
-    } catch (e) { document.getElementById('sector-display').innerText = "CONNECTION LOST"; }
+    } catch (e) { document.getElementById('sector-display').innerText = "LINK SEVERED"; }
 }
 
 function setupNavigation() {
@@ -139,9 +140,8 @@ function setupNavigation() {
     slider.max = totalPages;
     display.innerText = `SECTOR 01 / ${totalPages.toString().padStart(2, '0')}`;
     slider.oninput = (e) => {
-        const val = e.target.value;
-        display.innerText = `SECTOR ${val.padStart(2, '0')} / ${totalPages.toString().padStart(2, '0')}`;
-        renderGrid(parseInt(val));
+        display.innerText = `SECTOR ${e.target.value.padStart(2, '0')} / ${totalPages.toString().padStart(2, '0')}`;
+        renderGrid(parseInt(e.target.value));
     };
 }
 
@@ -149,7 +149,6 @@ function renderGrid(page) {
     const grid = document.getElementById('store-grid');
     const start = (page - 1) * itemsPerPage;
     const items = allProducts.slice(start, start + itemsPerPage);
-    
     grid.innerHTML = items.map(p => `
         <div class="card" onclick="openModal('${p.name.replace(/'/g, "\\'")}', '${p.images[0]}')">
             <img src="${p.images[0]}" loading="lazy">
@@ -162,10 +161,69 @@ function openModal(name, img) {
     activeProduct = { name, img }; selectedSize = null;
     document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected'));
     document.getElementById('modal-title').innerText = name;
-    document.getElementById('modal-img-container').innerHTML = `<img src="${img}" style="width:100%; mix-blend-mode:screen; filter:drop-shadow(0 0 20px var(--bio-high));">`;
+    document.getElementById('modal-img-container').innerHTML = `<img src="${img}" style="width:100%; mix-blend-mode:screen; filter:drop-shadow(0 0 15px var(--bio-high));">`;
     document.getElementById('modal-overlay').style.display = 'flex';
 }
 
 function selectSize(btn, size) { selectedSize = size; document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected')); btn.classList.add('selected'); }
 function closeModal() { document.getElementById('modal-overlay').style.display = 'none'; }
-function toggleCart(show) { document.getElementById('side-cart').classList.toggle('open', show);
+function toggleCart(show) { document.getElementById('side-cart').classList.toggle('open', show); }
+function addToCart() {
+    if(!selectedSize) return alert("SELECT SIZE");
+    cart.push({...activeProduct, size: selectedSize});
+    document.getElementById('cart-trigger').innerText = `MANIFEST (${cart.length})`;
+    document.getElementById('cart-items').innerHTML = cart.map(i => `<div style="padding:10px; border-bottom:1px solid #111;">${i.name}<br><span style="color:var(--bio-high)">${i.size}</span></div>`).join('');
+    closeModal(); toggleCart(true);
+}
+
+// --- FOCAL POINT ENGINE: FALLING TREES & RISING SPARKS ---
+const canvas = document.getElementById('fractalCanvas');
+const ctx = canvas.getContext('2d');
+let w, h, treeSegments = [], sparks = [], worldY = 0, lastTreeY = 0;
+
+function resize() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
+
+function gen(x, y, a, l, d) {
+    if (d > 8) return;
+    const x2 = x + Math.cos(a) * l, y2 = y + Math.sin(a) * l;
+    treeSegments.push({x1:x, y1:y, x2:x2, y2:y2, d});
+    gen(x2, y2, a - 0.35, l * 0.8, d + 1);
+    gen(x2, y2, a + 0.35, l * 0.8, d + 1);
+}
+
+function loop() {
+    worldY -= 4;
+    if (lastTreeY > worldY - h) {
+        gen(w/2 + Math.sin(worldY*0.001)*100, lastTreeY, -Math.PI/2, 110, 0);
+        lastTreeY -= 450;
+    }
+    ctx.fillStyle = "rgba(0, 0, 0, 0.3)"; 
+    ctx.fillRect(0, 0, w, h);
+
+    // Trees
+    treeSegments.forEach(s => {
+        const y1 = s.y1 - worldY, y2 = s.y2 - worldY;
+        if(y1 < h + 100 && y2 > -100) {
+            ctx.strokeStyle = `rgb(255, ${100 - s.d*10}, 0)`;
+            ctx.lineWidth = 1.3;
+            ctx.beginPath(); ctx.moveTo(s.x1, y1); ctx.lineTo(s.x2, y2); ctx.stroke();
+        }
+    });
+
+    // Sparks (Rising Embers)
+    if (sparks.length < 50) sparks.push({ x: Math.random() * w, y: h + 10, v: Math.random() * 2 + 1 });
+    sparks.forEach((p, i) => {
+        p.y -= p.v;
+        ctx.fillStyle = `rgba(255, 160, 0, ${Math.random()})`;
+        ctx.fillRect(p.x, p.y, 2, 2);
+        if (p.y < -10) sparks[i] = { x: Math.random() * w, y: h + 10, v: Math.random() * 2 + 1 };
+    });
+
+    if(treeSegments.length > 1500) treeSegments.splice(0, 50);
+    requestAnimationFrame(loop);
+}
+
+window.onresize = resize; resize(); lastTreeY = h; loop(); fetchStore();
+</script>
+</body>
+</html>
