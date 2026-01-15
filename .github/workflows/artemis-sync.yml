@@ -1,10 +1,9 @@
-name: Artemis 6-Hour Sync
+Name: Artemis 6-Hour Sync
 on:
   schedule:
     - cron: '0 */6 * * *'
   workflow_dispatch: 
 
-# THIS IS THE MISSING KEY
 permissions:
   contents: write
 
@@ -23,6 +22,7 @@ jobs:
         run: |
           git config --global user.name "Artemis-Bot"
           git config --global user.email "bot@axiom.com"
-          git add netlify/functions/archive-map.json
-          git commit -m "Auto-Update Archive Manifest" || echo "No changes"
+          # UPDATED: Points to the new Vercel-ready folder
+          git add api/archive-map.json
+          git commit -m "Auto-Update Archive Manifest [Vercel Path]" || echo "No changes"
           git push
