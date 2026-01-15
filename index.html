@@ -13,7 +13,7 @@
         body, html { 
             margin: 0; padding: 0; width: 100%; height: 100%; 
             background: #000; font-family: 'Courier New', monospace; color: white;
-            overflow: hidden; /* Locks the GoDaddy iFrame window */
+            overflow: hidden; 
         }
 
         canvas#fractalCanvas { position: fixed; top: 0; left: 0; z-index: 0; pointer-events: none; }
@@ -28,7 +28,6 @@
             color: var(--fire-glow); outline: none; box-sizing: border-box; font-size: 14px;
         }
 
-        /* FLEX BOX FOR FIXED 500PX HEIGHT */
         .content-wrapper {
             position: relative; z-index: 5;
             height: calc(100vh - var(--header-h) - var(--search-h));
@@ -36,17 +35,31 @@
         }
 
         #store-grid { 
-            flex: 1; /* Takes up available space */
+            flex: 1; 
             display: grid; grid-template-columns: repeat(2, 1fr); 
             grid-auto-rows: min-content; gap: 10px; width: 95%; margin: 0 auto;
-            overflow-y: auto; scrollbar-width: none; /* Internal scroll only */
+            overflow-y: auto; scrollbar-width: none;
             -webkit-overflow-scrolling: touch;
         }
         #store-grid::-webkit-scrollbar { display: none; }
 
+        /* BURNING SKELETON SHELVES */
+        @keyframes emberPulse {
+            0% { background: rgba(20, 0, 0, 1); border-color: rgba(255, 69, 0, 0.2); }
+            50% { background: rgba(60, 20, 0, 1); border-color: rgba(255, 174, 0, 0.6); box-shadow: 0 0 15px rgba(255, 69, 0, 0.2); }
+            100% { background: rgba(20, 0, 0, 1); border-color: rgba(255, 69, 0, 0.2); }
+        }
+
         .card { 
             position: relative; background: rgba(0,0,0,0.3); border: 1px solid rgba(255, 69, 0, 0.2); 
             cursor: pointer; overflow: hidden; aspect-ratio: 1 / 1;
+        }
+
+        .skeleton-shelf {
+            animation: emberPulse 1.5s infinite ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         /* PAGINATION PINNED AT BOTTOM */
@@ -81,9 +94,16 @@
 <div class="search-container"><input type="text" id="search-input" placeholder="SCANNING ARCHIVE..." oninput="handleSearch()"></div>
 
 <div class="content-wrapper">
-    <div id="store-grid"></div>
+    <div id="store-grid">
+        <div class="card skeleton-shelf"><div class="grid-label">IGNITING...</div></div>
+        <div class="card skeleton-shelf"><div class="grid-label">IGNITING...</div></div>
+        <div class="card skeleton-shelf"><div class="grid-label">IGNITING...</div></div>
+        <div class="card skeleton-shelf"><div class="grid-label">IGNITING...</div></div>
+    </div>
     <div class="pagination-container">
-        <div class="pagination-bar" id="pagination-bar"></div>
+        <div class="pagination-bar" id="pagination-bar">
+            <div class="page-num active">1</div>
+        </div>
     </div>
 </div>
 
@@ -132,7 +152,6 @@ function loop() {
         if (sy1 < h + 100 && sy2 > -100) {
             ctx.strokeStyle = `rgb(255, ${50 - s.depth*5}, 0)`; ctx.lineWidth = Math.max(1, 8 - s.depth);
             ctx.beginPath(); ctx.moveTo(s.x1, sy1); ctx.lineTo(s.x2, sy2); ctx.stroke();
-            // Restored Flame Generation
             if (Math.random() > 0.8) particles.push(new FlameSpike(s.x1 + (s.x2-s.x1)*Math.random(), s.y1 + (s.y2-s.y1)*Math.random(), 0, -5));
         }
     });
@@ -150,10 +169,19 @@ async function fetchStore(page = 0) {
     try {
         const res = await fetch(`/api/get-products?page=${page}`);
         const data = await res.json();
+        
+        // Merge data
         allProducts = [...allProducts, ...data.products];
         totalArchiveCount = data.total;
-        if (page === 0) { filteredProducts = allProducts; renderGrid(); if (!isHarvesting) startArtemisHarvest(1); }
-        else { renderPagination(); if(document.getElementById('search-input').value) handleSearch(); }
+
+        if (page === 0) { 
+            filteredProducts = allProducts; 
+            renderGrid(); 
+            if (!isHarvesting) startArtemisHarvest(1); 
+        } else { 
+            renderPagination(); 
+            if(document.getElementById('search-input').value) handleSearch(); 
+        }
     } catch (e) { console.error("Link Interrupted"); }
 }
 
@@ -168,6 +196,8 @@ async function startArtemisHarvest(nextPage) {
 function renderGrid() {
     const grid = document.getElementById('store-grid');
     const items = filteredProducts.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
+    
+    // Replace skeletons with actual cards
     grid.innerHTML = items.map(p => `
         <div class="card" onclick="expandCard(this)">
             <div class="close-btn" onclick="event.stopPropagation(); shrinkCard(this.parentElement)">×</div>
@@ -195,7 +225,13 @@ function handleSearch() {
     currentPage = 0; renderGrid(); 
 }
 
-resize(); lastTreeY = h; generateTree(w/2, h, -Math.PI/2, 120, 0); loop(); fetchStore(0);
+// --- BOOT SEQUENCE ---
+resize(); 
+lastTreeY = h; 
+generateTree(w/2, h, -Math.PI/2, 120, 0); 
+loop(); 
+fetchStore(0); 
+
 </script>
 </body>
 </html>
