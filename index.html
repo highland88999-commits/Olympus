@@ -13,7 +13,7 @@
         body, html { 
             margin: 0; padding: 0; width: 100%; height: 100%; 
             background: #000; font-family: 'Courier New', monospace; color: white;
-            overflow: hidden; 
+            overflow: hidden; /* Locks the GoDaddy iFrame window */
         }
 
         canvas#fractalCanvas { position: fixed; top: 0; left: 0; z-index: 0; pointer-events: none; }
@@ -28,7 +28,7 @@
             color: var(--fire-glow); outline: none; box-sizing: border-box; font-size: 14px;
         }
 
-        /* WRAPPER TO CLIP TO 500px iFrame */
+        /* FLEX BOX FOR FIXED 500PX HEIGHT */
         .content-wrapper {
             position: relative; z-index: 5;
             height: calc(100vh - var(--header-h) - var(--search-h));
@@ -36,23 +36,24 @@
         }
 
         #store-grid { 
-            flex-grow: 1;
+            flex: 1; /* Takes up available space */
             display: grid; grid-template-columns: repeat(2, 1fr); 
             grid-auto-rows: min-content; gap: 10px; width: 95%; margin: 0 auto;
-            overflow-y: auto; scrollbar-width: none;
+            overflow-y: auto; scrollbar-width: none; /* Internal scroll only */
+            -webkit-overflow-scrolling: touch;
         }
         #store-grid::-webkit-scrollbar { display: none; }
 
         .card { 
             position: relative; background: rgba(0,0,0,0.3); border: 1px solid rgba(255, 69, 0, 0.2); 
-            cursor: pointer; overflow: hidden; aspect-ratio: 1 / 1; display: flex; flex-direction: column;
+            cursor: pointer; overflow: hidden; aspect-ratio: 1 / 1;
         }
 
-        /* PAGINATION PINNED DIRECTLY BENEATH */
+        /* PAGINATION PINNED AT BOTTOM */
         .pagination-container { 
-            height: var(--pagi-h); 
+            height: var(--pagi-h); flex-shrink: 0;
             display: flex; align-items: center; justify-content: center;
-            background: rgba(0,0,0,0.8); border-top: 1px solid rgba(255, 69, 0, 0.3);
+            background: rgba(0,0,0,0.9); border-top: 1px solid rgba(255, 69, 0, 0.3);
         }
         .pagination-bar { 
             display: flex; gap: 15px; overflow-x: auto; max-width: 90%; 
@@ -64,16 +65,10 @@
         .page-num.active { color: var(--fire-glow); text-shadow: 0 0 8px var(--fire-core); font-weight: bold; }
 
         /* EXPANDED VIEW */
-        .card.expanded { 
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 100; 
-            display: flex; flex-direction: column; background: #000;
-        }
+        .card.expanded { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 100; display: flex; flex-direction: column; background: #000; }
         .slider-container { width: 100%; flex-grow: 1; position: relative; overflow: hidden; }
         .mockup-viewport { display: flex; height: 100%; overflow: hidden; scroll-behavior: smooth; }
         .mockup-viewport img { height: 100%; width: 100%; object-fit: contain; }
-
-        .action-row { height: 70px; display: none; grid-template-columns: 1fr 1fr 1fr; gap: 5px; padding: 10px; }
-        .card.expanded .action-row { display: grid; }
         .close-btn { position: absolute; top: 10px; right: 15px; font-size: 2rem; color: var(--fire-glow); z-index: 110; display: none; }
         .card.expanded .close-btn { display: block; }
         .grid-label { position: absolute; bottom: 0; width: 100%; background: rgba(0,0,0,0.7); text-align: center; font-size: 0.5rem; color: var(--fire-glow); padding: 4px 0; }
@@ -86,20 +81,37 @@
 <div class="search-container"><input type="text" id="search-input" placeholder="SCANNING ARCHIVE..." oninput="handleSearch()"></div>
 
 <div class="content-wrapper">
-    <div id="store-grid">
-        </div>
+    <div id="store-grid"></div>
     <div class="pagination-container">
         <div class="pagination-bar" id="pagination-bar"></div>
     </div>
 </div>
 
 <script>
-// --- FRACTAL ENGINE (Same as before) ---
+// --- FRACTAL ENGINE (FLAMES RESTORED) ---
 const canvas = document.getElementById('fractalCanvas');
 const ctx = canvas.getContext('2d');
 let w, h, worldY = 0, lastTreeY = 0, time = 0, treeSegments = [], particles = [];
+
 function resize() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
 window.addEventListener('resize', resize);
+
+class FlameSpike {
+    constructor(x, y, vx, vy) {
+        this.x = x; this.y = y; this.vx = vx; this.vy = vy;
+        this.life = 1.0; this.size = Math.random() * 4 + 2;
+        this.decay = Math.random() * 0.04 + 0.02;
+    }
+    update() { this.x += this.vx + Math.sin(time * 0.5) * 2; this.y += this.vy; this.life -= this.decay; }
+    draw() {
+        const sy = this.y - worldY;
+        ctx.fillStyle = this.life > 0.6 ? "#fff" : (this.life > 0.3 ? "#ffae00" : "#ff4500");
+        ctx.beginPath(); ctx.moveTo(this.x, sy);
+        ctx.lineTo(this.x + this.size, sy + this.size * 3); ctx.lineTo(this.x - this.size, sy + this.size * 3);
+        ctx.fill();
+    }
+}
+
 function generateTree(x, y, angle, len, depth) {
     if (depth > 8) return;
     const x2 = x + Math.cos(angle) * len; const y2 = y + Math.sin(angle) * len;
@@ -107,17 +119,25 @@ function generateTree(x, y, angle, len, depth) {
     if (Math.random() > 0.1) generateTree(x2, y2, angle - 0.4 + Math.random()*0.2, len * 0.75, depth + 1);
     if (Math.random() > 0.1) generateTree(x2, y2, angle + 0.4 - Math.random()*0.2, len * 0.75, depth + 1);
 }
+
 function loop() {
     time++; worldY -= 8;
-    if (lastTreeY > worldY - h) { generateTree(w/2 + Math.sin(worldY*0.001)*200, lastTreeY, -Math.PI/2, 130, 0); lastTreeY -= 400; }
+    if (lastTreeY > worldY - h) { 
+        generateTree(w/2 + Math.sin(worldY*0.001)*200, lastTreeY, -Math.PI/2, 130, 0); 
+        lastTreeY -= 400; 
+    }
     ctx.fillStyle = "#000"; ctx.fillRect(0, 0, w, h);
     treeSegments.forEach(s => {
         const sy1 = s.y1 - worldY; const sy2 = s.y2 - worldY;
         if (sy1 < h + 100 && sy2 > -100) {
             ctx.strokeStyle = `rgb(255, ${50 - s.depth*5}, 0)`; ctx.lineWidth = Math.max(1, 8 - s.depth);
             ctx.beginPath(); ctx.moveTo(s.x1, sy1); ctx.lineTo(s.x2, sy2); ctx.stroke();
+            // Restored Flame Generation
+            if (Math.random() > 0.8) particles.push(new FlameSpike(s.x1 + (s.x2-s.x1)*Math.random(), s.y1 + (s.y2-s.y1)*Math.random(), 0, -5));
         }
     });
+    particles = particles.filter(p => p.life > 0);
+    particles.forEach(p => { p.update(); p.draw(); });
     if(treeSegments.length > 500) treeSegments.splice(0, 20);
     requestAnimationFrame(loop);
 }
@@ -154,11 +174,6 @@ function renderGrid() {
             <div class="slider-container" onclick="event.stopPropagation()">
                 <div class="mockup-viewport">${p.images.map(img => `<img src="${img}">`).join('')}</div>
             </div>
-            <div class="action-row" onclick="event.stopPropagation()">
-                <select style="background:#000;color:#fff;border:1px solid #444"><option>SIZE</option><option>S</option><option>M</option><option>L</option></select>
-                <button style="border:1px solid var(--fire-glow);background:none;color:white;font-size:10px">FIAT</button>
-                <button style="border:1px solid #f7931a;background:none;color:#f7931a;font-size:10px">CRYPTO</button>
-            </div>
             <div class="grid-label">${p.name}</div>
         </div>
     `).join('');
@@ -171,7 +186,7 @@ function renderPagination() {
     bar.innerHTML = Array.from({length: pageCount}, (_, i) => `<div class="page-num ${i === currentPage ? 'active' : ''}" onclick="goToPage(${i})">${i + 1}</div>`).join('');
 }
 
-function goToPage(page) { currentPage = page; renderGrid(); }
+function goToPage(page) { currentPage = page; renderGrid(); document.getElementById('store-grid').scrollTop = 0; }
 function expandCard(card) { card.classList.add('expanded'); }
 function shrinkCard(card) { card.classList.remove('expanded'); }
 function handleSearch() { 
