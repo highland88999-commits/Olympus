@@ -51,7 +51,7 @@
 
         .card { 
             position: relative; 
-            background: rgba(0,0,0,0.2); /* Transparent background */
+            background: rgba(0,0,0,0.2); 
             border: 1px solid rgba(255, 69, 0, 0.2); 
             cursor: pointer; overflow: hidden; aspect-ratio: 1 / 1;
         }
@@ -63,7 +63,6 @@
             justify-content: center;
         }
 
-        /* PAGINATION PINNED AT BOTTOM */
         .pagination-container { 
             height: var(--pagi-h); flex-shrink: 0;
             display: flex; align-items: center; justify-content: center;
@@ -71,7 +70,7 @@
         }
         .pagination-bar { 
             display: flex; gap: 15px; overflow-x: auto; max-width: 90%; 
-            min-height: 30px; /* Forces visibility on load */
+            min-height: 30px; 
             scrollbar-width: none; white-space: nowrap; padding: 5px;
         }
         .pagination-bar::-webkit-scrollbar { display: none; }
@@ -79,7 +78,6 @@
         .page-num { font-size: 1rem; color: rgba(255, 255, 255, 0.3); cursor: pointer; min-width: 25px; text-align: center; }
         .page-num.active { color: var(--fire-glow); text-shadow: 0 0 8px var(--fire-core); font-weight: bold; }
 
-        /* EXPANDED VIEW */
         .card.expanded { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 100; display: flex; flex-direction: column; background: #000; }
         .slider-container { width: 100%; flex-grow: 1; position: relative; overflow: hidden; }
         .mockup-viewport { display: flex; height: 100%; overflow: hidden; scroll-behavior: smooth; }
@@ -110,7 +108,6 @@
 </div>
 
 <script>
-// --- FRACTAL ENGINE ---
 const canvas = document.getElementById('fractalCanvas');
 const ctx = canvas.getContext('2d');
 let w, h, worldY = 0, lastTreeY = 0, time = 0, treeSegments = [], particles = [];
@@ -163,50 +160,62 @@ function loop() {
     requestAnimationFrame(loop);
 }
 
-// --- ARTEMIS DATA ENGINE ---
+// --- ARTEMIS DATA ENGINE (FIXED) ---
 let allProducts = [], filteredProducts = [], currentPage = 0;
-let itemsPerPage = 4; let totalArchiveCount = 0; let isHarvesting = false;
+// We now set this to 20 to match your new get-products limit
+let itemsPerPage = 20; 
+let totalArchiveCount = 0; 
+let isHarvesting = false;
 
 async function fetchStore(page = 0) {
     try {
-        const res = await fetch(`/api/get-products?page=${page}`);
+        // Pointing directly to Netlify Function path
+        const res = await fetch(`/.netlify/functions/get-products?page=${page}`);
         const data = await res.json();
         
+        // Merge new batch into local memory
         allProducts = [...allProducts, ...data.products];
         totalArchiveCount = data.total;
 
         if (page === 0) { 
             filteredProducts = allProducts; 
             renderGrid(); 
+            // Clear the "Scanning" placeholder
+            document.getElementById('search-input').placeholder = "Search Hoodies...";
             if (!isHarvesting) startArtemisHarvest(1); 
         } else { 
             renderPagination(); 
             if(document.getElementById('search-input').value) handleSearch(); 
         }
-    } catch (e) { console.error("Link Interrupted"); }
+    } catch (e) { 
+        console.error("Link Interrupted"); 
+    }
 }
 
 async function startArtemisHarvest(nextPage) {
     isHarvesting = true;
-    const maxPages = Math.ceil(totalArchiveCount / 4);
+    const maxPages = Math.ceil(totalArchiveCount / itemsPerPage);
     if (nextPage >= maxPages) { isHarvesting = false; return; }
     await fetchStore(nextPage);
-    setTimeout(() => startArtemisHarvest(nextPage + 1), 300);
+    setTimeout(() => startArtemisHarvest(nextPage + 1), 500);
 }
 
 function renderGrid() {
     const grid = document.getElementById('store-grid');
-    // Important: Only slice what we have available
     const items = filteredProducts.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
     
-    // Inject real data into the grid
+    if (items.length === 0 && allProducts.length > 0) {
+        grid.innerHTML = '<div style="grid-column: 1/-1; text-align:center; padding: 20px;">No Hoodies Found in this Sector.</div>';
+        return;
+    }
+
     grid.innerHTML = items.map(p => `
         <div class="card" onclick="expandCard(this)">
             <div class="close-btn" onclick="event.stopPropagation(); shrinkCard(this.parentElement)">×</div>
             <div class="slider-container" onclick="event.stopPropagation()">
-                <div class="mockup-viewport">${p.images.map(img => `<img src="${img}" style="width:100%;height:100%;object-fit:contain;">`).join('')}</div>
+                <div class="mockup-viewport">${p.images.map(img => `<img src="${img}">`).join('')}</div>
             </div>
-            <div class="grid-label" style="background:rgba(0,0,0,0.8);">${p.name}</div>
+            <div class="grid-label">${p.name}</div>
         </div>
     `).join('');
     renderPagination();
@@ -215,21 +224,35 @@ function renderGrid() {
 function renderPagination() {
     const bar = document.getElementById('pagination-bar');
     const pageCount = Math.ceil(filteredProducts.length / itemsPerPage);
-    // Always show at least page 1
     const count = Math.max(1, pageCount);
-    bar.innerHTML = Array.from({length: count}, (_, i) => `<div class="page-num ${i === currentPage ? 'active' : ''}" onclick="goToPage(${i})">${i + 1}</div>`).join('');
+    
+    // Only show pagination if there's more than 1 page
+    if (count <= 1) {
+        bar.innerHTML = '<div class="page-num active">1</div>';
+        return;
+    }
+
+    bar.innerHTML = Array.from({length: count}, (_, i) => 
+        `<div class="page-num ${i === currentPage ? 'active' : ''}" onclick="goToPage(${i})">${i + 1}</div>`
+    ).join('');
 }
 
-function goToPage(page) { currentPage = page; renderGrid(); document.getElementById('store-grid').scrollTop = 0; }
+function goToPage(page) { 
+    currentPage = page; 
+    renderGrid(); 
+    document.getElementById('store-grid').scrollTop = 0; 
+}
+
 function expandCard(card) { card.classList.add('expanded'); }
 function shrinkCard(card) { card.classList.remove('expanded'); }
+
 function handleSearch() { 
     const term = document.getElementById('search-input').value.toLowerCase(); 
     filteredProducts = allProducts.filter(p => p.name.toLowerCase().includes(term)); 
-    currentPage = 0; renderGrid(); 
+    currentPage = 0; 
+    renderGrid(); 
 }
 
-// --- BOOT SEQUENCE ---
 resize(); 
 lastTreeY = h; 
 generateTree(w/2, h, -Math.PI/2, 120, 0); 
