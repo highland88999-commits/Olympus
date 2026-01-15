@@ -104,40 +104,23 @@
 let allProducts = [], cart = [], currentPage = 0, itemsPerPage = 24;
 let selectedSize = null, activeProduct = null, modalQty = 1;
 
-// ARTEMIS-GUIDED SEQUENTIAL HARVESTER
+// PRE-BUILT ARTEMIS 2 FETCHER
 async function fetchStore() {
     try {
-        document.getElementById('gather-status').innerText = "CONSULTING ARTEMIS 2...";
+        const statusText = document.getElementById('gather-status');
+        statusText.innerText = "ACCESSING OLYMPUS MANIFEST...";
         
-        // 1. Get the Map from Artemis 2
-        const configRes = await fetch('/.netlify/functions/artemis-2');
-        if (!configRes.ok) throw new Error("Artemis Unreachable");
-        const config = await configRes.json();
+        // Pull consolidated data from Artemis 2
+        const res = await fetch('/.netlify/functions/artemis-2');
+        if (!res.ok) throw new Error("Artemis Unreachable");
         
-        // 2. Prepare the Buckets
-        const sectorBuckets = new Array(config.totalSectors).fill(null);
-        itemsPerPage = config.itemsPerPage || 24;
+        const manifest = await res.json();
         
-        // 3. Sequential Pull from the Directory
-        for (let i = 1; i <= config.totalSectors; i++) {
-            const sectorId = i.toString().padStart(2, '0');
-            document.getElementById('gather-status').innerText = `SYNCING ${config.directory} | SECTOR ${sectorId}...`;
-            
-            const res = await fetch(`/.netlify/functions/get-products-${sectorId}`);
-            if (res.ok) {
-                const data = await res.json();
-                if (data && data.products) {
-                    // Slot into correct index to keep order
-                    sectorBuckets[i-1] = data.products;
-                    // Flatten buckets to update live list
-                    allProducts = sectorBuckets.filter(s => s !== null).flat();
-                    renderGrid();
-                }
-            }
-            // Small gap to prevent browser hang
-            await new Promise(r => setTimeout(r, 120));
+        if (manifest && manifest.products) {
+            allProducts = manifest.products; // Already in strict numerical order
+            statusText.innerText = `SYNCED | ${allProducts.length} DESIGNS FOUND`;
+            renderGrid();
         }
-        document.getElementById('gather-status').innerText = "ARCHIVE SYNC COMPLETE";
     } catch (e) {
         console.error("Critical System Error:", e);
         document.getElementById('gather-status').innerText = "ARTEMIS LINK SEVERED";
@@ -148,6 +131,7 @@ function renderGrid() {
     const grid = document.getElementById('store-grid');
     if (!allProducts.length) return;
     
+    // Slice only the 24 items for the current page
     const start = currentPage * itemsPerPage;
     const end = Math.min(start + itemsPerPage, allProducts.length);
     const items = allProducts.slice(start, end);
@@ -170,7 +154,11 @@ function renderPagination() {
     ).join('');
 }
 
-function goToPage(p) { currentPage = p; renderGrid(); document.getElementById('store-grid').scrollTop = 0; }
+function goToPage(p) { 
+    currentPage = p; 
+    renderGrid(); 
+    document.getElementById('store-grid').scrollTop = 0; 
+}
 
 function openModal(name, img) {
     activeProduct = { name, img }; selectedSize = null; modalQty = 1;
@@ -223,11 +211,23 @@ const ctx = canvas.getContext('2d');
 let w, h, worldY = 0, lastTreeY = 0, time = 0, treeSegments = [], particles = [];
 function resize() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
 window.addEventListener('resize', resize);
+
 class FlameSpike {
-    constructor(x, y, vx, vy) { this.x = x; this.y = y; this.vx = vx; this.vy = vy; this.life = 1.0; this.size = Math.random() * 4 + 2; this.decay = Math.random() * 0.04 + 0.02; }
+    constructor(x, y, vx, vy) { 
+        this.x = x; this.y = y; this.vx = vx; this.vy = vy; 
+        this.life = 1.0; this.size = Math.random() * 4 + 2; 
+        this.decay = Math.random() * 0.04 + 0.02; 
+    }
     update() { this.x += this.vx + Math.sin(time * 0.5) * 2; this.y += this.vy; this.life -= this.decay; }
-    draw() { const sy = this.y - worldY; ctx.fillStyle = this.life > 0.6 ? "#fff" : (this.life > 0.3 ? "#ffae00" : "#ff4500"); ctx.beginPath(); ctx.moveTo(this.x, sy); ctx.lineTo(this.x + this.size, sy + this.size * 3); ctx.lineTo(this.x - this.size, sy + this.size * 3); ctx.fill(); }
+    draw() { 
+        const sy = this.y - worldY; 
+        ctx.fillStyle = this.life > 0.6 ? "#fff" : (this.life > 0.3 ? "#ffae00" : "#ff4500"); 
+        ctx.beginPath(); ctx.moveTo(this.x, sy); 
+        ctx.lineTo(this.x + this.size, sy + this.size * 3); 
+        ctx.lineTo(this.x - this.size, sy + this.size * 3); ctx.fill(); 
+    }
 }
+
 function generateTree(x, y, angle, len, depth) {
     if (depth > 8) return;
     const x2 = x + Math.cos(angle) * len; const y2 = y + Math.sin(angle) * len;
@@ -235,18 +235,27 @@ function generateTree(x, y, angle, len, depth) {
     if (Math.random() > 0.1) generateTree(x2, y2, angle - 0.4 + Math.random()*0.2, len * 0.75, depth + 1);
     if (Math.random() > 0.1) generateTree(x2, y2, angle + 0.4 - Math.random()*0.2, len * 0.75, depth + 1);
 }
+
 function loop() {
     time++; worldY -= 8;
     if (lastTreeY > worldY - h) { generateTree(w/2 + Math.sin(worldY*0.001)*200, lastTreeY, -Math.PI/2, 130, 0); lastTreeY -= 400; }
     ctx.fillStyle = "#000"; ctx.fillRect(0, 0, w, h);
-    treeSegments.forEach(s => { const sy1 = s.y1 - worldY; const sy2 = s.y2 - worldY; if (sy1 < h + 100 && sy2 > -100) { ctx.strokeStyle = `rgb(255, ${50 - s.depth*5}, 0)`; ctx.lineWidth = Math.max(1, 8 - s.depth); ctx.beginPath(); ctx.moveTo(s.x1, sy1); ctx.lineTo(s.x2, sy2); ctx.stroke(); if (Math.random() > 0.8) particles.push(new FlameSpike(s.x1 + (s.x2-s.x1)*Math.random(), s.y1 + (s.y2-s.y1)*Math.random(), 0, -5)); } });
+    treeSegments.forEach(s => { 
+        const sy1 = s.y1 - worldY; const sy2 = s.y2 - worldY; 
+        if (sy1 < h + 100 && sy2 > -100) { 
+            ctx.strokeStyle = `rgb(255, ${50 - s.depth*5}, 0)`; 
+            ctx.lineWidth = Math.max(1, 8 - s.depth); 
+            ctx.beginPath(); ctx.moveTo(s.x1, sy1); ctx.lineTo(s.x2, sy2); ctx.stroke(); 
+            if (Math.random() > 0.8) particles.push(new FlameSpike(s.x1 + (s.x2-s.x1)*Math.random(), s.y1 + (s.y2-s.y1)*Math.random(), 0, -5)); 
+        } 
+    });
     particles = particles.filter(p => p.life > 0); particles.forEach(p => { p.update(); p.draw(); });
     if(treeSegments.length > 500) treeSegments.splice(0, 20);
     requestAnimationFrame(loop);
 }
 
 resize(); lastTreeY = h; generateTree(w/2, h, -Math.PI/2, 120, 0); loop(); 
-fetchStore(); // Triggering the Artemis-Guided Harvest
+fetchStore(); 
 </script>
 </body>
 </html>
