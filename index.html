@@ -12,18 +12,15 @@
 
         body, html { 
             margin: 0; padding: 0; width: 100%; height: 100%; 
-            background: #000; font-family: 'Segoe UI', sans-serif; color: white;
+            background: #000; font-family: 'Courier New', monospace; color: white;
             overflow: hidden; touch-action: manipulation;
         }
 
-        /* FRACTAL ENGINE LAYER */
         canvas#fractalCanvas { position: fixed; top: 0; left: 0; z-index: 0; pointer-events: none; }
 
-        /* HEADER - FULLY TRANSPARENT */
         header { position: relative; z-index: 10; height: var(--header-h); display: flex; align-items: center; justify-content: center; background: transparent; }
         h1 { letter-spacing: 10px; color: var(--fire-glow); text-shadow: 0 0 15px var(--fire-core); font-size: 1.4rem; margin: 0; font-weight: 200; }
 
-        /* SEARCH - GLASS MORPHISM / TRANSPARENT */
         .search-container { position: relative; z-index: 20; height: var(--search-h); display: flex; align-items: center; background: transparent; }
         #search-input { 
             width: 90%; margin: 0 auto; padding: 12px; 
@@ -32,156 +29,80 @@
             backdrop-filter: blur(2px);
         }
 
-        /* 4-ITEM GRID - NO CARD BG */
         #store-grid { 
-            position: relative; z-index: 5; height: calc(100vh - var(--header-h) - var(--search-h) - 100px);
+            position: relative; z-index: 5; height: calc(100vh - var(--header-h) - var(--search-h) - 80px);
             display: grid; grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(2, 1fr);
             gap: 15px; width: 95%; margin: 0 auto;
         }
 
-        .card { 
-            background: transparent; border: 1px solid rgba(255, 69, 0, 0.2); 
-            padding: 8px; cursor: pointer; display: flex; flex-direction: column; overflow: hidden;
-        }
-
-        /* EXPANDED VIEW - FULLY TRANSPARENT OVERLAY */
-        .card.expanded {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; 
-            z-index: 100; display: flex; flex-direction: column;
-            background: rgba(0, 0, 0, 0.85); /* Slight tint for text readability */
-            padding: 0; transition: transform 0.3s ease-out;
-        }
-
-        /* MOCKUPS - LIGHTEN BLEND ALLOWS TREE TO SHOW THROUGH DARK FABRIC */
+        .card { background: transparent; border: 1px solid rgba(255, 69, 0, 0.2); padding: 8px; cursor: pointer; display: flex; flex-direction: column; overflow: hidden; }
+        .card.expanded { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 100; display: flex; flex-direction: column; background: rgba(0, 0, 0, 0.9); padding: 0; transition: transform 0.3s ease-out; }
+        
         .slider-container { width: 100%; flex-grow: 1; position: relative; overflow: hidden; background: transparent; }
         .mockup-viewport { display: flex; height: 100%; overflow: hidden; scroll-behavior: smooth; }
-        .mockup-viewport img { 
-            height: 100%; width: 100%; object-fit: contain; 
-            mix-blend-mode: lighten; 
-        }
+        .mockup-viewport img { height: 100%; width: 100%; object-fit: contain; mix-blend-mode: lighten; }
 
-        /* ACTION ROW - TRANSPARENT BUTTONS */
-        .action-row {
-            height: var(--action-h); display: none; grid-template-columns: 1fr 1.2fr 1.2fr; gap: 10px;
-            padding: 15px; background: transparent; border-top: 1px solid rgba(255, 69, 0, 0.5); box-sizing: border-box;
-        }
+        .action-row { height: var(--action-h); display: none; grid-template-columns: 1fr 1.2fr 1.2fr; gap: 10px; padding: 15px; background: transparent; border-top: 1px solid rgba(255, 69, 0, 0.5); box-sizing: border-box; }
         .card.expanded .action-row { display: grid; }
 
-        .buy-btn { 
-            height: 100%; background: rgba(255, 255, 255, 0.05); 
-            border: 1px solid var(--fire-glow); color: white; font-size: 0.7rem; font-weight: bold; 
-        }
+        .buy-btn { height: 100%; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--fire-glow); color: white; font-size: 0.7rem; font-weight: bold; }
         .buy-btn.crypto { border-color: #f7931a; color: #f7931a; }
-        .size-select { 
-            height: 100%; background: rgba(0,0,0,0.5); color: white; 
-            border: 1px solid #444; font-size: 0.8rem; border-radius: 0;
-        }
+        .size-select { height: 100%; background: rgba(0,0,0,0.5); color: white; border: 1px solid #444; font-size: 0.8rem; border-radius: 0; }
 
-        /* PAGINATION BARS - GHOST STYLE */
-        .pagination-container { position: relative; z-index: 10; height: 60px; display: flex; align-items: center; justify-content: center; width: 100%; }
-        .pagination-bar { display: flex; gap: 10px; }
-        .page-dot { width: 35px; height: 3px; background: rgba(255, 255, 255, 0.1); cursor: pointer; }
-        .page-dot.active { background: var(--fire-glow); box-shadow: 0 0 10px var(--fire-core); }
+        /* SCROLLABLE NUMBERED PAGINATION */
+        .pagination-container {
+            position: relative; z-index: 10; height: 50px; width: 100%;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .pagination-bar {
+            display: flex; gap: 20px; overflow-x: auto; padding: 0 20px;
+            max-width: 80%; scrollbar-width: none; /* Hide scrollbar Firefox */
+            -ms-overflow-style: none; /* Hide scrollbar IE/Edge */
+        }
+        .pagination-bar::-webkit-scrollbar { display: none; } /* Hide scrollbar Chrome/Safari */
+
+        .page-num {
+            font-size: 1.2rem; color: rgba(255, 255, 255, 0.3);
+            cursor: pointer; transition: 0.3s; min-width: 30px; text-align: center;
+        }
+        .page-num.active {
+            color: var(--fire-glow); text-shadow: 0 0 10px var(--fire-core);
+            font-weight: bold; transform: scale(1.2);
+        }
 
         .close-btn { position: absolute; top: 15px; right: 20px; font-size: 2.5rem; color: var(--fire-glow); z-index: 110; display: none; cursor: pointer; }
         .card.expanded .close-btn { display: block; }
-        .grid-label { text-align: center; font-size: 0.6rem; color: var(--fire-glow); margin-top: 5px; text-transform: uppercase; background: transparent; }
+        .grid-label { text-align: center; font-size: 0.6rem; color: var(--fire-glow); margin-top: 5px; text-transform: uppercase; }
     </style>
 </head>
 <body>
 
 <canvas id="fractalCanvas"></canvas>
-
 <header><h1>OLYMPIAN HOODIES</h1></header>
+<div class="search-container"><input type="text" id="search-input" placeholder="SCAN ARCHIVE..." oninput="handleSearch()"></div>
 
-<div class="search-container">
-    <input type="text" id="search-input" placeholder="SCAN ARCHIVE..." oninput="handleSearch()">
-</div>
-
-<div id="store-grid">SCANNING...</div>
+<div id="store-grid">INITIALIZING...</div>
 
 <div class="pagination-container">
     <div class="pagination-bar" id="pagination-bar"></div>
 </div>
 
 <script>
-// --- BURNING FRACTAL ASCENT ENGINE ---
+// --- BURNING FRACTAL ASCENT ENGINE (From Previous) ---
+// [Rendering Logic remains identical to maintain the Tree effect]
 const canvas = document.getElementById('fractalCanvas');
 const ctx = canvas.getContext('2d');
 let w, h, worldY = 0, lastTreeY = 0, time = 0;
 const scrollSpeed = 8.0;
 let treeSegments = [], particles = [];
-
-function resize() {
-    w = canvas.width = window.innerWidth;
-    h = canvas.height = window.innerHeight;
-    if(treeSegments.length === 0) { lastTreeY = h; generateTree(w/2, h, -Math.PI/2, 120, 0); }
-}
+function resize() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; if(treeSegments.length === 0) { lastTreeY = h; generateTree(w/2, h, -Math.PI/2, 120, 0); } }
 window.addEventListener('resize', resize);
+class FlameSpike { constructor(x, y, vx, vy) { this.x = x; this.y = y; this.vx = vx; this.vy = vy; this.life = 1.0; this.size = Math.random() * 4 + 2; this.decay = Math.random() * 0.04 + 0.02; } update() { this.x += this.vx + Math.sin(time * 0.5) * 2; this.y += this.vy; this.life -= this.decay; } draw() { const sy = this.y - worldY; ctx.fillStyle = this.life > 0.6 ? "#fff" : (this.life > 0.3 ? "#ffae00" : "#ff4500"); ctx.beginPath(); ctx.moveTo(this.x, sy); ctx.lineTo(this.x + this.size, sy + this.size * 3); ctx.lineTo(this.x - this.size, sy + this.size * 3); ctx.fill(); } }
+class RealEmber { constructor(x, y) { this.x = x; this.y = y; this.vx = (Math.random() - 0.5) * 10; this.vy = -Math.random() * 15 - 10; this.life = 1.0; } update() { this.x += this.vx; this.y += this.vy; this.vy *= 0.96; this.vx *= 0.96; this.life -= 0.01; } draw() { const sy = this.y - worldY; ctx.fillStyle = `rgba(255, 200, 0, ${this.life})`; ctx.fillRect(this.x, sy, 2, 4); } }
+function generateTree(x, y, angle, len, depth) { if (depth > 8) return; const x2 = x + Math.cos(angle) * len; const y2 = y + Math.sin(angle) * len; treeSegments.push({ x1: x, y1: y, x2: x2, y2: y2, depth: depth }); const nLen = len * 0.75; if (Math.random() > 0.1) generateTree(x2, y2, angle - 0.4 + Math.random()*0.2, nLen, depth + 1); if (Math.random() > 0.1) generateTree(x2, y2, angle + 0.4 - Math.random()*0.2, nLen, depth + 1); }
+function loop() { time++; worldY -= scrollSpeed; if (lastTreeY > worldY - h) { generateTree(w/2 + Math.sin(worldY*0.001)*200, lastTreeY, -Math.PI/2, 130, 0); lastTreeY -= 400; } ctx.fillStyle = "#000"; ctx.fillRect(0, 0, w, h); treeSegments.forEach(s => { const sy1 = s.y1 - worldY; const sy2 = s.y2 - worldY; if (sy1 < h + 100 && sy2 > -100) { ctx.strokeStyle = `rgb(255, ${50 - s.depth*5}, 0)`; ctx.lineWidth = Math.max(1, 8 - s.depth); ctx.beginPath(); ctx.moveTo(s.x1, sy1); ctx.lineTo(s.x2, sy2); ctx.stroke(); if (Math.random() > 0.7) { let t = Math.random(); particles.push(new FlameSpike(s.x1 + (s.x2-s.x1)*t, s.y1 + (s.y2-s.y1)*t, 0, -5)); } if (Math.random() > 0.96) particles.push(new RealEmber(s.x2, s.y2)); } }); particles = particles.filter(p => p.life > 0); particles.forEach(p => { p.update(); p.draw(); }); if(treeSegments.length > 1000) treeSegments.splice(0, 50); requestAnimationFrame(loop); }
 
-class FlameSpike {
-    constructor(x, y, vx, vy) {
-        this.x = x; this.y = y; this.vx = vx; this.vy = vy;
-        this.life = 1.0; this.size = Math.random() * 4 + 2;
-        this.decay = Math.random() * 0.04 + 0.02;
-    }
-    update() { this.x += this.vx + Math.sin(time * 0.5) * 2; this.y += this.vy; this.life -= this.decay; }
-    draw() {
-        const sy = this.y - worldY;
-        ctx.fillStyle = this.life > 0.6 ? "#fff" : (this.life > 0.3 ? "#ffae00" : "#ff4500");
-        ctx.beginPath(); ctx.moveTo(this.x, sy);
-        ctx.lineTo(this.x + this.size, sy + this.size * 3);
-        ctx.lineTo(this.x - this.size, sy + this.size * 3);
-        ctx.fill();
-    }
-}
-
-class RealEmber {
-    constructor(x, y) {
-        this.x = x; this.y = y; this.vx = (Math.random() - 0.5) * 10;
-        this.vy = -Math.random() * 15 - 10; this.life = 1.0;
-    }
-    update() { this.x += this.vx; this.y += this.vy; this.vy *= 0.96; this.vx *= 0.96; this.life -= 0.01; }
-    draw() { const sy = this.y - worldY; ctx.fillStyle = `rgba(255, 200, 0, ${this.life})`; ctx.fillRect(this.x, sy, 2, 4); }
-}
-
-function generateTree(x, y, angle, len, depth) {
-    if (depth > 8) return;
-    const x2 = x + Math.cos(angle) * len;
-    const y2 = y + Math.sin(angle) * len;
-    treeSegments.push({ x1: x, y1: y, x2: x2, y2: y2, depth: depth });
-    const nLen = len * 0.75;
-    if (Math.random() > 0.1) generateTree(x2, y2, angle - 0.4 + Math.random()*0.2, nLen, depth + 1);
-    if (Math.random() > 0.1) generateTree(x2, y2, angle + 0.4 - Math.random()*0.2, nLen, depth + 1);
-}
-
-function loop() {
-    time++; worldY -= scrollSpeed;
-    if (lastTreeY > worldY - h) {
-        generateTree(w/2 + Math.sin(worldY*0.001)*200, lastTreeY, -Math.PI/2, 130, 0);
-        lastTreeY -= 400;
-    }
-    ctx.fillStyle = "#000"; ctx.fillRect(0, 0, w, h);
-    treeSegments.forEach(s => {
-        const sy1 = s.y1 - worldY; const sy2 = s.y2 - worldY;
-        if (sy1 < h + 100 && sy2 > -100) {
-            ctx.strokeStyle = `rgb(255, ${50 - s.depth*5}, 0)`;
-            ctx.lineWidth = Math.max(1, 8 - s.depth);
-            ctx.beginPath(); ctx.moveTo(s.x1, sy1); ctx.lineTo(s.x2, sy2); ctx.stroke();
-            if (Math.random() > 0.7) {
-                let t = Math.random();
-                particles.push(new FlameSpike(s.x1 + (s.x2-s.x1)*t, s.y1 + (s.y2-s.y1)*t, 0, -5));
-            }
-            if (Math.random() > 0.96) particles.push(new RealEmber(s.x2, s.y2));
-        }
-    });
-    particles = particles.filter(p => p.life > 0);
-    particles.forEach(p => { p.update(); p.draw(); });
-    if(treeSegments.length > 1000) treeSegments.splice(0, 50);
-    requestAnimationFrame(loop);
-}
-
-// --- STORE LOGIC ---
+// --- STORE LOGIC (DYNAMIC NUMBERING) ---
 let allProducts = [], filteredProducts = [], currentPage = 0;
 const itemsPerPage = 4;
 
@@ -190,7 +111,8 @@ async function fetchStore() {
         const res = await fetch('/.netlify/functions/get-products');
         allProducts = await res.json();
     } catch (e) {
-        allProducts = Array.from({length: 8}, (_, i) => ({ id: i, name: `OLYMPIAN v${i+1}`, images: ["https://via.placeholder.com/600/000"] }));
+        // Fallback for demo: 24 items to demonstrate page scrolling
+        allProducts = Array.from({length: 24}, (_, i) => ({ id: i, name: `OLYMPIAN v${i+1}`, images: ["https://via.placeholder.com/600/000"] }));
     }
     filteredProducts = allProducts;
     renderGrid();
@@ -202,16 +124,8 @@ function renderGrid() {
     grid.innerHTML = items.map(p => `
         <div class="card" onclick="expandCard(this)">
             <div class="close-btn" onclick="event.stopPropagation(); shrinkCard(this.parentElement)">×</div>
-            <div class="slider-container" onclick="event.stopPropagation()">
-                <div class="mockup-viewport" id="slider-${p.id}">
-                    ${p.images.map(img => `<img src="${img}">`).join('')}
-                </div>
-            </div>
-            <div class="action-row" onclick="event.stopPropagation()">
-                <select id="size-${p.id}" class="size-select"><option>SIZE</option><option>S</option><option>M</option><option>L</option></select>
-                <button class="buy-btn">FIAT</button>
-                <button class="buy-btn crypto">CRYPTO</button>
-            </div>
+            <div class="slider-container" onclick="event.stopPropagation()"><div class="mockup-viewport" id="slider-${p.id}">${p.images.map(img => `<img src="${img}">`).join('')}</div></div>
+            <div class="action-row" onclick="event.stopPropagation()"><select class="size-select"><option>SIZE</option><option>S</option><option>M</option><option>L</option></select><button class="buy-btn">FIAT</button><button class="buy-btn crypto">CRYPTO</button></div>
             <div class="grid-label">${p.name}</div>
         </div>
     `).join('');
@@ -222,31 +136,22 @@ function renderPagination() {
     const bar = document.getElementById('pagination-bar');
     const pageCount = Math.ceil(filteredProducts.length / itemsPerPage);
     bar.innerHTML = Array.from({length: pageCount}, (_, i) => `
-        <div class="page-dot ${i === currentPage ? 'active' : ''}" onclick="currentPage=${i}; renderGrid();"></div>
+        <div class="page-num ${i === currentPage ? 'active' : ''}" onclick="goToPage(${i})">${i + 1}</div>
     `).join('');
 }
 
-let touchStartY = 0;
-function expandCard(card) {
-    card.classList.add('expanded');
-    card.addEventListener('touchstart', e => touchStartY = e.touches[0].clientY);
-    card.addEventListener('touchmove', e => {
-        let diff = e.touches[0].clientY - touchStartY;
-        if (diff > 0) card.style.transform = `translateY(${diff}px)`;
-    });
-    card.addEventListener('touchend', e => {
-        if (e.changedTouches[0].clientY - touchStartY > 150) shrinkCard(card);
-        else card.style.transform = `translateY(0px)`;
-    });
-}
-function shrinkCard(card) { card.classList.remove('expanded'); card.style.transform = `translateY(0px)`; }
-
-function handleSearch() {
-    currentPage = 0;
-    const term = document.getElementById('search-input').value.toLowerCase();
-    filteredProducts = allProducts.filter(p => p.name.toLowerCase().includes(term));
+function goToPage(page) {
+    currentPage = page;
     renderGrid();
+    // Centering the active page in the scroll bar
+    const bar = document.getElementById('pagination-bar');
+    const active = bar.children[page];
+    bar.scrollTo({ left: active.offsetLeft - bar.offsetWidth / 2 + active.offsetWidth / 2, behavior: 'smooth' });
 }
+
+function expandCard(card) { card.classList.add('expanded'); }
+function shrinkCard(card) { card.classList.remove('expanded'); card.style.transform = `translateY(0px)`; }
+function handleSearch() { currentPage = 0; const term = document.getElementById('search-input').value.toLowerCase(); filteredProducts = allProducts.filter(p => p.name.toLowerCase().includes(term)); renderGrid(); }
 
 resize(); loop(); fetchStore();
 </script>
