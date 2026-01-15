@@ -8,3 +8,9 @@
 
 [functions]
   node_bundler = "esbuild"
+
+# --- ARTEMIS PROTOCOL SCHEDULE ---
+# This triggers the artemis function every 30 minutes
+# to harvest the 686 hoodies and keep the Nexus Shield warm.
+[functions."artemis"]
+  schedule = "*/30 * * * *"
