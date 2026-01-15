@@ -1,29 +1,10 @@
-Name: Artemis 6-Hour Sync
+name: Artemis 6-Hour Sync
 on:
   schedule:
     - cron: '0 */6 * * *'
-  workflow_dispatch: 
-
-permissions:
-  contents: write
-
-jobs:
-  sync:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Setup Node.js 20
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-      - name: Run Artemis 1
-        run: node artemis-1.js
-      - name: Push Manifest
-        run: |
-          git config --global user.name "Artemis-Bot"
-          git config --global user.email "bot@axiom.com"
-          # UPDATED: Points to the new Vercel-ready folder
-          git add api/archive-map.json
-          git commit -m "Auto-Update Archive Manifest [Vercel Path]" || echo "No changes"
-          git push
-
+  workflow_dispatch: # Keeps the manual button
+  push:
+    branches:
+      - main  # AUTOMATIC: Runs whenever you commit to the main branch
+    paths:
+      - 'artemis-1.js' # OPTIONAL: Only run if this specific file changes
