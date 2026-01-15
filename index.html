@@ -7,7 +7,7 @@
     <style>
         :root { 
             --fire-glow: #ffae00; --fire-core: #ff4500;
-            --header-h: 50px; --search-h: 55px; --pagi-h: 45px;
+            --header-h: 50px; --search-h: 55px; --pagi-h: 60px; /* Slightly taller for mobile thumbs */
         }
 
         body, html { 
@@ -40,97 +40,66 @@
             grid-auto-rows: min-content; gap: 10px; width: 95%; margin: 0 auto;
             overflow-y: auto; scrollbar-width: none;
             -webkit-overflow-scrolling: touch;
+            padding-bottom: 100px; /* FIX: Prevents bottom row cutoff */
         }
         #store-grid::-webkit-scrollbar { display: none; }
 
-        @keyframes emberPulse {
-            0% { background: rgba(20, 0, 0, 0.2); border-color: rgba(255, 69, 0, 0.2); }
-            50% { background: rgba(60, 20, 0, 0.4); border-color: rgba(255, 174, 0, 0.6); box-shadow: 0 0 15px rgba(255, 69, 0, 0.1); }
-            100% { background: rgba(20, 0, 0, 0.2); border-color: rgba(255, 69, 0, 0.2); }
-        }
-
         .card { 
-            position: relative; 
-            background: rgba(0,0,0,0.2); 
+            position: relative; background: rgba(0,0,0,0.2); 
             border: 1px solid rgba(255, 69, 0, 0.2); 
             cursor: pointer; overflow: hidden; aspect-ratio: 1 / 1;
         }
 
-        .skeleton-shelf {
-            animation: emberPulse 1.5s infinite ease-in-out;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
+        /* PAGINATION BAR FIX */
         .pagination-container { 
-            height: var(--pagi-h); flex-shrink: 0;
+            position: absolute; bottom: 0; width: 100%;
+            height: var(--pagi-h); z-index: 30;
             display: flex; align-items: center; justify-content: center;
-            background: rgba(0,0,0,0.9); border-top: 1px solid rgba(255, 69, 0, 0.3);
+            background: rgba(0,0,0,0.9); border-top: 1px solid rgba(255, 69, 0, 0.5);
         }
         .pagination-bar { 
             display: flex; gap: 15px; overflow-x: auto; max-width: 90%; 
-            min-height: 30px; 
-            scrollbar-width: none; white-space: nowrap; padding: 5px;
+            padding: 10px; scrollbar-width: none; white-space: nowrap;
         }
         .pagination-bar::-webkit-scrollbar { display: none; }
 
-        .page-num { font-size: 1rem; color: rgba(255, 255, 255, 0.3); cursor: pointer; min-width: 25px; text-align: center; }
-        .page-num.active { color: var(--fire-glow); text-shadow: 0 0 8px var(--fire-core); font-weight: bold; }
+        .page-num { font-size: 1.2rem; color: rgba(255, 255, 255, 0.3); cursor: pointer; min-width: 35px; text-align: center; }
+        .page-num.active { color: var(--fire-glow); text-shadow: 0 0 10px var(--fire-core); font-weight: bold; }
 
         .card.expanded { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 100; display: flex; flex-direction: column; background: #000; }
         .slider-container { width: 100%; flex-grow: 1; position: relative; overflow: hidden; }
-        .mockup-viewport { display: flex; height: 100%; overflow: hidden; scroll-behavior: smooth; }
+        .mockup-viewport { display: flex; height: 100%; overflow: hidden; }
         .mockup-viewport img { height: 100%; width: 100%; object-fit: contain; }
         .close-btn { position: absolute; top: 10px; right: 15px; font-size: 2rem; color: var(--fire-glow); z-index: 110; display: none; }
         .card.expanded .close-btn { display: block; }
-        .grid-label { position: absolute; bottom: 0; width: 100%; background: rgba(0,0,0,0.7); text-align: center; font-size: 0.5rem; color: var(--fire-glow); padding: 4px 0; }
+        .grid-label { position: absolute; bottom: 0; width: 100%; background: rgba(0,0,0,0.8); text-align: center; font-size: 0.6rem; color: var(--fire-glow); padding: 5px 0; }
     </style>
 </head>
 <body>
 
 <canvas id="fractalCanvas"></canvas>
 <header><h1>OLYMPIAN HOODIES</h1></header>
-<div class="search-container"><input type="text" id="search-input" placeholder="SCANNING ARCHIVE..." oninput="handleSearch()"></div>
+<div class="search-container"><input type="text" id="id-search" placeholder="INITIALIZING 586 ARCHIVES..." oninput="handleSearch()"></div>
 
 <div class="content-wrapper">
-    <div id="store-grid">
-        <div class="card skeleton-shelf"><div class="grid-label">IGNITING...</div></div>
-        <div class="card skeleton-shelf"><div class="grid-label">IGNITING...</div></div>
-        <div class="card skeleton-shelf"><div class="grid-label">IGNITING...</div></div>
-        <div class="card skeleton-shelf"><div class="grid-label">IGNITING...</div></div>
-    </div>
+    <div id="store-grid"></div>
     <div class="pagination-container">
-        <div class="pagination-bar" id="pagination-bar">
-            <div class="page-num active">1</div>
-        </div>
+        <div class="pagination-bar" id="pagination-bar"></div>
     </div>
 </div>
 
 <script>
+// --- FRACTAL ENGINE (PRESERVED) ---
 const canvas = document.getElementById('fractalCanvas');
 const ctx = canvas.getContext('2d');
 let w, h, worldY = 0, lastTreeY = 0, time = 0, treeSegments = [], particles = [];
-
 function resize() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
 window.addEventListener('resize', resize);
-
 class FlameSpike {
-    constructor(x, y, vx, vy) {
-        this.x = x; this.y = y; this.vx = vx; this.vy = vy;
-        this.life = 1.0; this.size = Math.random() * 4 + 2;
-        this.decay = Math.random() * 0.04 + 0.02;
-    }
+    constructor(x, y, vx, vy) { this.x = x; this.y = y; this.vx = vx; this.vy = vy; this.life = 1.0; this.size = Math.random() * 4 + 2; this.decay = Math.random() * 0.04 + 0.02; }
     update() { this.x += this.vx + Math.sin(time * 0.5) * 2; this.y += this.vy; this.life -= this.decay; }
-    draw() {
-        const sy = this.y - worldY;
-        ctx.fillStyle = this.life > 0.6 ? "#fff" : (this.life > 0.3 ? "#ffae00" : "#ff4500");
-        ctx.beginPath(); ctx.moveTo(this.x, sy);
-        ctx.lineTo(this.x + this.size, sy + this.size * 3); ctx.lineTo(this.x - this.size, sy + this.size * 3);
-        ctx.fill();
-    }
+    draw() { const sy = this.y - worldY; ctx.fillStyle = this.life > 0.6 ? "#fff" : (this.life > 0.3 ? "#ffae00" : "#ff4500"); ctx.beginPath(); ctx.moveTo(this.x, sy); ctx.lineTo(this.x + this.size, sy + this.size * 3); ctx.lineTo(this.x - this.size, sy + this.size * 3); ctx.fill(); }
 }
-
 function generateTree(x, y, angle, len, depth) {
     if (depth > 8) return;
     const x2 = x + Math.cos(angle) * len; const y2 = y + Math.sin(angle) * len;
@@ -138,77 +107,47 @@ function generateTree(x, y, angle, len, depth) {
     if (Math.random() > 0.1) generateTree(x2, y2, angle - 0.4 + Math.random()*0.2, len * 0.75, depth + 1);
     if (Math.random() > 0.1) generateTree(x2, y2, angle + 0.4 - Math.random()*0.2, len * 0.75, depth + 1);
 }
-
 function loop() {
     time++; worldY -= 8;
-    if (lastTreeY > worldY - h) { 
-        generateTree(w/2 + Math.sin(worldY*0.001)*200, lastTreeY, -Math.PI/2, 130, 0); 
-        lastTreeY -= 400; 
-    }
+    if (lastTreeY > worldY - h) { generateTree(w/2 + Math.sin(worldY*0.001)*200, lastTreeY, -Math.PI/2, 130, 0); lastTreeY -= 400; }
     ctx.fillStyle = "#000"; ctx.fillRect(0, 0, w, h);
-    treeSegments.forEach(s => {
-        const sy1 = s.y1 - worldY; const sy2 = s.y2 - worldY;
-        if (sy1 < h + 100 && sy2 > -100) {
-            ctx.strokeStyle = `rgb(255, ${50 - s.depth*5}, 0)`; ctx.lineWidth = Math.max(1, 8 - s.depth);
-            ctx.beginPath(); ctx.moveTo(s.x1, sy1); ctx.lineTo(s.x2, sy2); ctx.stroke();
-            if (Math.random() > 0.8) particles.push(new FlameSpike(s.x1 + (s.x2-s.x1)*Math.random(), s.y1 + (s.y2-s.y1)*Math.random(), 0, -5));
-        }
-    });
-    particles = particles.filter(p => p.life > 0);
-    particles.forEach(p => { p.update(); p.draw(); });
+    treeSegments.forEach(s => { const sy1 = s.y1 - worldY; const sy2 = s.y2 - worldY; if (sy1 < h + 100 && sy2 > -100) { ctx.strokeStyle = `rgb(255, ${50 - s.depth*5}, 0)`; ctx.lineWidth = Math.max(1, 8 - s.depth); ctx.beginPath(); ctx.moveTo(s.x1, sy1); ctx.lineTo(s.x2, sy2); ctx.stroke(); if (Math.random() > 0.8) particles.push(new FlameSpike(s.x1 + (s.x2-s.x1)*Math.random(), s.y1 + (s.y2-s.y1)*Math.random(), 0, -5)); } });
+    particles = particles.filter(p => p.life > 0); particles.forEach(p => { p.update(); p.draw(); });
     if(treeSegments.length > 500) treeSegments.splice(0, 20);
     requestAnimationFrame(loop);
 }
 
-// --- ARTEMIS DATA ENGINE (FIXED) ---
+// --- ARTEMIS DATA ENGINE (ULTRA-CAPACITY) ---
 let allProducts = [], filteredProducts = [], currentPage = 0;
-// We now set this to 20 to match your new get-products limit
 let itemsPerPage = 20; 
-let totalArchiveCount = 0; 
-let isHarvesting = false;
+let totalArchiveCount = 586; // Force the engine to recognize the large scale
 
 async function fetchStore(page = 0) {
     try {
-        // Pointing directly to Netlify Function path
         const res = await fetch(`/.netlify/functions/get-products?page=${page}`);
         const data = await res.json();
         
-        // Merge new batch into local memory
         allProducts = [...allProducts, ...data.products];
-        totalArchiveCount = data.total;
+        totalArchiveCount = data.total; 
+        filteredProducts = allProducts;
 
-        if (page === 0) { 
-            filteredProducts = allProducts; 
-            renderGrid(); 
-            // Clear the "Scanning" placeholder
-            document.getElementById('search-input').placeholder = "Search Hoodies...";
-            if (!isHarvesting) startArtemisHarvest(1); 
-        } else { 
-            renderPagination(); 
-            if(document.getElementById('search-input').value) handleSearch(); 
+        document.getElementById('id-search').placeholder = `SEARCHING ${allProducts.length}/${totalArchiveCount} HOODIES...`;
+        
+        renderGrid();
+
+        // If there's more to harvest, keep going automatically
+        if (allProducts.length < totalArchiveCount) {
+            setTimeout(() => fetchStore(page + 1), 200);
+        } else {
+            document.getElementById('id-search').placeholder = "SEARCH ARCHIVE";
         }
-    } catch (e) { 
-        console.error("Link Interrupted"); 
-    }
-}
-
-async function startArtemisHarvest(nextPage) {
-    isHarvesting = true;
-    const maxPages = Math.ceil(totalArchiveCount / itemsPerPage);
-    if (nextPage >= maxPages) { isHarvesting = false; return; }
-    await fetchStore(nextPage);
-    setTimeout(() => startArtemisHarvest(nextPage + 1), 500);
+    } catch (e) { console.error("Link Interrupted"); }
 }
 
 function renderGrid() {
     const grid = document.getElementById('store-grid');
     const items = filteredProducts.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
     
-    if (items.length === 0 && allProducts.length > 0) {
-        grid.innerHTML = '<div style="grid-column: 1/-1; text-align:center; padding: 20px;">No Hoodies Found in this Sector.</div>';
-        return;
-    }
-
     grid.innerHTML = items.map(p => `
         <div class="card" onclick="expandCard(this)">
             <div class="close-btn" onclick="event.stopPropagation(); shrinkCard(this.parentElement)">×</div>
@@ -224,41 +163,24 @@ function renderGrid() {
 function renderPagination() {
     const bar = document.getElementById('pagination-bar');
     const pageCount = Math.ceil(filteredProducts.length / itemsPerPage);
-    const count = Math.max(1, pageCount);
     
-    // Only show pagination if there's more than 1 page
-    if (count <= 1) {
-        bar.innerHTML = '<div class="page-num active">1</div>';
-        return;
+    let html = '';
+    for (let i = 0; i < pageCount; i++) {
+        html += `<div class="page-num ${i === currentPage ? 'active' : ''}" onclick="goToPage(${i})">${i + 1}</div>`;
     }
-
-    bar.innerHTML = Array.from({length: count}, (_, i) => 
-        `<div class="page-num ${i === currentPage ? 'active' : ''}" onclick="goToPage(${i})">${i + 1}</div>`
-    ).join('');
+    bar.innerHTML = html;
 }
 
-function goToPage(page) { 
-    currentPage = page; 
-    renderGrid(); 
-    document.getElementById('store-grid').scrollTop = 0; 
-}
-
-function expandCard(card) { card.classList.add('expanded'); }
-function shrinkCard(card) { card.classList.remove('expanded'); }
-
+function goToPage(p) { currentPage = p; renderGrid(); document.getElementById('store-grid').scrollTop = 0; }
+function expandCard(c) { c.classList.add('expanded'); }
+function shrinkCard(c) { c.classList.remove('expanded'); }
 function handleSearch() { 
-    const term = document.getElementById('search-input').value.toLowerCase(); 
+    const term = document.getElementById('id-search').value.toLowerCase(); 
     filteredProducts = allProducts.filter(p => p.name.toLowerCase().includes(term)); 
-    currentPage = 0; 
-    renderGrid(); 
+    currentPage = 0; renderGrid(); 
 }
 
-resize(); 
-lastTreeY = h; 
-generateTree(w/2, h, -Math.PI/2, 120, 0); 
-loop(); 
-fetchStore(0); 
-
+resize(); lastTreeY = h; generateTree(w/2, h, -Math.PI/2, 120, 0); loop(); fetchStore(0);
 </script>
 </body>
 </html>
