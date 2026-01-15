@@ -13,11 +13,17 @@
         #cart-trigger { cursor: pointer; color: var(--fire-glow); border: 1px solid var(--fire-glow); padding: 8px 15px; font-size: 0.8rem; }
         #store-grid { position: relative; z-index: 5; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 95%; margin: 15px auto; overflow-y: auto; height: calc(100vh - 170px); padding-bottom: 100px; scrollbar-width: none; }
         .card { position: relative; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 174, 0, 0.2); aspect-ratio: 1/1; cursor: pointer; overflow: hidden; }
+        
+        /* The Transparent Window Function */
         .card img { width: 100%; height: 100%; object-fit: contain; mix-blend-mode: screen; }
+        
         .grid-label { position: absolute; bottom: 0; width: 100%; background: rgba(0,0,0,0.85); font-size: 0.55rem; text-align: center; padding: 6px 0; color: var(--fire-glow); border-top: 1px solid var(--fire-core); }
         #modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1000; display: none; background: rgba(0,0,0,0.95); backdrop-filter: blur(10px); align-items: center; justify-content: center; }
         .modal-content { width: 90%; max-width: 400px; background: #000; border: 1px solid var(--fire-glow); position: relative; padding-bottom: 20px; }
+        
+        /* Single Mockup Transparency */
         #modal-img-container img { width: 100%; mix-blend-mode: screen; }
+        
         .size-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; margin: 15px 20px; }
         .size-btn { border: 1px solid var(--fire-glow); background: #000; color: #fff; padding: 10px 0; cursor: pointer; font-size: 0.7rem; }
         .size-btn.selected { background: var(--fire-glow); color: #000; }
@@ -47,7 +53,6 @@
 let allProducts = [], cart = [], itemsPerPage = 20, selectedSize = null, activeProduct = null;
 async function fetchStore() {
     try {
-        // FIXED: Pointing to artemis-2 as confirmed by you
         const res = await fetch('/api/artemis-2');
         const data = await res.json();
         if (data.products) { allProducts = data.products; setupNavigation(); renderGrid(1); }
