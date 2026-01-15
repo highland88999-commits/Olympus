@@ -49,6 +49,7 @@ async function fetchStore() {
     try {
         const res = await fetch('/api/artemis-1');
         const data = await res.json();
+        // Pointing to "products" key as confirmed in your screenshot
         if (data.products) { allProducts = data.products; setupNavigation(); renderGrid(1); }
     } catch (e) { document.getElementById('sector-display').innerText = "LINK SEVERED"; }
 }
