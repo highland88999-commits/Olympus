@@ -37,6 +37,7 @@
         .card { 
             background: rgba(0, 0, 0, 0.6); border: 1px solid rgba(255, 0, 255, 0.2); 
             padding: 10px; cursor: pointer; transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex; flex-direction: column;
         }
 
         /* EXPANDED DASHBOARD */
@@ -44,7 +45,7 @@
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; 
             z-index: 100; display: flex; flex-direction: column;
             background: rgba(5, 0, 10, 0.98); padding: 0; cursor: default;
-            transition: transform 0.3s ease-out; /* For swipe animations */
+            transition: transform 0.3s ease-out;
         }
 
         .slider-container { width: 100%; flex-grow: 1; position: relative; overflow: hidden; }
@@ -65,14 +66,14 @@
         }
         .card.expanded .action-row { display: grid; }
 
-        .buy-btn { height: 100%; background: none; border: 1px solid var(--cyan); color: white; font-size: 0.7rem; font-weight: bold; }
+        .buy-btn { height: 100%; background: none; border: 1px solid var(--cyan); color: white; font-size: 0.7rem; font-weight: bold; border-radius: 0; }
         .buy-btn.crypto { border-color: #f7931a; color: #f7931a; }
-        .size-select { height: 100%; background: #111; color: white; border: 1px solid #444; font-size: 0.8rem; }
+        .size-select { height: 100%; background: #111; color: white; border: 1px solid #444; font-size: 0.8rem; -webkit-appearance: none; border-radius: 0; }
 
         .close-btn { position: absolute; top: 15px; right: 20px; font-size: 2.5rem; color: var(--magenta); z-index: 110; display: none; cursor: pointer; }
         .card.expanded .close-btn { display: block; }
         
-        .grid-label { text-align: center; font-size: 0.6rem; color: var(--cyan); margin-top: 8px; text-transform: uppercase; }
+        .grid-label { text-align: center; font-size: 0.6rem; color: var(--cyan); margin-top: 8px; text-transform: uppercase; letter-spacing: 1px; }
     </style>
 </head>
 <body>
@@ -82,53 +83,70 @@
 <div class="search-container">
     <input type="text" id="search-input" placeholder="SCAN ARCHIVE..." oninput="handleSearch()">
 </div>
-<div id="store-grid">INITIALIZING...</div>
+<div id="store-grid">SCANNING NEXUS...</div>
 
 <script>
-    // --- NEXUS FLAME ENGINE (Background) ---
-    // [Same particle logic as provided, rendered at z-index 0]
-    
-    // --- GESTURE LOGIC ---
+    // --- NEXUS FLAME ENGINE ---
+    const canvas = document.getElementById('flameCanvas');
+    const ctx = canvas.getContext('2d');
+    let w, h, particles = [], time = 0;
+    function resize() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
+    window.addEventListener('resize', resize); resize();
+    class FlameParticle {
+        constructor() { this.reset(); }
+        reset() {
+            this.x = Math.random() * w; this.y = h + 20;
+            this.vx = (Math.random() - 0.5) * 1.5; this.vy = -Math.random() * 3 - 1;
+            this.life = 1; this.decay = Math.random() * 0.01 + 0.005;
+            this.size = Math.random() * 60 + 20; this.color = Math.random() > 0.5 ? '#ff00ff' : '#00f2ff';
+        }
+        update() { this.y += this.vy; this.x += this.vx + Math.sin(time * 0.02 + this.y * 0.01); this.life -= this.decay; if (this.life <= 0) this.reset(); }
+        draw() { ctx.globalCompositeOperation = 'lighter'; ctx.fillStyle = this.color; ctx.globalAlpha = this.life * 0.3; ctx.beginPath(); ctx.arc(this.x, this.y, this.size * this.life, 0, Math.PI * 2); ctx.fill(); }
+    }
+    for(let i = 0; i < 40; i++) particles.push(new FlameParticle());
+    function animate() { ctx.clearRect(0, 0, w, h); time++; particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animate); }
+    animate();
+
+    // --- PRODUCT DATA & FALLBACK ---
+    let allProducts = [];
+    const fallbackData = [
+        { id: "1", name: "OLYMPIAN HERA", images: ["https://via.placeholder.com/600/00f2ff", "https://via.placeholder.com/600/ff00ff"] },
+        { id: "2", name: "OLYMPIAN ZEUS", images: ["https://via.placeholder.com/600/00f2ff", "https://via.placeholder.com/600/ff00ff"] },
+        { id: "3", name: "OLYMPIAN APOLLO", images: ["https://via.placeholder.com/600/00f2ff", "https://via.placeholder.com/600/ff00ff"] },
+        { id: "4", name: "OLYMPIAN ARES", images: ["https://via.placeholder.com/600/00f2ff", "https://via.placeholder.com/600/ff00ff"] }
+    ];
+
+    async function fetchStore() {
+        try {
+            const res = await fetch('/.netlify/functions/get-products');
+            if (!res.ok) throw new Error();
+            allProducts = await res.json();
+        } catch (e) {
+            console.warn("Nexus Offline: Using Local Archive");
+            allProducts = fallbackData; // Ensures the screen is never stuck
+        }
+        renderGrid(allProducts);
+    }
+
+    // --- GESTURES & INTERACTION ---
     let touchStartY = 0;
-    let touchEndY = 0;
-
-    function handleTouchStart(e) { touchStartY = e.touches[0].clientY; }
-    
-    function handleTouchMove(e, card) {
-        let currentY = e.touches[0].clientY;
-        let diff = currentY - touchStartY;
-        if (diff > 0) { // Sliding Down
-            card.style.transform = `translateY(${diff}px)`;
-        }
-    }
-
-    function handleTouchEnd(card) {
-        let diff = touchEndY - touchStartY;
-        if (diff > 150) { // Threshold for closing
-            shrinkCard(card);
-        } else {
-            card.style.transform = `translateY(0px)`; // Snap back
-        }
-    }
-
     function expandCard(card) {
         if (card.classList.contains('expanded')) return;
         card.classList.add('expanded');
-        document.body.style.overflow = 'hidden';
-
-        // Add swipe listeners only when expanded
-        card.addEventListener('touchstart', handleTouchStart);
-        card.addEventListener('touchmove', (e) => handleTouchMove(e, card));
-        card.addEventListener('touchend', (e) => {
-            touchEndY = e.changedTouches[0].clientY;
-            handleTouchEnd(card);
+        card.addEventListener('touchstart', e => touchStartY = e.touches[0].clientY);
+        card.addEventListener('touchmove', e => {
+            let diff = e.touches[0].clientY - touchStartY;
+            if (diff > 0) card.style.transform = `translateY(${diff}px)`;
+        });
+        card.addEventListener('touchend', e => {
+            if (e.changedTouches[0].clientY - touchStartY > 150) shrinkCard(card);
+            else card.style.transform = `translateY(0px)`;
         });
     }
 
     function shrinkCard(card) {
         card.style.transform = `translateY(0px)`;
         card.classList.remove('expanded');
-        document.body.style.overflow = 'auto';
     }
 
     function slideTo(id, index, thumb) {
@@ -138,8 +156,35 @@
         thumb.classList.add('active');
     }
 
-    // --- FETCH & SEARCH LOGIC ---
-    // [Existing fetch/render logic]
+    function renderGrid(items) {
+        const grid = document.getElementById('store-grid');
+        grid.innerHTML = items.map(p => `
+            <div class="card" onclick="expandCard(this)">
+                <div class="close-btn" onclick="event.stopPropagation(); shrinkCard(this.parentElement)">×</div>
+                <div class="slider-container" onclick="event.stopPropagation()">
+                    <div class="mockup-viewport" id="slider-${p.id}">
+                        ${p.images.map(img => `<img src="${img}">`).join('')}
+                    </div>
+                </div>
+                <div class="thumb-nav" onclick="event.stopPropagation()">
+                    ${p.images.map((img, i) => `<img src="${img}" class="${i===0?'active':''}" onclick="slideTo('${p.id}', ${i}, this)">`).join('')}
+                </div>
+                <div class="action-row" onclick="event.stopPropagation()">
+                    <select id="size-${p.id}" class="size-select"><option>SIZE</option><option>S</option><option>M</option><option>L</option></select>
+                    <button class="buy-btn">FIAT</button>
+                    <button class="buy-btn crypto">CRYPTO</button>
+                </div>
+                <div class="grid-label">${p.name}</div>
+            </div>
+        `).join('');
+    }
+
+    function handleSearch() {
+        const term = document.getElementById('search-input').value.toLowerCase();
+        renderGrid(allProducts.filter(p => p.name.toLowerCase().includes(term)));
+    }
+
+    fetchStore();
 </script>
 </body>
 </html>
