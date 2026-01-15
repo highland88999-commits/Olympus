@@ -47,9 +47,9 @@
 let allProducts = [], cart = [], itemsPerPage = 20, selectedSize = null, activeProduct = null;
 async function fetchStore() {
     try {
-        const res = await fetch('/api/artemis-1');
+        // FIXED: Pointing to artemis-2 as confirmed by you
+        const res = await fetch('/api/artemis-2');
         const data = await res.json();
-        // Pointing to "products" key as confirmed in your screenshot
         if (data.products) { allProducts = data.products; setupNavigation(); renderGrid(1); }
     } catch (e) { document.getElementById('sector-display').innerText = "LINK SEVERED"; }
 }
@@ -72,8 +72,4 @@ function addToCart() { if(!selectedSize) return alert("SELECT SIZE"); cart.push(
 const canvas = document.getElementById('fractalCanvas'); const ctx = canvas.getContext('2d'); let w, h, treeSegments = [], worldY = 0, lastTreeY = 0;
 function resize() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
 function gen(x, y, a, l, d) { if (d > 8) return; const x2 = x + Math.cos(a) * l, y2 = y + Math.sin(a) * l; treeSegments.push({x1:x, y1:y, x2:x2, y2:y2, d}); gen(x2, y2, a - 0.35, l * 0.8, d + 1); gen(x2, y2, a + 0.35, l * 0.8, d + 1); }
-function loop() { worldY -= 4; if (lastTreeY > worldY - h) { gen(w/2 + Math.sin(worldY*0.001)*100, lastTreeY, -Math.PI/2, 90, 0); lastTreeY -= 400; } ctx.fillStyle = "black"; ctx.fillRect(0,0,w,h); ctx.lineWidth = 1.5; treeSegments.forEach(s => { const y1 = s.y1 - worldY, y2 = s.y2 - worldY; if(y1 < h + 100 && y2 > -100) { ctx.strokeStyle = `rgb(255, ${120 - s.d*12}, 0)`; ctx.beginPath(); ctx.moveTo(s.x1, y1); ctx.lineTo(s.x2, y2); ctx.stroke(); } }); if(treeSegments.length > 1000) treeSegments.splice(0, 50); requestAnimationFrame(loop); }
-window.onresize = resize; resize(); lastTreeY = h; loop(); fetchStore();
-</script>
-</body>
-</html>
+function loop() { worldY -= 4; if (lastTreeY > worldY - h) { gen(w/2 + Math.sin(worldY*0.001)*100, lastTreeY, -Math.PI/2, 90, 0); lastTreeY -= 400; } ctx.fillStyle = "black"; ctx.fillRect(0,0,w,h); ctx.lineWidth = 1.5; treeSegments.forEach(s => { const y1 = s.y1 - worldY, y2 = s.y2 - worldY; if(y1 < h + 100 && y2 > -100) { ctx.strokeStyle = `rgb(255, ${120 - s.d*12}, 0)`; ctx.beginPath(); ctx.moveTo(s.x1,
