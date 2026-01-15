@@ -1,26 +1,35 @@
-const fetch = require('node-fetch');
+exports.handler = async () => {
+  console.log("ARTEMIS PROTOCOL: Initializing Persistent Sequential Harvest...");
+  
+  const results = [];
 
-exports.handler = async (event) => {
-    // UPDATED: Use the correct internal path
-    const siteUrl = 'https://darling-moonbeam-c2c30e.netlify.app';
-    const API_ENDPOINT = `${siteUrl}/.netlify/functions/get-products`;
-    
-    console.log("ARTEMIS PROTOCOL: INITIATING ARCHIVE HARVEST...");
+  for (let i = 1; i <= 10; i++) {
+    // We pad the number with a 0 to match the new filenames (01, 02, etc.)
+    const sectorId = i.toString().padStart(2, '0');
+    console.log(`ARTEMIS: Checking Sector ${sectorId}...`);
 
     try {
-        // Fetch a large batch at once to "warm up" the store cache
-        const res = await fetch(`${API_ENDPOINT}?page=0`);
-        const data = await res.json();
-        
-        console.log(`ARTEMIS: HARVESTED ${data.products.length} ITEMS FROM ARCHIVE.`);
+      const response = await fetch(`https://2c30e.netlify.app/.netlify/functions/get-products-${sectorId}`);
+      
+      if (!response.ok) {
+        console.log(`ARTEMIS: Sector ${sectorId} reported status ${response.status}. Continuing...`);
+        results.push({ sector: sectorId, status: "Empty/Error" });
+        continue; // Keep going to the next sector no matter what
+      }
 
-        return {
-            statusCode: 200,
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ status: "Success", totalItems: data.total })
-        };
+      const data = await response.json();
+      results.push({ sector: sectorId, status: "Success", count: data.products?.length || 0 });
+      console.log(`ARTEMIS: Sector ${sectorId} synced successfully.`);
+      
     } catch (error) {
-        console.error("ARTEMIS CRITICAL ERROR:", error.message);
-        return { statusCode: 500, body: "Artemis Link Interrupted" };
+      console.error(`ARTEMIS: Sector ${sectorId} failed. Continuing harvest...`);
+      results.push({ sector: sectorId, status: "Failed" });
     }
+  }
+
+  return {
+    statusCode: 200,
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ message: "Artemis: Full Perimeter Scan Complete", details: results })
+  };
 };
