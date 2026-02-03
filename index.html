@@ -4,15 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>OLYMPIAN | AXIOM 24</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <style>
         :root { --fire: #ff4500; --spark: #ffae00; --bio-low: #001a33; --bio-high: #00f2ff; }
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: #000; font-family: 'Courier New', monospace; color: white; overflow: hidden; }
-        canvas#fractalCanvas { position: fixed; top: 0; left: 0; z-index: 0; pointer-events: none; }
+        
+        /* Background Canvas Styling */
+        canvas#hurricaneCanvas { position: fixed; top: 0; left: 0; z-index: 0; pointer-events: none; }
         
         header { position: relative; z-index: 100; height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; background: rgba(0,0,0,0.85); border-bottom: 1px solid var(--bio-high); }
         h1 { letter-spacing: 5px; color: var(--bio-high); text-shadow: 0 0 15px var(--bio-high); font-size: 0.9rem; }
 
-        /* RESTORED TO 24-ITEM COMPATIBLE GRID */
         #store-grid { 
             position: relative; z-index: 5; 
             display: grid; 
@@ -37,6 +39,7 @@
             justify-content: center;
             box-shadow: inset 0 0 15px var(--bio-low);
             transition: 0.3s;
+            backdrop-filter: blur(2px);
         }
         .card:hover { border-color: var(--bio-high); box-shadow: 0 0 20px var(--bio-high); }
 
@@ -48,7 +51,6 @@
 
         .grid-label { position: absolute; bottom: 0; width: 100%; background: rgba(0,26,51,0.9); font-size: 0.55rem; text-align: center; padding: 6px 0; color: var(--bio-high); border-top: 1px solid var(--bio-high); }
 
-        /* BIOLUME SINGLE VIEW */
         #modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1000; display: none; background: rgba(0,0,0,0.95); backdrop-filter: blur(12px); align-items: center; justify-content: center; }
         .modal-content { 
             width: 90%; max-width: 420px; background: #000; 
@@ -73,7 +75,7 @@
 </head>
 <body ondblclick="closeModal(); toggleCart(false)">
 
-<canvas id="fractalCanvas"></canvas>
+<canvas id="hurricaneCanvas"></canvas>
 
 <header>
     <h1>OLYMPIAN</h1>
@@ -119,6 +121,7 @@
 </div>
 
 <script>
+// --- STORE LOGIC (UNTOUCHED) ---
 let allProducts = [], cart = [], itemsPerPage = 24, selectedSize = null, activeProduct = null;
 
 async function fetchStore() {
@@ -176,54 +179,118 @@ function addToCart() {
     closeModal(); toggleCart(true);
 }
 
-// --- FOCAL POINT ENGINE: FALLING TREES & RISING SPARKS ---
-const canvas = document.getElementById('fractalCanvas');
-const ctx = canvas.getContext('2d');
-let w, h, treeSegments = [], sparks = [], worldY = 0, lastTreeY = 0;
+// --- HURRICANE ENGINE: REPLACED FALLING TREES ---
+let scene, camera, renderer, clock = new THREE.Clock();
+let clouds = [], rain, ocean, hurricaneGroup;
+let shakeIntensity = 0, lightningFlash = 0;
 
-function resize() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
+function initHurricane() {
+    scene = new THREE.Scene();
+    scene.fog = new THREE.FogExp2(0x000606, 0.004);
 
-function gen(x, y, a, l, d) {
-    if (d > 8) return;
-    const x2 = x + Math.cos(a) * l, y2 = y + Math.sin(a) * l;
-    treeSegments.push({x1:x, y1:y, x2:x2, y2:y2, d});
-    gen(x2, y2, a - 0.35, l * 0.8, d + 1);
-    gen(x2, y2, a + 0.35, l * 0.8, d + 1);
-}
+    camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 3500);
+    camera.position.set(0, 150, 450);
 
-function loop() {
-    worldY -= 4;
-    if (lastTreeY > worldY - h) {
-        gen(w/2 + Math.sin(worldY*0.001)*100, lastTreeY, -Math.PI/2, 110, 0);
-        lastTreeY -= 450;
+    const canvas = document.getElementById('hurricaneCanvas');
+    renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setClearColor(0x000000);
+
+    hurricaneGroup = new THREE.Group();
+    scene.add(hurricaneGroup);
+
+    const oceanGeo = new THREE.PlaneGeometry(3500, 3500, 100, 100);
+    const oceanMat = new THREE.MeshStandardMaterial({ color: 0x001111, metalness: 0.98, roughness: 0.02, flatShading: true });
+    ocean = new THREE.Mesh(oceanGeo, oceanMat);
+    ocean.rotation.x = -Math.PI / 2;
+    scene.add(ocean);
+
+    const cloudGeo = new THREE.IcosahedronGeometry(22, 1);
+    for (let i = 0; i < 250; i++) {
+        const cloudMat = new THREE.MeshLambertMaterial({ color: 0x020202, transparent: true, opacity: 0.5 });
+        const cloud = new THREE.Mesh(cloudGeo, cloudMat);
+        const angle = i * 0.16;
+        const dist = 70 + (i * 1.9);
+        cloud.position.set(Math.cos(angle) * dist, 130 + (Math.random() * 90), Math.sin(angle) * dist);
+        cloud.scale.set(Math.random() * 9 + 5, Math.random() * 4 + 1, Math.random() * 9 + 5);
+        hurricaneGroup.add(cloud);
+        clouds.push(cloud);
     }
-    ctx.fillStyle = "rgba(0, 0, 0, 0.3)"; 
-    ctx.fillRect(0, 0, w, h);
 
-    // Trees
-    treeSegments.forEach(s => {
-        const y1 = s.y1 - worldY, y2 = s.y2 - worldY;
-        if(y1 < h + 100 && y2 > -100) {
-            ctx.strokeStyle = `rgb(255, ${100 - s.d*10}, 0)`;
-            ctx.lineWidth = 1.3;
-            ctx.beginPath(); ctx.moveTo(s.x1, y1); ctx.lineTo(s.x2, y2); ctx.stroke();
-        }
-    });
+    const rainGeo = new THREE.BufferGeometry();
+    const rainPos = [];
+    for (let i = 0; i < 35000; i++) {
+        rainPos.push((Math.random() - 0.5) * 3000, Math.random() * 1500, (Math.random() - 0.5) * 3000);
+    }
+    rainGeo.setAttribute('position', new THREE.Float32BufferAttribute(rainPos, 3));
+    rain = new THREE.Points(rainGeo, new THREE.PointsMaterial({ color: 0x00ffaa, size: 0.28, transparent: true, opacity: 0.45 }));
+    scene.add(rain);
 
-    // Sparks (Rising Embers)
-    if (sparks.length < 50) sparks.push({ x: Math.random() * w, y: h + 10, v: Math.random() * 2 + 1 });
-    sparks.forEach((p, i) => {
-        p.y -= p.v;
-        ctx.fillStyle = `rgba(255, 160, 0, ${Math.random()})`;
-        ctx.fillRect(p.x, p.y, 2, 2);
-        if (p.y < -10) sparks[i] = { x: Math.random() * w, y: h + 10, v: Math.random() * 2 + 1 };
-    });
-
-    if(treeSegments.length > 1500) treeSegments.splice(0, 50);
-    requestAnimationFrame(loop);
+    scene.add(new THREE.AmbientLight(0x001a1a, 0.45));
+    animate();
 }
 
-window.onresize = resize; resize(); lastTreeY = h; loop(); fetchStore();
+function triggerLightning() {
+    const colors = [0x00ffaa, 0x00ffff, 0xffffff, 0x4488ff, 0xaa00ff];
+    const col = colors[Math.floor(Math.random() * colors.length)];
+    const x = (Math.random() - 0.5) * 1500, z = (Math.random() - 0.5) * 1500;
+    const pts = [];
+    let curr = new THREE.Vector3(x, 600, z);
+    for(let i=0; i<18; i++) {
+        pts.push(curr.clone());
+        curr.add(new THREE.Vector3((Math.random()-0.5)*140, -40, (Math.random()-0.5)*140));
+    }
+    const geo = new THREE.BufferGeometry().setFromPoints(pts);
+    const line = new THREE.Line(geo, new THREE.LineBasicMaterial({ color: col, linewidth: 4 }));
+    const light = new THREE.PointLight(col, 800, 2500);
+    light.position.set(x, 300, z);
+    scene.add(line); scene.add(light);
+    shakeIntensity = 15; lightningFlash = 3.0;
+    setTimeout(() => { scene.remove(line); scene.remove(light); }, 45 + Math.random() * 55);
+}
+
+function animate() {
+    requestAnimationFrame(animate);
+    const time = clock.getElapsedTime();
+    if (Math.random() > 0.96) triggerLightning();
+
+    const verts = ocean.geometry.attributes.position.array;
+    for (let i = 0; i < verts.length; i += 3) {
+        const x = verts[i], y = verts[i+1];
+        const d = Math.sqrt(x*x + y*y);
+        verts[i+2] = Math.sin(d * 0.015 - time * 5.5) * 35 + Math.cos(x * 0.09 + time * 4.5) * 17.5;
+    }
+    ocean.geometry.attributes.position.needsUpdate = true;
+    hurricaneGroup.rotation.y += 0.018;
+
+    const rArray = rain.geometry.attributes.position.array;
+    for (let i = 0; i < rArray.length; i += 3) {
+        rArray[i+1] -= 18;
+        if (rArray[i+1] < 0) rArray[i+1] = 1500;
+    }
+    rain.geometry.attributes.position.needsUpdate = true;
+
+    camera.position.x = (Math.sin(time * 0.08) * 600) + (Math.random() - 0.5) * shakeIntensity;
+    camera.position.z = (Math.cos(time * 0.08) * 600) + (Math.random() - 0.5) * shakeIntensity;
+    camera.lookAt(0, 80, 0);
+
+    if (shakeIntensity > 0) shakeIntensity *= 0.88;
+    if (lightningFlash > 0) {
+        scene.fog.color.setScalar(lightningFlash * 0.4);
+        lightningFlash *= 0.93;
+    }
+    renderer.render(scene, camera);
+}
+
+window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+// INITIALIZE
+initHurricane();
+fetchStore();
 </script>
 </body>
 </html>
