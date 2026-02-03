@@ -1,16 +1,22 @@
-name: Artemis 6-Hour Sync
+Name: Artemis Hourly Sync
 on:
   schedule:
-    - cron: '0 */6 * * *'
-  workflow_dispatch: # Allows you to keep the manual "Run" button
+    # Runs at the top of every hour
+    - cron: '0 * * * *'
+  workflow_dispatch: 
   push:
     branches:
       - main
     paths:
-      - 'artemis-1.js' # The sync will trigger the moment you save this file
+      - 'artemis-1.js'
 
 permissions:
   contents: write
+
+# Prevents multiple runs from overlapping if one hangs
+concurrency:
+  group: artemis-sync
+  cancel-in-progress: false 
 
 jobs:
   sync:
@@ -35,5 +41,5 @@ jobs:
           git config --global user.name "Artemis-Bot"
           git config --global user.email "bot@axiom.com"
           git add api/archive-map.json
-          git commit -m "Auto-Sync: 253 Hoodies Archived [Vercel Path]" || echo "No changes to commit"
+          git commit -m "Auto-Sync: Hourly Archive Update" || echo "No changes to commit"
           git push
