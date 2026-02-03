@@ -1,4 +1,5 @@
-Name: Artemis Hourly Sync
+name: Artemis Hourly Sync
+
 on:
   schedule:
     # Runs at the top of every hour
@@ -13,7 +14,7 @@ on:
 permissions:
   contents: write
 
-# Prevents multiple runs from overlapping if one hangs
+# Prevents multiple runs from overlapping
 concurrency:
   group: artemis-sync
   cancel-in-progress: false 
@@ -22,24 +23,37 @@ jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout Repository
+        uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          # Fetch all history so rebase works correctly
+          fetch-depth: 0
 
       - name: Setup Node.js 20
         uses: actions/setup-node@v4
         with:
           node-version: '20'
 
-      - name: Run Artemis 1
+      - name: Install Dependencies
+        run: npm install node-fetch@2
+
+      - name: Run Artemis 1 (Harvest)
         env:
           PRINTFUL_API_KEY: ${{ secrets.PRINTFUL_API_KEY }}
         run: node artemis-1.js
 
-      - name: Push Manifest
+      - name: Push Manifest to Archive
         run: |
           git config --global user.name "Artemis-Bot"
           git config --global user.email "bot@axiom.com"
+          
+          # Pull latest changes and put our data on top to avoid "non-fast-forward" errors
+          git pull origin main --rebase
+          
           git add api/archive-map.json
-          git commit -m "Auto-Sync: Hourly Archive Update" || echo "No changes to commit"
-          git push
+          
+          # [skip ci] prevents Vercel from rebuilding every hour, saving your deployment limits
+          git commit -m "Auto-Sync: Hourly Archive Update [skip ci]" || echo "No changes to commit"
+          
+          git push origin main
