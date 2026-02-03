@@ -1,7 +1,24 @@
 {
   "status": "ONLINE",
-  "totalItems": 253,
+  "lastSync": "2026-02-03T03:20:12.042Z",
+  "totalItems": 255,
   "products": [
+    {
+      "id": 417305560,
+      "name": "Unisex Hoodie - McDavid",
+      "images": [
+        "https://files.cdn.printful.com/files/d89/d89b113049ca4855b0de029cb1b7753d_preview.png"
+      ],
+      "price": 95
+    },
+    {
+      "id": 414784106,
+      "name": "Unisex Hoodie - Prompt: Artemis",
+      "images": [
+        "https://files.cdn.printful.com/files/814/814f119ecb902b64e9c34f34785d3c8d_preview.png"
+      ],
+      "price": 95
+    },
     {
       "id": 414257239,
       "name": "Unisex Hoodie - Prompt: Ocean Eyes; Jelly Fish! AKA Immortality Caused By No Brains lol",
