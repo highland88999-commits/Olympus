@@ -1,13 +1,205 @@
 {
   "status": "ONLINE",
-  "lastSync": "2026-02-03T20:31:43.052Z",
-  "totalItems": 269,
+  "lastSync": "2026-02-03T21:17:43.652Z",
+  "totalItems": 293,
   "products": [
+    {
+      "id": 417451932,
+      "name": "Unisex Hoodie - Balance the Scales",
+      "images": [
+        "https://files.cdn.printful.com/files/83e/83e09e812493f1647a7316d7d3395b76_preview.png"
+      ],
+      "price": 95
+    },
+    {
+      "id": 417451430,
+      "name": "Unisex Hoodie - Prompt: The Eye of Horus + Walk Like an Egyptian",
+      "images": [
+        "https://files.cdn.printful.com/files/9a4/9a48d67fcdcd24b071e429c4895448d6_preview.png"
+      ],
+      "price": 95
+    },
+    {
+      "id": 417451355,
+      "name": "Unisex Hoodie - Earthquakes & Waterfalls",
+      "images": [
+        "https://files.cdn.printful.com/files/4d3/4d38b1dca5569dc99d9c56bd93204aa1_preview.png"
+      ],
+      "price": 95
+    },
+    {
+      "id": 417451193,
+      "name": "Unisex Hoodie - Be The Magic You Wish To See",
+      "images": [
+        "https://files.cdn.printful.com/files/3a3/3a3e9bc3d803f32ad6c9a10aebccd142_preview.png"
+      ],
+      "price": 95
+    },
+    {
+      "id": 417450993,
+      "name": "Unisex Hoodie - Wanna Catch a Movie?",
+      "images": [
+        "https://files.cdn.printful.com/files/dba/dba5106d0e12691f7a8a5af40f873d94_preview.png"
+      ],
+      "price": 95
+    },
+    {
+      "id": 417450835,
+      "name": "Unisex Hoodie - Heavens Abortion (Band Art)",
+      "images": [
+        "https://files.cdn.printful.com/files/01d/01d4720983ab57f5e22e73b85b2f7520_preview.png"
+      ],
+      "price": 95
+    },
+    {
+      "id": 417450691,
+      "name": "Unisex Hoodie - Prompt: Pulsing Veins",
+      "images": [
+        "https://files.cdn.printful.com/files/db9/db9a44e1f93a112f9d869f425dbe1cad_preview.png"
+      ],
+      "price": 95
+    },
+    {
+      "id": 417450511,
+      "name": "Unisex Hoodie - Black Panthers",
+      "images": [
+        "https://files.cdn.printful.com/files/052/0525c0e59ed733c5a93134099de7ff6f_preview.png"
+      ],
+      "price": 95
+    },
+    {
+      "id": 417450401,
+      "name": "Unisex Hoodie - Cheetahs",
+      "images": [
+        "https://files.cdn.printful.com/files/8da/8da68cc15628a37c14e95f320c399846_preview.png"
+      ],
+      "price": 95
+    },
+    {
+      "id": 417450230,
+      "name": "Unisex Hoodie - Treason at High Sea",
+      "images": [
+        "https://files.cdn.printful.com/files/635/635d80dc7c2a5e49809c85a1831f0189_preview.png"
+      ],
+      "price": 95
+    },
+    {
+      "id": 417450049,
+      "name": "Unisex Hoodie - Walk Like an Egyptian",
+      "images": [
+        "https://files.cdn.printful.com/files/7b6/7b6f0b33e300c3e5c1bb89e9e0c6f45c_preview.png"
+      ],
+      "price": 95
+    },
+    {
+      "id": 417449818,
+      "name": "Unisex Hoodie - House Hippo",
+      "images": [
+        "https://files.cdn.printful.com/files/5e5/5e5bf2a21935089a905694603437c08e_preview.png"
+      ],
+      "price": 95
+    },
+    {
+      "id": 417449706,
+      "name": "Unisex Hoodie - Amazonian Sprite",
+      "images": [
+        "https://files.cdn.printful.com/files/90a/90ae3f8d3ea10ebbe592aa8c5dc20247_preview.png"
+      ],
+      "price": 95
+    },
+    {
+      "id": 417449621,
+      "name": "Unisex Hoodie - Don't Fear The Reaper",
+      "images": [
+        "https://files.cdn.printful.com/files/450/4504e0921be9cd50e770f40b940f2a18_preview.png"
+      ],
+      "price": 95
+    },
+    {
+      "id": 417449507,
+      "name": "Unisex Hoodie - Prompt: Crocodile",
+      "images": [
+        "https://files.cdn.printful.com/files/896/89613030740c3617aae132314f98da15_preview.png"
+      ],
+      "price": 95
+    },
+    {
+      "id": 417449404,
+      "name": "Unisex Hoodie - Army of The Dead",
+      "images": [
+        "https://files.cdn.printful.com/files/6e2/6e2ffc3fa45b914fe7a1657c586f6bba_preview.png"
+      ],
+      "price": 95
+    },
+    {
+      "id": 417449311,
+      "name": "Unisex Hoodie - Prompt: The Eye of Horus + Walk Like an Egyptian",
+      "images": [
+        "https://files.cdn.printful.com/files/2c5/2c53a00404ee8555d2a0b572163c9cc7_preview.png"
+      ],
+      "price": 95
+    },
+    {
+      "id": 417449229,
+      "name": "Unisex Hoodie - Prompt: Walk Like an Egyptian + The Sphynx",
+      "images": [
+        "https://files.cdn.printful.com/files/8b2/8b2cbff57c821430ba6c20610b888ecb_preview.png"
+      ],
+      "price": 95
+    },
+    {
+      "id": 417449070,
+      "name": "Unisex Hoodie - Lower Class Society, Stop Judging",
+      "images": [
+        "https://files.cdn.printful.com/files/ab4/ab4e5769a4158018b4e18a5c41e3a713_preview.png"
+      ],
+      "price": 95
+    },
+    {
+      "id": 417448981,
+      "name": "Unisex Hoodie - Horus; The Eyes See All",
+      "images": [
+        "https://files.cdn.printful.com/files/41e/41e2bf1a4ce9b791c245a86039352e8b_preview.png"
+      ],
+      "price": 95
+    },
+    {
+      "id": 417448786,
+      "name": "Unisex Hoodie - Family of Baboons",
+      "images": [
+        "https://files.cdn.printful.com/files/4ea/4ea602f39968138f73947b88dc5d9033_preview.png"
+      ],
+      "price": 95
+    },
+    {
+      "id": 417448680,
+      "name": "Unisex Hoodie - Higher Class Society, Stop Judging",
+      "images": [
+        "https://files.cdn.printful.com/files/c78/c78bdd012ad759b288342fe021ebea82_preview.png"
+      ],
+      "price": 95
+    },
+    {
+      "id": 417448500,
+      "name": "Unisex Hoodie - Prompt: Hit & Sunk, You Sunk My Battleship",
+      "images": [
+        "https://files.cdn.printful.com/files/fd2/fd20653155931d93fac4c43c14afa04e_preview.png"
+      ],
+      "price": 95
+    },
+    {
+      "id": 417448396,
+      "name": "Unisex Hoodie - Prompt: The Lion Rests His Case",
+      "images": [
+        "https://files.cdn.printful.com/files/be8/be8496dcbb7e0d1e550165e54c529204_preview.png"
+      ],
+      "price": 95
+    },
     {
       "id": 417448327,
       "name": "Unisex Hoodie - Prompt: More Cheetahs",
       "images": [
-        null
+        "https://files.cdn.printful.com/files/d93/d932d411359fb3a6a007852ead82a83a_preview.png"
       ],
       "price": 95
     },
