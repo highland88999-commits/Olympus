@@ -24,16 +24,26 @@
         }
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
 
-        /* Store UI - Hidden initially */
-        header, #store-grid, .pagination-container, #design-toggle { display: none; opacity: 0; transition: opacity 1s ease; }
-
-        header { position: relative; z-index: 100; height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; background: rgba(0,0,0,0.85); border-bottom: 1px solid var(--bio-high); }
+        /* Store Layout - Visual Stopper Implementation */
+        header { position: relative; z-index: 100; height: 60px; display: none; opacity: 0; align-items: center; justify-content: space-between; padding: 0 20px; background: rgba(0,0,0,0.85); border-bottom: 1px solid var(--bio-high); }
         h1 { letter-spacing: 5px; color: var(--bio-high); text-shadow: 0 0 15px var(--bio-high); font-size: 0.9rem; }
 
         #store-grid { 
-            position: relative; z-index: 5; display: grid; grid-template-columns: repeat(2, 1fr); 
-            gap: 15px; width: 95%; margin: 15px auto; height: calc(100vh - 180px); 
-            overflow-y: auto; scrollbar-width: none; padding-bottom: 50px;
+            position: relative; z-index: 5; display: none; opacity: 0;
+            grid-template-columns: repeat(2, 1fr); gap: 15px; 
+            width: 95%; margin: 15px auto 0 auto; 
+            /* Height set to stop before the 2mm gap and control bar */
+            height: calc(100vh - 185px); 
+            overflow-y: auto; scrollbar-width: none;
+        }
+
+        /* The 2mm Visual Stopper Gap (Red Circle Area) */
+        .visual-stopper {
+            height: 2mm;
+            width: 100%;
+            background: transparent;
+            position: relative;
+            z-index: 6;
         }
 
         .card { 
@@ -45,27 +55,39 @@
         .card img { width: 85%; height: 85%; object-fit: contain; mix-blend-mode: screen; filter: drop-shadow(0 0 8px var(--bio-high)); }
         .grid-label { position: absolute; bottom: 0; width: 100%; background: rgba(0,26,51,0.9); font-size: 0.55rem; text-align: center; padding: 6px 0; color: var(--bio-high); border-top: 1px solid var(--bio-high); }
 
+        /* Control Footer (Yellow Circle Area) */
+        .control-footer {
+            position: fixed; bottom: 0; width: 100%; height: 100px;
+            background: rgba(0,0,0,0.9); z-index: 150; 
+            display: none; opacity: 0; flex-direction: column; align-items: center; justify-content: center;
+            border-top: 1px solid rgba(0, 242, 255, 0.3);
+            transition: opacity 1s ease;
+        }
+
+        #design-toggle { 
+            position: absolute; left: 20px; bottom: 30px;
+            padding: 10px 18px; background: rgba(0, 242, 255, 0.1); border: 1px solid var(--bio-high); 
+            border-radius: 5px; color: var(--bio-high); cursor: pointer; display: flex; align-items: center; 
+            gap: 8px; font-size: 0.7rem; text-transform: uppercase;
+        }
+
+        .sector-slider { width: 60%; accent-color: var(--bio-high); margin-left: 80px; }
+        #sector-display { font-size: 0.7rem; color: var(--bio-high); margin-bottom: 5px; letter-spacing: 2px; margin-left: 80px; }
+
+        /* Modals & Cart */
         #modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1000; display: none; background: rgba(0,0,0,0.95); backdrop-filter: blur(12px); align-items: center; justify-content: center; }
         .modal-content { width: 90%; max-width: 420px; background: #000; border: 2px solid var(--bio-high); position: relative; padding-bottom: 20px; box-shadow: 0 0 40px var(--bio-low); }
         .close-modal { position: absolute; top: 10px; right: 15px; font-size: 1.8rem; color: var(--bio-high); cursor: pointer; z-index: 100; }
-        
         .size-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; margin: 15px 20px; }
         .size-btn { border: 1px solid var(--bio-high); background: #000; color: #fff; padding: 12px 0; cursor: pointer; font-size: 0.65rem; }
         .size-btn.selected { background: var(--bio-high); color: #000; font-weight: bold; }
-
-        .pagination-container { position: fixed; bottom: 0; width: 100%; height: 80px; background: rgba(0,0,0,0.9); z-index: 150; display: flex; flex-direction: column; align-items: center; justify-content: center; border-top: 1px solid var(--bio-high); }
-        .sector-slider { width: 80%; accent-color: var(--bio-high); }
-        #sector-display { font-size: 0.7rem; color: var(--bio-high); margin-bottom: 5px; letter-spacing: 2px; }
 
         #side-cart { position: fixed; top: 0; right: -100%; width: 85%; max-width: 350px; height: 100%; background: #000; border-left: 1px solid var(--bio-high); z-index: 2000; transition: 0.4s; }
         #side-cart.open { right: 0; }
         .pay-link { display: block; width: 90%; margin: 10px auto; padding: 15px 0; text-align: center; font-size: 0.8rem; text-decoration: none; font-weight: bold; }
 
-        /* Holoframe */
-        #holoframe-container { position: fixed; bottom: 90px; left: 20px; width: 320px; height: 500px; z-index: 9999; display: none; opacity: 0; transform: translateY(20px); transition: all 0.4s; }
+        #holoframe-container { position: fixed; bottom: 110px; left: 20px; width: 320px; height: 500px; z-index: 9999; display: none; opacity: 0; transform: translateY(20px); transition: all 0.4s; }
         .glass-frame { width: 100%; height: 100%; background: var(--cyan-bloom); backdrop-filter: blur(15px); border: 1px solid var(--cyan-border); border-radius: 15px; box-shadow: var(--cyan-glow); overflow: hidden; display: flex; flex-direction: column; }
-        #design-toggle { position: fixed; bottom: 20px; left: 20px; padding: 10px 18px; background: rgba(0, 242, 255, 0.1); border: 1px solid var(--bio-high); border-radius: 5px; color: var(--bio-high); cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 0.7rem; text-transform: uppercase; z-index: 10000; }
-        .icon-circle { width: 8px; height: 8px; background: var(--bio-high); border-radius: 50%; box-shadow: 0 0 8px var(--bio-high); }
     </style>
 </head>
 <body ondblclick="closeModal(); toggleCart(false)">
@@ -83,10 +105,17 @@
 
 <div id="store-grid"></div>
 
-<button id="design-toggle" onclick="toggleHoloframe()">
-    <div class="icon-circle"></div>
-    <span>Custom Design</span>
-</button>
+<div class="visual-stopper" id="stopper"></div>
+
+<div class="control-footer" id="footer-controls">
+    <button id="design-toggle" onclick="toggleHoloframe()">
+        <div class="icon-circle"></div>
+        <span>Custom Design</span>
+    </button>
+
+    <div id="sector-display">SYNCING...</div>
+    <input type="range" id="sector-slider" class="sector-slider" min="1" max="1" value="1">
+</div>
 
 <div id="holoframe-container">
     <div class="glass-frame">
@@ -125,27 +154,19 @@
     </div>
 </div>
 
-<div class="pagination-container" id="pagination">
-    <div id="sector-display">SYNCING...</div>
-    <input type="range" id="sector-slider" class="sector-slider" min="1" max="1" value="1">
-</div>
-
 <script>
 let allProducts = [], cart = [], itemsPerPage = 24, selectedSize = null, activeProduct = null;
 
 function enterSystem() {
     const overlay = document.getElementById('landing-overlay');
-    const prompt = document.getElementById('landing-prompt');
-    prompt.innerText = "SYNCING MANIFEST...";
-    
+    document.getElementById('landing-prompt').innerText = "SYNCING MANIFEST...";
     overlay.style.opacity = '0';
     setTimeout(() => {
         overlay.style.display = 'none';
-        // Show all UI elements
-        const elements = ['main-header', 'store-grid', 'pagination', 'design-toggle'];
+        const elements = ['main-header', 'store-grid', 'footer-controls'];
         elements.forEach(id => {
             const el = document.getElementById(id);
-            el.style.display = (id === 'store-grid') ? 'grid' : (id === 'main-header' || id === 'pagination') ? 'flex' : 'block';
+            el.style.display = (id === 'store-grid') ? 'grid' : 'flex';
             setTimeout(() => el.style.opacity = '1', 50);
         });
         fetchStore();
