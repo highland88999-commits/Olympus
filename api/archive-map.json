@@ -1,13 +1,61 @@
 {
   "status": "ONLINE",
-  "lastSync": "2026-02-03T22:26:01.738Z",
-  "totalItems": 341,
+  "lastSync": "2026-02-03T22:38:57.056Z",
+  "totalItems": 347,
   "products": [
+    {
+      "id": 417466509,
+      "name": "Sparks Fly ????",
+      "images": [
+        "https://files.cdn.printful.com/files/488/488ae67295336f77b8b8f4316afde151_preview.png"
+      ],
+      "price": 95
+    },
+    {
+      "id": 417465806,
+      "name": "The Power of the Universe in the Palm of your Hand ????????????",
+      "images": [
+        "https://files.cdn.printful.com/files/081/0816018f4a9e7311cfc4fe1735664151_preview.png"
+      ],
+      "price": 95
+    },
+    {
+      "id": 417465552,
+      "name": "Break The Chains",
+      "images": [
+        "https://files.cdn.printful.com/files/dce/dce7d1cb84bcc875bce00e261d8b1f82_preview.png"
+      ],
+      "price": 95
+    },
+    {
+      "id": 417464860,
+      "name": "Hi ????",
+      "images": [
+        "https://files.cdn.printful.com/files/0d0/0d095987ef9a94357bd41351a7de030a_preview.png"
+      ],
+      "price": 95
+    },
+    {
+      "id": 417464132,
+      "name": "Galaga x Arcade - Loving You is a Losing Game",
+      "images": [
+        "https://files.cdn.printful.com/files/9ae/9ae251b41233c1f5e7c474a57341c857_preview.png"
+      ],
+      "price": 95
+    },
+    {
+      "id": 417463430,
+      "name": "Portals Worldwide ????????",
+      "images": [
+        "https://files.cdn.printful.com/files/e5d/e5d19d8f02625544faffbba66b11b419_preview.png"
+      ],
+      "price": 95
+    },
     {
       "id": 417463025,
       "name": "Pac-Man ????",
       "images": [
-        null
+        "https://files.cdn.printful.com/files/844/84437205409aa99d80eab7c9e06cc754_preview.png"
       ],
       "price": 95
     },
