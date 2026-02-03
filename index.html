@@ -6,57 +6,47 @@
     <title>OLYMPIAN | AXIOM 24</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <style>
-        :root { --fire: #ff4500; --spark: #ffae00; --bio-low: #001a33; --bio-high: #00f2ff; }
+        :root { --fire: #ff4500; --spark: #ffae00; --bio-low: #001a33; --bio-high: #00f2ff; --cyan-bloom: rgba(0, 255, 255, 0.15); --cyan-border: rgba(0, 255, 255, 0.4); --cyan-glow: 0 0 20px rgba(0, 255, 255, 0.3); }
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: #000; font-family: 'Courier New', monospace; color: white; overflow: hidden; }
         
         canvas#hurricaneCanvas { position: fixed; top: 0; left: 0; z-index: 0; pointer-events: none; }
         
+        /* Landing Overlay */
+        #landing-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: radial-gradient(circle, rgba(0,26,51,0.5) 0%, #000 100%);
+            z-index: 5000; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            cursor: pointer; transition: opacity 1s ease;
+        }
+        #landing-prompt {
+            color: var(--bio-high); font-size: 1.2rem; letter-spacing: 8px;
+            text-shadow: 0 0 20px var(--bio-high); animation: pulse 2s infinite;
+        }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+        /* Store UI - Hidden initially */
+        header, #store-grid, .pagination-container, #design-toggle { display: none; opacity: 0; transition: opacity 1s ease; }
+
         header { position: relative; z-index: 100; height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; background: rgba(0,0,0,0.85); border-bottom: 1px solid var(--bio-high); }
         h1 { letter-spacing: 5px; color: var(--bio-high); text-shadow: 0 0 15px var(--bio-high); font-size: 0.9rem; }
 
         #store-grid { 
-            position: relative; z-index: 5; 
-            display: grid; 
-            grid-template-columns: repeat(2, 1fr); 
-            gap: 15px; 
-            width: 95%; 
-            margin: 15px auto; 
-            height: calc(100vh - 180px); 
-            overflow-y: auto; 
-            scrollbar-width: none;
-            padding-bottom: 50px;
+            position: relative; z-index: 5; display: grid; grid-template-columns: repeat(2, 1fr); 
+            gap: 15px; width: 95%; margin: 15px auto; height: calc(100vh - 180px); 
+            overflow-y: auto; scrollbar-width: none; padding-bottom: 50px;
         }
 
         .card { 
-            position: relative; 
-            background: rgba(0, 242, 255, 0.03); 
-            border: 1px solid rgba(0, 242, 255, 0.2);
-            aspect-ratio: 0.8 / 1; 
-            cursor: pointer; 
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: inset 0 0 15px var(--bio-low);
-            transition: 0.3s;
-            backdrop-filter: blur(2px);
+            position: relative; background: rgba(0, 242, 255, 0.03); border: 1px solid rgba(0, 242, 255, 0.2);
+            aspect-ratio: 0.8 / 1; cursor: pointer; display: flex; align-items: center; justify-content: center;
+            box-shadow: inset 0 0 15px var(--bio-low); transition: 0.3s; backdrop-filter: blur(2px);
         }
         .card:hover { border-color: var(--bio-high); box-shadow: 0 0 20px var(--bio-high); }
-
-        .card img { 
-            width: 85%; height: 85%; object-fit: contain; 
-            mix-blend-mode: screen; 
-            filter: drop-shadow(0 0 8px var(--bio-high)); 
-        }
-
+        .card img { width: 85%; height: 85%; object-fit: contain; mix-blend-mode: screen; filter: drop-shadow(0 0 8px var(--bio-high)); }
         .grid-label { position: absolute; bottom: 0; width: 100%; background: rgba(0,26,51,0.9); font-size: 0.55rem; text-align: center; padding: 6px 0; color: var(--bio-high); border-top: 1px solid var(--bio-high); }
 
         #modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1000; display: none; background: rgba(0,0,0,0.95); backdrop-filter: blur(12px); align-items: center; justify-content: center; }
-        .modal-content { 
-            width: 90%; max-width: 420px; background: #000; 
-            border: 2px solid var(--bio-high); 
-            position: relative; padding-bottom: 20px; 
-            box-shadow: 0 0 40px var(--bio-low);
-        }
+        .modal-content { width: 90%; max-width: 420px; background: #000; border: 2px solid var(--bio-high); position: relative; padding-bottom: 20px; box-shadow: 0 0 40px var(--bio-low); }
         .close-modal { position: absolute; top: 10px; right: 15px; font-size: 1.8rem; color: var(--bio-high); cursor: pointer; z-index: 100; }
         
         .size-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; margin: 15px 20px; }
@@ -70,18 +60,39 @@
         #side-cart { position: fixed; top: 0; right: -100%; width: 85%; max-width: 350px; height: 100%; background: #000; border-left: 1px solid var(--bio-high); z-index: 2000; transition: 0.4s; }
         #side-cart.open { right: 0; }
         .pay-link { display: block; width: 90%; margin: 10px auto; padding: 15px 0; text-align: center; font-size: 0.8rem; text-decoration: none; font-weight: bold; }
+
+        /* Holoframe */
+        #holoframe-container { position: fixed; bottom: 90px; left: 20px; width: 320px; height: 500px; z-index: 9999; display: none; opacity: 0; transform: translateY(20px); transition: all 0.4s; }
+        .glass-frame { width: 100%; height: 100%; background: var(--cyan-bloom); backdrop-filter: blur(15px); border: 1px solid var(--cyan-border); border-radius: 15px; box-shadow: var(--cyan-glow); overflow: hidden; display: flex; flex-direction: column; }
+        #design-toggle { position: fixed; bottom: 20px; left: 20px; padding: 10px 18px; background: rgba(0, 242, 255, 0.1); border: 1px solid var(--bio-high); border-radius: 5px; color: var(--bio-high); cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 0.7rem; text-transform: uppercase; z-index: 10000; }
+        .icon-circle { width: 8px; height: 8px; background: var(--bio-high); border-radius: 50%; box-shadow: 0 0 8px var(--bio-high); }
     </style>
 </head>
 <body ondblclick="closeModal(); toggleCart(false)">
 
+<div id="landing-overlay" onclick="enterSystem()">
+    <div id="landing-prompt">SYSTEM READY // CLICK TO SYNC</div>
+</div>
+
 <canvas id="hurricaneCanvas"></canvas>
 
-<header>
+<header id="main-header">
     <h1>OLYMPIAN</h1>
     <div id="cart-trigger" onclick="toggleCart(true)" style="color:var(--bio-high); border:1px solid var(--bio-high); padding:8px 15px; font-size:0.8rem; cursor:pointer;">MANIFEST (0)</div>
 </header>
 
 <div id="store-grid"></div>
+
+<button id="design-toggle" onclick="toggleHoloframe()">
+    <div class="icon-circle"></div>
+    <span>Custom Design</span>
+</button>
+
+<div id="holoframe-container">
+    <div class="glass-frame">
+        <iframe src="https://georgia-aquarium.vercel.app/" style="width:100%; height:100%; border:none;"></iframe>
+    </div>
+</div>
 
 <div id="modal-overlay" onclick="closeModal()">
     <div class="modal-content" onclick="event.stopPropagation()">
@@ -114,7 +125,7 @@
     </div>
 </div>
 
-<div class="pagination-container">
+<div class="pagination-container" id="pagination">
     <div id="sector-display">SYNCING...</div>
     <input type="range" id="sector-slider" class="sector-slider" min="1" max="1" value="1">
 </div>
@@ -122,7 +133,37 @@
 <script>
 let allProducts = [], cart = [], itemsPerPage = 24, selectedSize = null, activeProduct = null;
 
-// FIXED: Updated fetch path to include .js for Vercel routing
+function enterSystem() {
+    const overlay = document.getElementById('landing-overlay');
+    const prompt = document.getElementById('landing-prompt');
+    prompt.innerText = "SYNCING MANIFEST...";
+    
+    overlay.style.opacity = '0';
+    setTimeout(() => {
+        overlay.style.display = 'none';
+        // Show all UI elements
+        const elements = ['main-header', 'store-grid', 'pagination', 'design-toggle'];
+        elements.forEach(id => {
+            const el = document.getElementById(id);
+            el.style.display = (id === 'store-grid') ? 'grid' : (id === 'main-header' || id === 'pagination') ? 'flex' : 'block';
+            setTimeout(() => el.style.opacity = '1', 50);
+        });
+        fetchStore();
+    }, 1000);
+}
+
+function toggleHoloframe() {
+    const frame = document.getElementById('holoframe-container');
+    if (frame.style.display === 'block') {
+        frame.style.opacity = '0';
+        frame.style.transform = 'translateY(20px)';
+        setTimeout(() => { frame.style.display = 'none'; }, 400);
+    } else {
+        frame.style.display = 'block';
+        setTimeout(() => { frame.style.opacity = '1'; frame.style.transform = 'translateY(0)'; }, 10);
+    }
+}
+
 async function fetchStore() {
     try {
         const res = await fetch('/api/artemis-2.js');
@@ -186,24 +227,19 @@ let shakeIntensity = 0, lightningFlash = 0;
 function initHurricane() {
     scene = new THREE.Scene();
     scene.fog = new THREE.FogExp2(0x000606, 0.004);
-
     camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 3500);
     camera.position.set(0, 150, 450);
-
     const canvas = document.getElementById('hurricaneCanvas');
     renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setClearColor(0x000000);
-
     hurricaneGroup = new THREE.Group();
     scene.add(hurricaneGroup);
-
     const oceanGeo = new THREE.PlaneGeometry(3500, 3500, 100, 100);
     const oceanMat = new THREE.MeshStandardMaterial({ color: 0x001111, metalness: 0.98, roughness: 0.02, flatShading: true });
     ocean = new THREE.Mesh(oceanGeo, oceanMat);
     ocean.rotation.x = -Math.PI / 2;
     scene.add(ocean);
-
     const cloudGeo = new THREE.IcosahedronGeometry(22, 1);
     for (let i = 0; i < 250; i++) {
         const cloudMat = new THREE.MeshLambertMaterial({ color: 0x020202, transparent: true, opacity: 0.5 });
@@ -215,7 +251,6 @@ function initHurricane() {
         hurricaneGroup.add(cloud);
         clouds.push(cloud);
     }
-
     const rainGeo = new THREE.BufferGeometry();
     const rainPos = [];
     for (let i = 0; i < 35000; i++) {
@@ -224,7 +259,6 @@ function initHurricane() {
     rainGeo.setAttribute('position', new THREE.Float32BufferAttribute(rainPos, 3));
     rain = new THREE.Points(rainGeo, new THREE.PointsMaterial({ color: 0x00ffaa, size: 0.28, transparent: true, opacity: 0.45 }));
     scene.add(rain);
-
     scene.add(new THREE.AmbientLight(0x001a1a, 0.45));
     animate();
 }
@@ -252,7 +286,6 @@ function animate() {
     requestAnimationFrame(animate);
     const time = clock.getElapsedTime();
     if (Math.random() > 0.96) triggerLightning();
-
     const verts = ocean.geometry.attributes.position.array;
     for (let i = 0; i < verts.length; i += 3) {
         const x = verts[i], y = verts[i+1];
@@ -261,18 +294,15 @@ function animate() {
     }
     ocean.geometry.attributes.position.needsUpdate = true;
     hurricaneGroup.rotation.y += 0.018;
-
     const rArray = rain.geometry.attributes.position.array;
     for (let i = 0; i < rArray.length; i += 3) {
         rArray[i+1] -= 18;
         if (rArray[i+1] < 0) rArray[i+1] = 1500;
     }
     rain.geometry.attributes.position.needsUpdate = true;
-
     camera.position.x = (Math.sin(time * 0.08) * 600) + (Math.random() - 0.5) * shakeIntensity;
     camera.position.z = (Math.cos(time * 0.08) * 600) + (Math.random() - 0.5) * shakeIntensity;
     camera.lookAt(0, 80, 0);
-
     if (shakeIntensity > 0) shakeIntensity *= 0.88;
     if (lightningFlash > 0) {
         scene.fog.color.setScalar(lightningFlash * 0.4);
@@ -288,7 +318,6 @@ window.addEventListener('resize', () => {
 });
 
 initHurricane();
-fetchStore();
 </script>
 </body>
 </html>
