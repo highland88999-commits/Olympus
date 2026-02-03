@@ -1,8 +1,16 @@
 {
   "status": "ONLINE",
-  "lastSync": "2026-02-03T03:20:12.042Z",
-  "totalItems": 255,
+  "lastSync": "2026-02-03T04:43:48.512Z",
+  "totalItems": 256,
   "products": [
+    {
+      "id": 417365704,
+      "name": "Unisex Hoodie - Prompt: Olympus",
+      "images": [
+        "https://files.cdn.printful.com/files/5c0/5c065b1e30ec5a526f5b17d5aae54410_preview.png"
+      ],
+      "price": 95
+    },
     {
       "id": 417305560,
       "name": "Unisex Hoodie - McDavid",
