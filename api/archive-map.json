@@ -1,8 +1,88 @@
 {
   "status": "ONLINE",
-  "lastSync": "2026-02-03T21:17:43.652Z",
-  "totalItems": 293,
+  "lastSync": "2026-02-03T21:30:16.638Z",
+  "totalItems": 303,
   "products": [
+    {
+      "id": 417455151,
+      "name": "Unisex Hoodie - Chicken Butt",
+      "images": [
+        null
+      ],
+      "price": 95
+    },
+    {
+      "id": 417454995,
+      "name": "Unisex Hoodie - Venom In My Veins",
+      "images": [
+        "https://files.cdn.printful.com/files/d29/d29b8d336f5e6ec8275ff4edca7bcdb2_preview.png"
+      ],
+      "price": 95
+    },
+    {
+      "id": 417454926,
+      "name": "Unisex Hoodie - Free falling, Parachute",
+      "images": [
+        "https://files.cdn.printful.com/files/a84/a84400b6a0bfde854e55f22b9e36daca_preview.png"
+      ],
+      "price": 95
+    },
+    {
+      "id": 417454815,
+      "name": "Unisex Hoodie - Urban Indian (Rapper Art)",
+      "images": [
+        "https://files.cdn.printful.com/files/394/394977158a48021a9ea5d270f38961df_preview.png"
+      ],
+      "price": 95
+    },
+    {
+      "id": 417454685,
+      "name": "Unisex Hoodie - Blow Your Cool Just Like a Volcano",
+      "images": [
+        "https://files.cdn.printful.com/files/bad/bad21574fc9109714033bcb2a4a3368e_preview.png"
+      ],
+      "price": 95
+    },
+    {
+      "id": 417454563,
+      "name": "Unisex Hoodie - Dawn",
+      "images": [
+        "https://files.cdn.printful.com/files/50b/50b8035073b012e6740d938ac93d60cf_preview.png"
+      ],
+      "price": 95
+    },
+    {
+      "id": 417454389,
+      "name": "Unisex Hoodie - Walk Like an Egyptian",
+      "images": [
+        "https://files.cdn.printful.com/files/ea8/ea89d0c37b90853b8180f4f5e62b8d12_preview.png"
+      ],
+      "price": 95
+    },
+    {
+      "id": 417454312,
+      "name": "Unisex Hoodie - The Eye of Horus + Walk Like an Egyptian",
+      "images": [
+        "https://files.cdn.printful.com/files/cf5/cf5bf5d723440695974ddf18e9bc7ae3_preview.png"
+      ],
+      "price": 95
+    },
+    {
+      "id": 417454234,
+      "name": "Unisex Hoodie - The Leaf of Life",
+      "images": [
+        "https://files.cdn.printful.com/files/975/9755d684e3409d4bdc72fa91e9b6b8c9_preview.png"
+      ],
+      "price": 95
+    },
+    {
+      "id": 417454158,
+      "name": "Unisex Hoodie - Veins in the Mountains",
+      "images": [
+        "https://files.cdn.printful.com/files/526/526b6b537741a444467e8942557b9e7c_preview.png"
+      ],
+      "price": 95
+    },
     {
       "id": 417451932,
       "name": "Unisex Hoodie - Balance the Scales",
