@@ -1,10 +1,11 @@
 const fs = require('fs');
 const path = require('path');
+// CRITICAL FIX: Added node-fetch for GitHub Actions compatibility
+const fetch = require('node-fetch');
 
 async function runHarvest() {
     const API_KEY = process.env.PRINTFUL_API_KEY;
     
-    // Safety check for the API key before starting
     if (!API_KEY) {
         console.error("❌ ERROR: PRINTFUL_API_KEY is missing from Environment Secrets.");
         process.exit(1);
@@ -20,7 +21,7 @@ async function runHarvest() {
     console.log("🚀 STARTING OLYMPUS HARVEST...");
 
     try {
-        for (let i = 0; i < 5; i++) { // Adjusted to 5 sectors (up to 500 items)
+        for (let i = 0; i < 5; i++) { 
             const offset = i * 100;
             console.log(`📡 Requesting Sector ${i} (Offset: ${offset})...`);
             
@@ -44,17 +45,16 @@ async function runHarvest() {
                     id: product.id,
                     name: product.name,
                     images: [product.thumbnail_url],
-                    price: 95 // Hardcoded as per your request
+                    price: 95 
                 });
             });
 
-            // Standard Rate Limit Protection (Printful allows 2 requests per second)
             await new Promise(r => setTimeout(r, 1200)); 
         }
 
         manifest.totalItems = manifest.products.length;
         
-        // Ensure directory exists using absolute paths
+        // Ensure directory exists
         const dirPath = path.resolve(process.cwd(), 'api');
         if (!fs.existsSync(dirPath)) {
             fs.mkdirSync(dirPath, { recursive: true });
@@ -67,7 +67,6 @@ async function runHarvest() {
 
     } catch (error) {
         console.error("❌ HARVEST CRASHED:", error.message);
-        // We exit with 1 so GitHub Actions knows the sync failed
         process.exit(1); 
     }
 }
