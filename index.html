@@ -11,27 +11,33 @@
         
         canvas#hurricaneCanvas { position: fixed; top: 0; left: 0; z-index: 0; pointer-events: none; }
         
-        header { position: relative; z-index: 100; height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; background: rgba(0,0,0,0.9); border-bottom: 1px solid var(--bio-high); }
+        /* LANDING OVERLAY */
+        #landing-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: radial-gradient(circle, rgba(0,26,51,0.5) 0%, #000 100%);
+            z-index: 5000; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            cursor: pointer; transition: opacity 1s ease;
+        }
+        #landing-prompt {
+            color: var(--bio-high); font-size: 1.2rem; letter-spacing: 8px;
+            text-shadow: 0 0 20px var(--bio-high); animation: pulse 2s infinite;
+        }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+        /* UI ELEMENTS (HIDDEN INITIALLY) */
+        header { position: relative; z-index: 100; height: 60px; display: none; opacity: 0; align-items: center; justify-content: space-between; padding: 0 20px; background: rgba(0,0,0,0.9); border-bottom: 1px solid var(--bio-high); transition: opacity 1s; }
         h1 { letter-spacing: 5px; color: var(--bio-high); text-shadow: 0 0 15px var(--bio-high); font-size: 0.9rem; }
 
-        /* FIXED GRID: Stops exactly above the footer/stopper zone */
         #store-grid { 
-            position: relative; z-index: 5; display: grid;
+            position: relative; z-index: 5; display: none; opacity: 0;
             grid-template-columns: repeat(2, 1fr); gap: 15px; 
             width: 95%; margin: 15px auto 0 auto; 
             height: calc(100vh - 185px); 
             overflow-y: auto; scrollbar-width: none;
-            padding-bottom: 10px;
+            padding-bottom: 10px; transition: opacity 1s;
         }
 
-        /* 2mm VISUAL STOPPER */
-        .visual-stopper {
-            height: 2mm;
-            width: 100%;
-            background: transparent;
-            position: relative;
-            z-index: 10;
-        }
+        .visual-stopper { height: 2mm; width: 100%; background: transparent; position: relative; z-index: 10; }
 
         .card { 
             position: relative; background: rgba(0, 242, 255, 0.03); border: 1px solid rgba(0, 242, 255, 0.2);
@@ -42,13 +48,12 @@
         .card img { width: 85%; height: 85%; object-fit: contain; mix-blend-mode: screen; filter: drop-shadow(0 0 8px var(--bio-high)); }
         .grid-label { position: absolute; bottom: 0; width: 100%; background: rgba(0,26,51,0.9); font-size: 0.55rem; text-align: center; padding: 6px 0; color: var(--bio-high); border-top: 1px solid var(--bio-high); }
 
-        /* SOLID BLACK FOOTER: Visual floor for the hoodies */
         .control-footer {
             position: fixed; bottom: 0; width: 100%; height: 100px;
             background: #000; z-index: 150; 
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            display: none; opacity: 0; flex-direction: column; align-items: center; justify-content: center;
             border-top: 1px solid var(--bio-high);
-            box-shadow: 0 -10px 30px rgba(0,0,0,0.9);
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.9); transition: opacity 1s;
         }
 
         #design-toggle { 
@@ -62,12 +67,11 @@
         .sector-slider { width: 100%; accent-color: var(--bio-high); }
         #sector-display { font-size: 0.7rem; color: var(--bio-high); margin-bottom: 5px; letter-spacing: 2px; }
 
-        /* HOLOFRAME MODAL */
+        /* MODALS & CART */
         #holoframe-container { position: fixed; top: 10%; left: 5%; width: 90%; height: 75%; z-index: 9999; display: none; opacity: 0; transform: scale(0.9); transition: all 0.4s ease; }
         .glass-frame { width: 100%; height: 100%; background: #000; border: 2px solid var(--bio-high); border-radius: 15px; box-shadow: 0 0 50px var(--bio-low); overflow: hidden; position: relative; }
         .close-holo { position: absolute; top: 15px; right: 20px; color: var(--bio-high); font-size: 2rem; cursor: pointer; z-index: 10001; }
 
-        /* CART & PRODUCT MODAL */
         #modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1000; display: none; background: rgba(0,0,0,0.95); backdrop-filter: blur(12px); align-items: center; justify-content: center; }
         .modal-content { width: 90%; max-width: 420px; background: #000; border: 2px solid var(--bio-high); position: relative; padding-bottom: 20px; }
         .close-modal { position: absolute; top: 10px; right: 15px; font-size: 1.8rem; color: var(--bio-high); cursor: pointer; z-index: 100; }
@@ -82,9 +86,13 @@
 </head>
 <body ondblclick="closeModal(); toggleCart(false)">
 
+<div id="landing-overlay" onclick="enterSystem()">
+    <div id="landing-prompt">SYSTEM READY // CLICK TO SYNC</div>
+</div>
+
 <canvas id="hurricaneCanvas"></canvas>
 
-<header>
+<header id="ui-header">
     <h1>OLYMPIAN</h1>
     <div id="cart-trigger" onclick="toggleCart(true)" style="color:var(--bio-high); border:1px solid var(--bio-high); padding:8px 15px; font-size:0.8rem; cursor:pointer;">MANIFEST (0)</div>
 </header>
@@ -93,7 +101,7 @@
 
 <div class="visual-stopper"></div>
 
-<div class="control-footer">
+<div class="control-footer" id="ui-footer">
     <button id="design-toggle" onclick="toggleHoloframe()">
         <span>Custom Design</span>
     </button>
@@ -144,6 +152,37 @@
 
 <script>
 let allProducts = [], cart = [], itemsPerPage = 24, selectedSize = null, activeProduct = null;
+
+// ENTER SYSTEM LOGIC
+function enterSystem() {
+    const overlay = document.getElementById('landing-overlay');
+    document.getElementById('landing-prompt').innerText = "SYNCING MANIFEST...";
+    overlay.style.opacity = '0';
+    
+    setTimeout(() => {
+        overlay.style.display = 'none';
+        
+        // Show Header
+        const header = document.getElementById('ui-header');
+        header.style.display = 'flex';
+        
+        // Show Grid
+        const grid = document.getElementById('store-grid');
+        grid.style.display = 'grid';
+        
+        // Show Footer
+        const footer = document.getElementById('ui-footer');
+        footer.style.display = 'flex';
+
+        setTimeout(() => {
+            header.style.opacity = '1';
+            grid.style.opacity = '1';
+            footer.style.opacity = '1';
+        }, 50);
+
+        fetchStore();
+    }, 1000);
+}
 
 // HOLOFRAME LOGIC
 function toggleHoloframe() {
@@ -319,8 +358,8 @@ window.addEventListener('resize', () => {
     renderer.setSize(window.innerWidth, window.innerHeight);
 });
 
+// START HURRICANE IMMEDIATELY (AS BACKGROUND)
 initHurricane();
-fetchStore();
 </script>
 </body>
 </html>
