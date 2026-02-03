@@ -1,8 +1,104 @@
 {
   "status": "ONLINE",
-  "lastSync": "2026-02-03T19:42:42.219Z",
-  "totalItems": 257,
+  "lastSync": "2026-02-03T20:31:43.052Z",
+  "totalItems": 269,
   "products": [
+    {
+      "id": 417448327,
+      "name": "Unisex Hoodie - Prompt: More Cheetahs",
+      "images": [
+        null
+      ],
+      "price": 95
+    },
+    {
+      "id": 417448266,
+      "name": "Unisex Hoodie - Prompt: Home Depot",
+      "images": [
+        "https://files.cdn.printful.com/files/aea/aea98f92424d49b59c470e2284c0074a_preview.png"
+      ],
+      "price": 95
+    },
+    {
+      "id": 417448206,
+      "name": "Unisex Hoodie - Prompt: Snow Ball Fight; Infinity",
+      "images": [
+        "https://files.cdn.printful.com/files/386/386b735a273cbb7bb6d4db678cca3172_preview.png"
+      ],
+      "price": 95
+    },
+    {
+      "id": 417448172,
+      "name": "Unisex Hoodie - Prompt: Snow Ball Fight; Infinity",
+      "images": [
+        "https://files.cdn.printful.com/files/58a/58a0c06efd318b07e4c9cc22c9b3fe46_preview.png"
+      ],
+      "price": 95
+    },
+    {
+      "id": 417448062,
+      "name": "Unisex Hoodie - Prompt: Antarctican Snow Monster",
+      "images": [
+        "https://files.cdn.printful.com/files/6da/6da0ba5f6fcc7d5810b5e4bae4896704_preview.png"
+      ],
+      "price": 95
+    },
+    {
+      "id": 417448017,
+      "name": "Unisex Hoodie - Prompt: Protect Home",
+      "images": [
+        "https://files.cdn.printful.com/files/50b/50b2a127e556090186cee79359b28e47_preview.png"
+      ],
+      "price": 95
+    },
+    {
+      "id": 417447939,
+      "name": "Unisex Hoodie - Prompt: Antarctican Snow Monster",
+      "images": [
+        "https://files.cdn.printful.com/files/ee2/ee26f3c22f0638bb3d7fd7643cec1ec1_preview.png"
+      ],
+      "price": 95
+    },
+    {
+      "id": 417447881,
+      "name": "Unisex Hoodie - Prompt: Antarctican Snow Monster",
+      "images": [
+        "https://files.cdn.printful.com/files/da9/da9fd907ec17aa36a6b04f12f2ba4bc6_preview.png"
+      ],
+      "price": 95
+    },
+    {
+      "id": 417447819,
+      "name": "Unisex Hoodie - Prompt: Here There Be Dragons",
+      "images": [
+        "https://files.cdn.printful.com/files/090/090febfde83006b3658ce0e141bfdf38_preview.png"
+      ],
+      "price": 95
+    },
+    {
+      "id": 417447763,
+      "name": "Unisex Hoodie - Prompt: Antarctican Snow Monster",
+      "images": [
+        "https://files.cdn.printful.com/files/42c/42cba709222aec89c62a142b4199c947_preview.png"
+      ],
+      "price": 95
+    },
+    {
+      "id": 417447691,
+      "name": "Unisex Hoodie - Prompt: Here There Be Dragons",
+      "images": [
+        "https://files.cdn.printful.com/files/971/97164c5c0a8d3c8fb7703baa4edb9482_preview.png"
+      ],
+      "price": 95
+    },
+    {
+      "id": 417447016,
+      "name": "Unisex Hoodie - The Midas Touch",
+      "images": [
+        "https://files.cdn.printful.com/files/174/174d2b697cb37c8d99abbf828d2b5c4e_preview.png"
+      ],
+      "price": 95
+    },
     {
       "id": 417388650,
       "name": "Unisex Hoodie - Prompt: Delusions of Grandeur (Band)",
