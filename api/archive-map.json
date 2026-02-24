@@ -1,13 +1,13 @@
 {
   "status": "ONLINE",
-  "lastSync": "2026-02-24T01:49:22.176Z",
+  "lastSync": "2026-02-24T04:15:33.189Z",
   "totalItems": 353,
   "products": [
     {
       "id": 421083383,
       "name": "Unisex Hoodie - Artemis Hunting Gear",
       "images": [
-        null
+        "https://files.cdn.printful.com/files/095/095a84c84c803b343bffe2571274ce7c_preview.png"
       ],
       "price": 95
     },
