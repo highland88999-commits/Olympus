@@ -1,8 +1,56 @@
 {
   "status": "ONLINE",
-  "lastSync": "2026-02-23T23:31:25.579Z",
-  "totalItems": 347,
+  "lastSync": "2026-02-24T01:49:22.176Z",
+  "totalItems": 353,
   "products": [
+    {
+      "id": 421083383,
+      "name": "Unisex Hoodie - Artemis Hunting Gear",
+      "images": [
+        null
+      ],
+      "price": 95
+    },
+    {
+      "id": 421083331,
+      "name": "Unisex track pants - Artemis Hunting Gear",
+      "images": [
+        "https://files.cdn.printful.com/files/175/175e5eefec1674886a2e8cd2b3d89249_preview.png"
+      ],
+      "price": 95
+    },
+    {
+      "id": 421083279,
+      "name": "Unisex Hoodie - Artemis Hunting Gear",
+      "images": [
+        "https://files.cdn.printful.com/files/11a/11a55e067789c6c2f0e15e8fd6917b9a_preview.png"
+      ],
+      "price": 95
+    },
+    {
+      "id": 421083231,
+      "name": "Unisex track pants - Artemis Hunting Gear",
+      "images": [
+        "https://files.cdn.printful.com/files/7b9/7b97a79caf6a513bf0cc82feb5f0294f_preview.png"
+      ],
+      "price": 95
+    },
+    {
+      "id": 421083183,
+      "name": "Unisex Hoodie - Artemis Hunting Gear ",
+      "images": [
+        "https://files.cdn.printful.com/files/937/9377bb2c0745c39ad1ca03b7025dd985_preview.png"
+      ],
+      "price": 95
+    },
+    {
+      "id": 421083055,
+      "name": "Unisex track pants - Artemis Hunting Gear",
+      "images": [
+        "https://files.cdn.printful.com/files/4fc/4fcc75a921c7d9d11b6deacbf2432792_preview.png"
+      ],
+      "price": 95
+    },
     {
       "id": 417466509,
       "name": "Sparks Fly ????",
