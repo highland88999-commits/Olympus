@@ -1,8 +1,16 @@
 {
   "status": "ONLINE",
-  "lastSync": "2026-03-03T06:44:52.994Z",
-  "totalItems": 353,
+  "lastSync": "2026-03-03T07:39:25.723Z",
+  "totalItems": 354,
   "products": [
+    {
+      "id": 422137988,
+      "name": "Unisex Hoodie - JoeyHolliVevo",
+      "images": [
+        "https://files.cdn.printful.com/files/760/760eb64083362547f3736563e7ede0bf_preview.png"
+      ],
+      "price": 95
+    },
     {
       "id": 421083383,
       "name": "Unisex Hoodie - Artemis Hunting Gear",
