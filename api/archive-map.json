@@ -1,8 +1,24 @@
 {
   "status": "ONLINE",
-  "lastSync": "2026-03-07T08:26:17.601Z",
-  "totalItems": 354,
+  "lastSync": "2026-03-07T09:25:05.536Z",
+  "totalItems": 356,
   "products": [
+    {
+      "id": 422728811,
+      "name": "Unisex Hoodie - Camo",
+      "images": [
+        "https://files.cdn.printful.com/files/0db/0db8638b5696d74cfc5b4e16bbd04bf7_preview.png"
+      ],
+      "price": 95
+    },
+    {
+      "id": 422728789,
+      "name": "Wide-leg joggers - Camo",
+      "images": [
+        "https://files.cdn.printful.com/files/197/1975c0d112ca43a4bc7ec26eb19b0e74_preview.png"
+      ],
+      "price": 95
+    },
     {
       "id": 422137988,
       "name": "Unisex Hoodie - JoeyHolliVevo",
