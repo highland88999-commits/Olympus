@@ -14,21 +14,11 @@
         
         .btn-core { border: 1px solid var(--neon); background: rgba(0,0,0,0.5); color: var(--neon); padding: 12px 24px; cursor: pointer; font-size: 0.7rem; letter-spacing: 3px; backdrop-filter: blur(5px); transition: 0.3s; text-decoration: none; }
         .btn-core:hover { background: var(--neon); color: #000; box-shadow: 0 0 15px var(--neon); }
-
-        #gateway { position: fixed; inset: 0; z-index: 5000; background: #000; display: flex; align-items: center; justify-content: center; transition: opacity 1s ease; pointer-events: auto; }
-        .hidden { opacity: 0 !important; pointer-events: none !important; }
     </style>
 </head>
 <body>
 
-<div id="gateway">
-    <div style="text-align:center;">
-        <button class="btn-core" style="font-size: 1rem; padding: 20px 40px;" onclick="ignite()">IGNITE SOLAR CORE</button>
-        <p style="font-size: 0.5rem; margin-top: 20px; letter-spacing: 2px; opacity: 0.5;">8K_ASSET_PIPELINE_STABLE</p>
-    </div>
-</div>
-
-<div id="ui-layer" class="hidden">
+<div id="ui-layer">
     <header>
         <div style="letter-spacing: 5px; font-weight: bold;">OLYMPIAN // HUB</div>
         <div id="manifest-count">MANIFEST (0)</div>
@@ -36,7 +26,7 @@
     
     <footer>
         <a href="https://invite.kraken.com/JDNW/2yyr243k" target="_blank" class="btn-core">BTC REWARD</a>
-        <button class="btn-core" onclick="toggleViewport()">TOGGLE VIEWPORT 🪐</button>
+        <button class="btn-core" onclick="toggleControls()">TOGGLE VIEWPORT 🪐</button>
     </footer>
 </div>
 
@@ -51,7 +41,7 @@
     import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
     import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 
-    // 1. SYSTEM INIT
+    // 1. CORE ENGINE & CENTERING
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 40000);
     const renderer = new THREE.WebGLRenderer({ antialias: true, logarithmicDepthBuffer: true });
@@ -60,14 +50,16 @@
     renderer.toneMapping = THREE.ReinhardToneMapping;
     document.body.appendChild(renderer.domElement);
 
+    // Initial camera position centered on Sun (0,0,0)
     const controls = new OrbitControls(camera, renderer.domElement);
-    controls.enabled = false;
-    camera.position.set(0, 1500, 4500);
+    controls.enableDamping = true;
+    camera.position.set(0, 2000, 5000);
+    controls.target.set(0, 0, 0); // Centers system
 
     const loader = new THREE.TextureLoader();
     const assetPath = './assets/';
 
-    // 2. TIERED BLOOM CONFIG
+    // 2. UNIVERSAL BLOOM TIERS
     const renderScene = new RenderPass(scene, camera);
     const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
     bloomPass.threshold = 0.1; 
@@ -78,30 +70,29 @@
     composer.addPass(renderScene);
     composer.addPass(bloomPass);
 
-    // UNIVERSAL BLOOM TIERS
     const TIER = {
-        SUN: { em: 0xffffff, int: 1.5 },
-        BRIGHT: { em: 0x44ccff, int: 0.6 },
-        PLANET: { em: 0x222222, int: 0.2 }
+        SUN: { em: 0xffffff, int: 2.0 },
+        BRIGHT: { em: 0x44ccff, int: 0.8 },
+        PLANET: { em: 0x222222, int: 0.3 }
     };
 
-    // 3. PROCEDURAL STARFIELD
+    // 3. PROCEDURAL GALAXY (Centered)
     const starGeo = new THREE.BufferGeometry();
     const starCount = 15000;
     const posArray = new Float32Array(starCount * 3);
-    for(let i=0; i < starCount * 3; i++) { posArray[i] = (Math.random() - 0.5) * 28000; }
+    for(let i=0; i < starCount * 3; i++) { posArray[i] = (Math.random() - 0.5) * 30000; }
     starGeo.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
     const stars = new THREE.Points(starGeo, new THREE.PointsMaterial({ color: 0xffffff, size: 1.1, sizeAttenuation: true }));
     scene.add(stars);
 
     // 4. THE SUN (TIER 1)
     const sun = new THREE.Mesh(
-        new THREE.SphereGeometry(450, 64, 64),
+        new THREE.SphereGeometry(500, 64, 64),
         new THREE.MeshBasicMaterial({ map: loader.load(assetPath + '8k_sun.jpg') })
     );
     scene.add(sun);
 
-    // 5. PLANETARY ENGINE (ALL REPO ASSETS)
+    // 5. PLANETARY ENGINE (FULL REPO SYNC)
     const bodies = [];
     function spawn(size, tex, dist, speed, tier, ring = null) {
         const pivot = new THREE.Group();
@@ -125,39 +116,37 @@
         return mesh;
     }
 
-    // FULL SYSTEM SYNC
-    spawn(25, '8k_mercury.jpg', 800, 0.012, TIER.PLANET);
-    spawn(55, '8k_venus_surface.jpg', 1200, 0.009, TIER.BRIGHT);
-    const earth = spawn(65, '8k_earth_nightmap.jpg', 1800, 0.006, TIER.BRIGHT);
-    const moon = new THREE.Mesh(new THREE.SphereGeometry(15, 32, 32), new THREE.MeshStandardMaterial({ map: loader.load(assetPath + '8k_moon.jpg'), emissive: 0xffffff, emissiveIntensity: 0.3 }));
-    moon.position.x = 130; earth.add(moon);
-    spawn(35, '8k_mars.jpg', 2300, 0.005, TIER.PLANET);
-    spawn(160, '8k_jupiter.jpg', 3200, 0.002, TIER.PLANET);
-    spawn(140, '8k_saturn.jpg', 4200, 0.001, TIER.PLANET, '8k_saturn_ring_alpha.png');
-    spawn(90, '2k_uranus.jpg', 5200, 0.0007, TIER.PLANET);
-    spawn(85, '2k_neptune.jpg', 6000, 0.0005, TIER.PLANET);
+    // Centered distribution
+    spawn(28, '8k_mercury.jpg', 900, 0.012, TIER.PLANET);
+    spawn(60, '8k_venus_surface.jpg', 1350, 0.009, TIER.BRIGHT);
+    const earth = spawn(70, '8k_earth_nightmap.jpg', 1900, 0.006, TIER.BRIGHT);
+    const moon = new THREE.Mesh(new THREE.SphereGeometry(16, 32, 32), new THREE.MeshStandardMaterial({ map: loader.load(assetPath + '8k_moon.jpg'), emissive: 0xffffff, emissiveIntensity: 0.4 }));
+    moon.position.x = 140; earth.add(moon);
+    spawn(40, '8k_mars.jpg', 2500, 0.005, TIER.PLANET);
+    spawn(180, '8k_jupiter.jpg', 3500, 0.002, TIER.PLANET);
+    spawn(155, '8k_saturn.jpg', 4600, 0.001, TIER.PLANET, '8k_saturn_ring_alpha.png');
+    spawn(95, '2k_uranus.jpg', 5600, 0.0007, TIER.PLANET);
+    spawn(90, '2k_neptune.jpg', 6500, 0.0005, TIER.PLANET);
 
-    scene.add(new THREE.PointLight(0xffffff, 8, 25000));
-    scene.add(new THREE.AmbientLight(0xffffff, 0.1));
+    scene.add(new THREE.PointLight(0xffffff, 10, 25000));
+    scene.add(new THREE.AmbientLight(0xffffff, 0.05));
 
     function animate() {
         requestAnimationFrame(animate);
         sun.rotation.y += 0.001;
-        stars.rotation.y += 0.00005;
-        bodies.forEach(b => { b.pivot.rotation.y += b.speed; b.mesh.rotation.y += 0.005; });
-        if(controls.enabled) controls.update();
+        stars.rotation.y += 0.00003;
+        bodies.forEach(b => { 
+            b.pivot.rotation.y += b.speed; 
+            b.mesh.rotation.y += 0.004; 
+        });
+        controls.update();
         composer.render();
     }
     animate();
 
-    window.ignite = () => {
-        document.getElementById('gateway').classList.add('hidden');
-        document.getElementById('ui-layer').classList.remove('hidden');
-    };
-
-    window.toggleViewport = () => {
+    window.toggleControls = () => {
         controls.enabled = !controls.enabled;
-        document.getElementById('ui-layer').classList.toggle('hidden');
+        document.getElementById('ui-layer').style.opacity = controls.enabled ? '0.3' : '1';
     };
 
     window.addEventListener('resize', () => {
