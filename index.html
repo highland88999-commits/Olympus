@@ -7,7 +7,6 @@
     <style>
         :root { 
             --neon-cyan: #00f2ff;
-            --neon-orange: #ff4500;
             --ui-bg: rgba(0, 0, 0, 0.92);
         }
         body, html { 
@@ -194,7 +193,7 @@ const sun = new THREE.Mesh(
 );
 scene.add(sun);
 
-// Planets with proper parenting
+// Planets
 const planets = [];
 
 function addPlanet(radius, texFile, dist, speed, cloudFile = null, ringFile = null) {
@@ -228,7 +227,7 @@ function addPlanet(radius, texFile, dist, speed, cloudFile = null, ringFile = nu
     return data;
 }
 
-// Build the system with correct wrapping
+// Full solar system with correct wrapping
 addPlanet(18, '1000000128.jpg', 420, 0.018);                    // Mercury
 addPlanet(32, '1000000129.jpg', 620, 0.012, '1000000130.jpg'); // Venus + clouds
 const earthData = addPlanet(35, '1000000138.jpg', 850, 0.008, '1000000135.jpg'); // Earth + atmosphere
@@ -261,7 +260,7 @@ function animate() {
 }
 animate();
 
-// UI Controls
+// UI
 window.dismissLanding = () => {
     document.getElementById('landing-overlay').style.transform = 'translateY(-100%)';
     setTimeout(() => {
@@ -294,9 +293,7 @@ window.openModal = (name) => {
     document.getElementById('modal-overlay').style.display = 'flex';
 };
 
-window.closeModal = () => {
-    document.getElementById('modal-overlay').style.display = 'none';
-};
+window.closeModal = () => document.getElementById('modal-overlay').style.display = 'none';
 
 window.selectSize = (btn, size) => {
     document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected'));
