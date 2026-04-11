@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>OLYMPIAN | AXIOM 24</title>
+    <title>OLYMPIAN | DEEP SPACE</title>
     <style>
         :root { 
             --fire: #ff4500; 
             --spark: #ffae00; 
             --bio-low: #001a33; 
             --bio-high: #00f2ff; 
-            --cyan-glow: 0 0 20px rgba(0, 255, 255, 0.3); 
+            --ui-bg: rgba(0, 0, 0, 0.85);
         }
 
         body, html { 
@@ -21,122 +21,101 @@
         
         canvas { position: fixed; top: 0; left: 0; z-index: 0; }
         
-        /* UI VISIBILITY TOGGLE */
         .ui-hidden { opacity: 0 !important; pointer-events: none !important; }
 
-        /* LANDING OVERLAY */
-        #landing-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: radial-gradient(circle, rgba(0,26,51,0.5) 0%, #000 100%);
-            z-index: 5000; display: flex; flex-direction: column; align-items: center; justify-content: center;
-            cursor: pointer; transition: opacity 1s ease;
-        }
-        #landing-prompt {
-            color: var(--bio-high); font-size: 1.2rem; letter-spacing: 8px;
-            text-shadow: 0 0 20px var(--bio-high); animation: pulse 2s infinite;
-        }
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
-
-        /* UI ELEMENTS */
+        /* HEADER */
         header { 
-            position: relative; z-index: 100; height: 60px; display: none; opacity: 0; 
+            position: relative; z-index: 100; height: 65px; display: none; opacity: 0; 
             align-items: center; justify-content: space-between; padding: 0 20px; 
-            background: rgba(0,0,0,0.9); border-bottom: 1px solid var(--bio-high); 
+            background: var(--ui-bg); border-bottom: 1px solid var(--bio-high); 
             transition: opacity 0.5s ease; 
         }
-        h1 { letter-spacing: 5px; color: var(--bio-high); text-shadow: 0 0 15px var(--bio-high); font-size: 0.9rem; }
+        h1 { letter-spacing: 4px; color: var(--bio-high); text-shadow: 0 0 10px var(--bio-high); font-size: 0.85rem; }
 
+        /* GRID */
         #store-grid { 
             position: relative; z-index: 5; display: none; opacity: 0;
-            grid-template-columns: repeat(2, 1fr); gap: 15px; 
-            width: 95%; margin: 15px auto 0 auto; 
-            height: calc(100vh - 160px - 2mm); 
+            grid-template-columns: repeat(2, 1fr); gap: 12px; 
+            width: 92%; margin: 15px auto 0 auto; 
+            height: calc(100vh - 180px); 
             overflow-y: auto; scrollbar-width: none;
-            padding-bottom: 2mm; 
+            padding-bottom: 5px; 
             transition: opacity 0.5s ease;
         }
         #store-grid::-webkit-scrollbar { display: none; }
 
         .card { 
-            position: relative; background: rgba(0, 242, 255, 0.03); border: 1px solid rgba(0, 242, 255, 0.2);
-            aspect-ratio: 0.8 / 1; cursor: pointer; display: flex; align-items: center; justify-content: center;
-            box-shadow: inset 0 0 15px var(--bio-low); transition: 0.3s; backdrop-filter: blur(2px);
+            position: relative; background: rgba(0, 242, 255, 0.02); border: 1px solid rgba(0, 242, 255, 0.2);
+            aspect-ratio: 0.85 / 1; cursor: pointer; display: flex; align-items: center; justify-content: center;
+            backdrop-filter: blur(4px); transition: 0.3s;
         }
-        .card:hover { border-color: var(--bio-high); box-shadow: 0 0 20px var(--bio-high); }
-        .card img { width: 85%; height: 85%; object-fit: contain; mix-blend-mode: screen; filter: drop-shadow(0 0 8px var(--bio-high)); }
-        .grid-label { position: absolute; bottom: 0; width: 100%; background: rgba(0,26,51,0.9); font-size: 0.55rem; text-align: center; padding: 6px 0; color: var(--bio-high); border-top: 1px solid var(--bio-high); }
+        .card:hover { border-color: var(--bio-high); box-shadow: 0 0 15px var(--bio-high); }
+        .card img { width: 90%; height: 90%; object-fit: contain; mix-blend-mode: screen; }
+        .grid-label { position: absolute; bottom: 0; width: 100%; background: rgba(0,26,51,0.95); font-size: 0.5rem; text-align: center; padding: 5px 0; color: var(--bio-high); border-top: 1px solid var(--bio-high); letter-spacing: 1px; }
 
+        /* REBALANCED FOOTER */
         .control-footer {
-            position: fixed; bottom: 0; width: 100%; height: 100px;
-            background: #000; z-index: 150; 
-            display: none; opacity: 0; align-items: center; justify-content: center;
-            border-top: 1px solid var(--bio-high);
-            box-shadow: 0 -10px 30px rgba(0,0,0,0.9); transition: opacity 0.5s ease;
+            position: fixed; bottom: 0; width: 100%; height: 90px;
+            background: var(--ui-bg); z-index: 150; 
+            display: none; opacity: 0; align-items: center; justify-content: space-between;
+            border-top: 1px solid var(--bio-high); padding: 0 15px; box-sizing: border-box;
+            transition: all 0.5s ease;
         }
 
-        #design-toggle { 
-            position: absolute; left: 20px; bottom: 30px;
-            padding: 10px 15px; background: rgba(0, 242, 255, 0.1); border: 1px solid var(--bio-high); 
-            border-radius: 5px; color: var(--bio-high); cursor: pointer; display: flex; align-items: center; 
-            gap: 8px; font-size: 0.65rem; text-transform: uppercase; transition: opacity 0.5s;
+        .footer-btn {
+            height: 45px; padding: 0 12px; background: rgba(0, 242, 255, 0.05); 
+            border: 1px solid var(--bio-high); color: var(--bio-high); 
+            font-size: 0.65rem; font-family: inherit; letter-spacing: 1px;
+            cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
+            text-transform: uppercase; transition: 0.3s;
         }
+        .footer-btn:active { transform: scale(0.95); background: var(--bio-high); color: #000; }
+        .footer-btn.active { background: var(--bio-high); color: #000; box-shadow: 0 0 15px var(--bio-high); }
 
-        /* NEW INTERACTIVE BUTTON */
-        #interactive-toggle {
-            position: fixed; right: 20px; bottom: 30px; z-index: 500;
-            padding: 10px 15px; background: rgba(0, 242, 255, 0.1); border: 1px solid var(--bio-high); 
-            border-radius: 5px; color: var(--bio-high); cursor: pointer; display: flex; align-items: center; 
-            gap: 8px; font-size: 0.65rem; text-transform: uppercase;
-            box-shadow: 0 0 10px var(--bio-low);
+        .center-controls {
+            flex-grow: 1; max-width: 40%; display: flex; flex-direction: column; align-items: center; gap: 8px;
+            transition: opacity 0.5s;
         }
-        #interactive-toggle.active { background: var(--bio-high); color: #000; box-shadow: 0 0 20px var(--bio-high); }
+        #sector-display { font-size: 0.6rem; color: var(--bio-high); letter-spacing: 2px; }
+        .sector-slider { width: 100%; accent-color: var(--bio-high); cursor: pointer; }
 
-        .slider-wrapper { width: 40%; display: flex; flex-direction: column; align-items: center; transition: opacity 0.5s; }
-        .sector-slider { width: 100%; accent-color: var(--bio-high); }
-        #sector-display { font-size: 0.7rem; color: var(--bio-high); margin-bottom: 5px; letter-spacing: 2px; }
-
-        /* MODALS & CART */
-        #modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1000; display: none; background: rgba(0,0,0,0.95); backdrop-filter: blur(12px); align-items: center; justify-content: center; }
-        .modal-content { width: 90%; max-width: 420px; background: #000; border: 2px solid var(--bio-high); position: relative; padding-bottom: 20px; }
-        .size-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; margin: 15px 20px; }
-        .size-btn { border: 1px solid var(--bio-high); background: #000; color: #fff; padding: 10px 0; cursor: pointer; font-size: 0.6rem; }
+        /* MODALS & SIZES */
+        #modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1000; display: none; background: rgba(0,0,0,0.96); backdrop-filter: blur(15px); align-items: center; justify-content: center; }
+        .modal-content { width: 92%; max-width: 400px; background: #000; border: 1px solid var(--bio-high); padding: 20px 0; position: relative; }
+        .size-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 20px; }
+        .size-btn { border: 1px solid var(--bio-high); background: transparent; color: #fff; padding: 12px 0; cursor: pointer; font-size: 0.6rem; transition: 0.2s; }
         .size-btn.selected { background: var(--bio-high); color: #000; font-weight: bold; }
-        
+
         #side-cart { position: fixed; top: 0; right: -100%; width: 85%; max-width: 350px; height: 100%; background: #000; border-left: 1px solid var(--bio-high); z-index: 2000; transition: 0.4s; }
         #side-cart.open { right: 0; }
     </style>
 </head>
 <body ondblclick="window.closeModal(); window.toggleCart(false)">
 
-<div id="landing-overlay" onclick="window.enterSystem()">
-    <div id="landing-prompt">SYSTEM READY // CLICK TO SYNC</div>
-</div>
-
 <header id="ui-header">
     <h1>OLYMPIAN // DEEP SPACE</h1>
-    <div id="cart-trigger" onclick="window.toggleCart(true)" style="color:var(--bio-high); border:1px solid var(--bio-high); padding:8px 15px; font-size:0.8rem; cursor:pointer;">MANIFEST (0)</div>
+    <div id="cart-trigger" onclick="window.toggleCart(true)" style="border:1px solid var(--bio-high); color:var(--bio-high); padding:10px 15px; font-size:0.7rem; cursor:pointer;">MANIFEST (0)</div>
 </header>
 
 <div id="store-grid"></div>
 
-<button id="interactive-toggle" onclick="window.toggleInteractive()">
-    <span>INTERACTIVE</span> <span style="font-size:1.2rem">🪐</span>
-</button>
-
 <div class="control-footer" id="ui-footer">
-    <button id="design-toggle" onclick="window.toggleHoloframe()" style="position:static; margin-right:auto; margin-left:20px;">
-        <span>CUSTOM</span>
-    </button>
-    <div class="slider-wrapper" id="footer-slider-box">
+    <button class="footer-btn" id="design-toggle" onclick="window.toggleHoloframe()">CUSTOM</button>
+    
+    <div class="center-controls" id="center-ui">
         <div id="sector-display">SYNCING...</div>
         <input type="range" id="sector-slider" class="sector-slider" min="1" max="1" value="1">
     </div>
-    <div style="width:100px;"></div> </div>
+
+    <button class="footer-btn" id="interactive-toggle" onclick="window.toggleInteractive()">
+        INTERACTIVE 🪐
+    </button>
+</div>
 
 <div id="modal-overlay" onclick="window.closeModal()">
     <div class="modal-content" onclick="event.stopPropagation()">
-        <div id="modal-img-container" style="padding:10px;"></div>
-        <div id="modal-title" style="color:var(--bio-high); font-size:0.7rem; text-align:center; text-transform:uppercase;"></div>
+        <div id="modal-img-container" style="padding:10px; text-align:center;"></div>
+        <div id="modal-title" style="color:var(--bio-high); font-size:0.75rem; text-align:center; padding:10px; letter-spacing:1px;"></div>
         <div class="size-grid">
             <button class="size-btn" onclick="window.selectSize(this, '3XS')">3XS</button>
             <button class="size-btn" onclick="window.selectSize(this, '2XS')">2XS</button>
@@ -151,8 +130,15 @@
             <button class="size-btn" onclick="window.selectSize(this, '5XL')">5XL</button>
             <button class="size-btn" onclick="window.selectSize(this, '6XL')">6XL</button>
         </div>
-        <button onclick="window.addToCart()" style="width:90%; margin:0 5%; padding:15px; background:var(--bio-high); border:none; font-weight:bold; color:#000;">UPLOAD TO MANIFEST</button>
+        <button onclick="window.addToCart()" style="width:90%; margin:10px 5%; padding:15px; background:var(--bio-high); border:none; font-weight:bold; cursor:pointer; color:#000;">UPLOAD TO MANIFEST</button>
     </div>
+</div>
+
+<div id="side-cart">
+    <div style="padding:20px; border-bottom:1px solid var(--bio-high); display:flex; justify-content:space-between; color:var(--bio-high)">
+        <span>MANIFEST</span><span onclick="window.toggleCart(false)" style="cursor:pointer;">×</span>
+    </div>
+    <div id="cart-items" style="padding:20px; font-size:0.7rem;"></div>
 </div>
 
 <script type="importmap">
@@ -179,14 +165,27 @@
     renderer.setPixelRatio(window.devicePixelRatio);
     document.body.appendChild(renderer.domElement);
 
-    // Orbit Controls
     const controls = new OrbitControls(camera, renderer.domElement);
-    controls.enabled = false; // Disabled by default
+    controls.enabled = false;
     controls.enableDamping = true;
-    controls.autoRotate = false;
+    controls.dampingFactor = 0.05;
 
     const textureLoader = new THREE.TextureLoader();
-    scene.background = textureLoader.load('8k_stars_milky_way.jpg');
+    
+    // Background Restore
+    const bgTexture = textureLoader.load('8k_stars_milky_way.jpg');
+    scene.background = bgTexture;
+
+    // Enhanced Star Field (Former Glory)
+    const starGeo = new THREE.BufferGeometry();
+    const starCoords = [];
+    for (let i = 0; i < 15000; i++) {
+        starCoords.push((Math.random() - 0.5) * 8000, (Math.random() - 0.5) * 8000, (Math.random() - 0.5) * 8000);
+    }
+    starGeo.setAttribute('position', new THREE.Float32BufferAttribute(starCoords, 3));
+    const starMat = new THREE.PointsMaterial({ color: 0xffffff, size: 1.2, transparent: true, opacity: 0.9 });
+    const stars = new THREE.Points(starGeo, starMat);
+    scene.add(stars);
 
     const systemGroup = new THREE.Group();
     scene.add(systemGroup);
@@ -195,11 +194,16 @@
 
     function createPlanet(name, size, textureFile, distance, orbitSpeed, hasRings = false) {
         const geometry = new THREE.SphereGeometry(size, 64, 64);
-        const material = new THREE.MeshStandardMaterial({ map: textureLoader.load(textureFile), metalness: 0.4, roughness: 0.7 });
+        const material = new THREE.MeshStandardMaterial({ 
+            map: textureLoader.load(textureFile), 
+            metalness: 0.3, 
+            roughness: 0.8 
+        });
         const planet = new THREE.Mesh(geometry, material);
-        const orbitData = { mesh: planet, distance: distance, speed: orbitSpeed, angle: Math.random() * Math.PI * 2 };
+        const orbitData = { mesh: planet, distance, speed: orbitSpeed, angle: Math.random() * Math.PI * 2 };
+        
         if (hasRings) {
-            const ringGeo = new THREE.RingGeometry(size * 1.4, size * 2.2, 64);
+            const ringGeo = new THREE.RingGeometry(size * 1.5, size * 2.5, 64);
             const ringMat = new THREE.MeshBasicMaterial({ map: textureLoader.load('8k_saturn_ring_alpha.png'), side: THREE.DoubleSide, transparent: true, opacity: 0.8 });
             const rings = new THREE.Mesh(ringGeo, ringMat);
             rings.rotation.x = Math.PI / 2; planet.add(rings);
@@ -209,31 +213,31 @@
         return planet;
     }
 
-    const sun = createPlanet("Sun", 60, '1000000142.jpg', 0, 0);
+    // Solar Core
+    const sun = createPlanet("Sun", 70, '1000000142.jpg', 0, 0);
     sun.material.emissive = new THREE.Color(0xff4500);
-    sun.material.emissiveIntensity = 1.5;
+    sun.material.emissiveIntensity = 2.0;
 
-    createPlanet("Mercury", 5, '1000000128.jpg', 140, 0.012);
-    createPlanet("Venus", 10, '1000000129.jpg', 220, 0.009);
-    createPlanet("Earth", 11, '8k_earth_daymap.jpg', 320, 0.007);
-    createPlanet("Mars", 8, '1000000131.jpg', 420, 0.005);
-    createPlanet("Jupiter", 35, '1000000132.jpg', 600, 0.003);
-    createPlanet("Saturn", 30, '1000000133.jpg', 850, 0.002, true);
-    createPlanet("Uranus", 20, '2k_uranus.jpg', 1100, 0.001);
-    createPlanet("Neptune", 20, '2k_neptune.jpg', 1300, 0.0008);
+    createPlanet("Mercury", 6, '1000000128.jpg', 160, 0.015);
+    createPlanet("Venus", 12, '1000000129.jpg', 240, 0.01);
+    createPlanet("Earth", 13, '8k_earth_daymap.jpg', 350, 0.008);
+    createPlanet("Mars", 9, '1000000131.jpg', 460, 0.006);
+    createPlanet("Jupiter", 40, '1000000132.jpg', 650, 0.004);
+    createPlanet("Saturn", 35, '1000000133.jpg', 900, 0.002, true);
+    createPlanet("Uranus", 22, '2k_uranus.jpg', 1200, 0.001);
+    createPlanet("Neptune", 22, '2k_neptune.jpg', 1450, 0.0008);
 
-    const pointLight = new THREE.PointLight(0xffffff, 8, 3000);
-    scene.add(pointLight);
-    scene.add(new THREE.AmbientLight(0x404040, 1.0));
+    const sunLight = new THREE.PointLight(0xffffff, 10, 4000);
+    scene.add(sunLight);
+    scene.add(new THREE.AmbientLight(0xffffff, 0.4));
 
-    camera.position.set(0, 800, 2000);
+    camera.position.set(0, 1000, 2500);
     camera.lookAt(0,0,0);
-
-    const clock = new THREE.Clock();
 
     function animate() {
         requestAnimationFrame(animate);
-        const t = clock.getElapsedTime();
+        const t = Date.now() * 0.001;
+        
         planets.forEach(p => {
             if(p.distance > 0) {
                 p.angle += p.speed;
@@ -242,55 +246,46 @@
             }
             p.mesh.rotation.y += 0.005;
         });
-        sun.material.emissiveIntensity = 1.2 + Math.sin(t * 1.5) * 0.5;
+
+        sun.material.emissiveIntensity = 1.5 + Math.sin(t * 2) * 0.5;
+        stars.rotation.y += 0.0001;
+        
         if (controls.enabled) controls.update();
         renderer.render(scene, camera);
     }
     animate();
 
-    // --- INTERACTIVE UI LOGIC ---
+    // --- UI CONTROLS ---
     window.toggleInteractive = function() {
         window.isInteractive = !window.isInteractive;
+        const uiElements = [document.getElementById('ui-header'), document.getElementById('store-grid'), document.getElementById('center-ui'), document.getElementById('design-toggle')];
         const btn = document.getElementById('interactive-toggle');
-        const header = document.getElementById('ui-header');
-        const grid = document.getElementById('store-grid');
         const footer = document.getElementById('ui-footer');
-        const sliderBox = document.getElementById('footer-slider-box');
-        const designBtn = document.getElementById('design-toggle');
 
         if (window.isInteractive) {
+            uiElements.forEach(el => el.classList.add('ui-hidden'));
             btn.classList.add('active');
-            header.classList.add('ui-hidden');
-            grid.classList.add('ui-hidden');
-            footer.style.border = 'none';
             footer.style.background = 'transparent';
-            sliderBox.classList.add('ui-hidden');
-            designBtn.classList.add('ui-hidden');
+            footer.style.border = 'none';
             controls.enabled = true;
         } else {
+            uiElements.forEach(el => el.classList.remove('ui-hidden'));
             btn.classList.remove('active');
-            header.classList.remove('ui-hidden');
-            grid.classList.remove('ui-hidden');
+            footer.style.background = 'var(--ui-bg)';
             footer.style.borderTop = '1px solid var(--bio-high)';
-            footer.style.background = '#000';
-            sliderBox.classList.remove('ui-hidden');
-            designBtn.classList.remove('ui-hidden');
             controls.enabled = false;
         }
     };
 
-    window.enterSystem = function() {
-        document.getElementById('landing-overlay').style.opacity = '0';
-        setTimeout(() => {
-            document.getElementById('landing-overlay').style.display = 'none';
-            ['ui-header', 'store-grid', 'ui-footer'].forEach(id => {
-                const el = document.getElementById(id);
-                el.style.display = (id === 'store-grid') ? 'grid' : 'flex';
-                setTimeout(() => el.style.opacity = '1', 50);
-            });
-            fetchStore();
-        }, 1000);
-    };
+    // Initialize System
+    setTimeout(() => {
+        ['ui-header', 'store-grid', 'ui-footer'].forEach(id => {
+            const el = document.getElementById(id);
+            el.style.display = (id === 'store-grid') ? 'grid' : 'flex';
+            setTimeout(() => el.style.opacity = '1', 50);
+        });
+        fetchStore();
+    }, 100);
 
     async function fetchStore() {
         try {
@@ -301,7 +296,7 @@
                 setupNavigation();
                 renderGrid(1); 
             }
-        } catch (e) {}
+        } catch (e) { document.getElementById('sector-display').innerText = "OFFLINE"; }
     }
 
     function setupNavigation() {
@@ -327,8 +322,9 @@
     window.openModal = function(name, img) {
         window.activeProduct = { name, img }; window.selectedSize = null;
         document.getElementById('modal-title').innerText = name;
-        document.getElementById('modal-img-container').innerHTML = `<img src="${img}" style="width:100%; mix-blend-mode:screen;">`;
+        document.getElementById('modal-img-container').innerHTML = `<img src="${img}" style="width:100%; max-height:300px; object-fit:contain; mix-blend-mode:screen;">`;
         document.getElementById('modal-overlay').style.display = 'flex';
+        document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected'));
     };
 
     window.selectSize = function(btn, size) { 
