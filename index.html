@@ -47,10 +47,13 @@
             position: relative; z-index: 5; display: none; opacity: 0;
             grid-template-columns: repeat(2, 1fr); gap: 15px; 
             width: 95%; margin: 15px auto 0 auto; 
-            height: calc(100vh - 185px); 
+            /* Height = Total View - Header (60px) - Footer (100px) - 2mm Buffer */
+            height: calc(100vh - 160px - 2mm); 
             overflow-y: auto; scrollbar-width: none;
-            padding-bottom: 10px; transition: opacity 1s;
+            padding-bottom: 2mm; /* Added 2mm buffer inside the scroll area */
+            transition: opacity 1s;
         }
+        #store-grid::-webkit-scrollbar { display: none; }
 
         .card { 
             position: relative; background: rgba(0, 242, 255, 0.03); border: 1px solid rgba(0, 242, 255, 0.2);
@@ -120,39 +123,6 @@
     </div>
 </div>
 
-<div id="holoframe-container">
-    <span class="close-holo" onclick="window.toggleHoloframe()">×</span>
-    <div class="glass-frame">
-        <iframe src="https://georgia-aquarium.vercel.app/" style="width:100%; height:100%; border:none;"></iframe>
-    </div>
-</div>
-
-<div id="modal-overlay" onclick="window.closeModal()">
-    <div class="modal-content" onclick="event.stopPropagation()">
-        <span class="close-modal" onclick="window.closeModal()">×</span>
-        <div id="modal-img-container" style="padding:10px;"></div>
-        <div style="padding:0 20px;">
-            <div id="modal-title" style="color:var(--bio-high); font-size:0.8rem; margin-bottom:10px; text-transform:uppercase; text-align:center;"></div>
-            <div class="size-grid">
-                <button class="size-btn" onclick="window.selectSize(this, 'S')">S</button>
-                <button class="size-btn" onclick="window.selectSize(this, 'M')">M</button>
-                <button class="size-btn" onclick="window.selectSize(this, 'L')">L</button>
-                <button class="size-btn" onclick="window.selectSize(this, 'XL')">XL</button>
-                <button class="size-btn" onclick="window.selectSize(this, '2XL')">2XL</button>
-            </div>
-            <button onclick="window.addToCart()" style="width:100%; padding:15px; background:var(--bio-high); border:none; font-weight:bold; cursor:pointer; color:#000;">UPLOAD TO MANIFEST</button>
-        </div>
-    </div>
-</div>
-
-<div id="side-cart">
-    <div style="padding:20px; border-bottom:1px solid var(--bio-high); display:flex; justify-content:space-between;"><span style="color:var(--bio-high)">MANIFEST</span><span onclick="window.toggleCart(false)" style="cursor:pointer;">×</span></div>
-    <div id="cart-items" style="padding:20px; font-size:0.7rem;"></div>
-    <div style="position:absolute; bottom:20px; width:100%;">
-        <a href="https://buy.stripe.com/4gMaEWdE3dha4GUgBAcIE01" class="pay-link" style="background:#fff; color:#000;" target="_blank">STRIPE</a>
-    </div>
-</div>
-
 <script type="importmap">
     { "imports": { "three": "https://unpkg.com/three@0.160.0/build/three.module.js" } }
 </script>
@@ -160,14 +130,12 @@
 <script type="module">
     import * as THREE from 'three';
 
-    // GLOBAL STORE & UI STATE
     window.allProducts = []; 
     window.cart = []; 
     window.itemsPerPage = 24; 
     window.selectedSize = null; 
     window.activeProduct = null;
 
-    // --- SOLAR CORE ENGINE ---
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 2000);
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -179,7 +147,6 @@
     const sunTexture = textureLoader.load('1000000142.jpg');
     sunTexture.wrapS = sunTexture.wrapT = THREE.RepeatWrapping;
 
-    // The Plasma Core
     const coreGeo = new THREE.SphereGeometry(100, 64, 64);
     const coreMat = new THREE.MeshStandardMaterial({
         map: sunTexture,
@@ -191,7 +158,6 @@
     const sun = new THREE.Mesh(coreGeo, coreMat);
     scene.add(sun);
 
-    // The Shimmering Corona
     const coronaGeo = new THREE.SphereGeometry(105, 64, 64);
     const coronaMat = new THREE.MeshBasicMaterial({
         color: 0xffaa00,
@@ -203,7 +169,6 @@
     const corona = new THREE.Mesh(coronaGeo, coronaMat);
     scene.add(corona);
 
-    // Dynamic Solar Flares (Light)
     const flareLight = new THREE.PointLight(0xffaa00, 5, 1000);
     scene.add(flareLight);
     scene.add(new THREE.AmbientLight(0x202020, 0.5));
@@ -216,30 +181,20 @@
     function animate() {
         requestAnimationFrame(animate);
         const t = clock.getElapsedTime();
-
-        // 1. Plasma Drift (Texture Flow)
         sunTexture.offset.x += 0.0005;
         sunTexture.offset.y += 0.0002;
         sun.rotation.y += 0.0015;
-
-        // 2. Vitality Pulse (Breathing)
         const pulse = 1 + Math.sin(t * 0.8) * 0.02;
         sun.scale.set(pulse, pulse, pulse);
         coreMat.emissiveIntensity = 1.2 + Math.sin(t * 2) * 0.3;
-
-        // 3. Corona Shimmer
         corona.scale.set(pulse * 1.05, pulse * 1.05, pulse * 1.05);
         coronaMat.opacity = 0.15 + Math.sin(t * 1.5) * 0.05;
-
-        // 4. Solar Flare Flicker
         flareLight.intensity = 4 + Math.random() * 2;
         flareLight.position.x = Math.sin(t * 0.5) * 20;
-
         renderer.render(scene, camera);
     }
     animate();
 
-    // --- UI INTERFACE LOGIC ---
     window.enterSystem = function() {
         const overlay = document.getElementById('landing-overlay');
         document.getElementById('landing-prompt').innerText = "CALIBRATING SOLAR CORE...";
@@ -264,9 +219,7 @@
                 setupNavigation();
                 renderGrid(1); 
             }
-        } catch (e) { 
-            document.getElementById('sector-display').innerText = "SIGNAL LOST"; 
-        }
+        } catch (e) { document.getElementById('sector-display').innerText = "SIGNAL LOST"; }
     }
 
     function setupNavigation() {
@@ -309,7 +262,6 @@
 
     window.closeModal = function() { document.getElementById('modal-overlay').style.display = 'none'; };
     window.toggleCart = function(show) { document.getElementById('side-cart').classList.toggle('open', show); };
-    
     window.toggleHoloframe = function() {
         const frame = document.getElementById('holoframe-container');
         if (frame.style.display === 'block') {
