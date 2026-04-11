@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>OLYMPIAN // SOLAR CORE</title>
+    <title>OLYMPIAN // V1 CORE</title>
     <style>
         :root { --neon: #00f2ff; --bg: #000; }
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: var(--bg); overflow: hidden; color: var(--neon); font-family: 'Courier New', monospace; text-transform: uppercase; }
@@ -30,13 +30,13 @@
 
 <div id="ui-layer" class="hidden">
     <header>
-        <div style="letter-spacing: 5px; font-weight: bold;">OLYMPIAN // V1</div>
+        <div style="letter-spacing: 5px; font-weight: bold;">OLYMPIAN // HUB</div>
         <div id="manifest-count">MANIFEST (0)</div>
     </header>
     
     <footer>
         <a href="https://invite.kraken.com/JDNW/2yyr243k" target="_blank" class="btn-core">BTC REWARD</a>
-        <button class="btn-core" onclick="location.reload()">RESET VIEWPORT</button>
+        <button class="btn-core" onclick="toggleViewport()">TOGGLE VIEWPORT 🪐</button>
     </footer>
 </div>
 
@@ -61,113 +61,103 @@
     document.body.appendChild(renderer.domElement);
 
     const controls = new OrbitControls(camera, renderer.domElement);
-    camera.position.set(0, 1500, 4000);
+    controls.enabled = false;
+    camera.position.set(0, 1500, 4500);
 
     const loader = new THREE.TextureLoader();
     const assetPath = './assets/';
 
-    // 2. TIERED BLOOM POST-PROCESSING
+    // 2. TIERED BLOOM CONFIG
     const renderScene = new RenderPass(scene, camera);
     const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
-    bloomPass.threshold = 0.15; // Lower threshold = more elements glow
-    bloomPass.strength = 1.2;
-    bloomPass.radius = 0.6;
+    bloomPass.threshold = 0.1; 
+    bloomPass.strength = 1.4;
+    bloomPass.radius = 0.7;
 
     const composer = new EffectComposer(renderer);
     composer.addPass(renderScene);
     composer.addPass(bloomPass);
 
-    // 3. PROCEDURAL STARFIELD (Zero Load Time)
+    // UNIVERSAL BLOOM TIERS
+    const TIER = {
+        SUN: { em: 0xffffff, int: 1.5 },
+        BRIGHT: { em: 0x44ccff, int: 0.6 },
+        PLANET: { em: 0x222222, int: 0.2 }
+    };
+
+    // 3. PROCEDURAL STARFIELD
     const starGeo = new THREE.BufferGeometry();
     const starCount = 15000;
     const posArray = new Float32Array(starCount * 3);
-    for(let i=0; i < starCount * 3; i++) {
-        posArray[i] = (Math.random() - 0.5) * 25000;
-    }
+    for(let i=0; i < starCount * 3; i++) { posArray[i] = (Math.random() - 0.5) * 28000; }
     starGeo.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-    const starMat = new THREE.PointsMaterial({ color: 0xffffff, size: 1.2, sizeAttenuation: true });
-    const stars = new THREE.Points(starGeo, starMat);
+    const stars = new THREE.Points(starGeo, new THREE.PointsMaterial({ color: 0xffffff, size: 1.1, sizeAttenuation: true }));
     scene.add(stars);
 
-    // 4. THE SUN (TIER 1 BLOOM)
-    const sunTex = loader.load(assetPath + '8k_sun.jpg');
+    // 4. THE SUN (TIER 1)
     const sun = new THREE.Mesh(
         new THREE.SphereGeometry(450, 64, 64),
-        new THREE.MeshBasicMaterial({ map: sunTex })
+        new THREE.MeshBasicMaterial({ map: loader.load(assetPath + '8k_sun.jpg') })
     );
     scene.add(sun);
 
-    // 5. PLANETARY ENGINE
+    // 5. PLANETARY ENGINE (ALL REPO ASSETS)
     const bodies = [];
-    function addPlanet(size, texture, distance, speed, emissiveHex = 0x000000, emissiveInt = 0, ringTex = null) {
+    function spawn(size, tex, dist, speed, tier, ring = null) {
         const pivot = new THREE.Group();
         scene.add(pivot);
         const mesh = new THREE.Mesh(
             new THREE.SphereGeometry(size, 64, 64),
             new THREE.MeshStandardMaterial({ 
-                map: loader.load(assetPath + texture),
-                emissive: new THREE.Color(emissiveHex),
-                emissiveIntensity: emissiveInt
+                map: loader.load(assetPath + tex),
+                emissive: new THREE.Color(tier.em),
+                emissiveIntensity: tier.int
             })
         );
-        mesh.position.x = distance;
+        mesh.position.x = dist;
         pivot.add(mesh);
-        
-        if(ringTex) {
-            const rings = new THREE.Mesh(
-                new THREE.RingGeometry(size * 1.8, size * 3.2, 64),
-                new THREE.MeshBasicMaterial({ map: loader.load(assetPath + ringTex), side: THREE.DoubleSide, transparent: true })
-            );
-            rings.rotation.x = Math.PI/2;
-            mesh.add(rings);
+        if(ring) {
+            const r = new THREE.Mesh(new THREE.RingGeometry(size*1.8, size*3.2, 64), new THREE.MeshBasicMaterial({ map: loader.load(assetPath + ring), side: THREE.DoubleSide, transparent: true }));
+            r.rotation.x = Math.PI/2;
+            mesh.add(r);
         }
         bodies.push({ pivot, mesh, speed });
         return mesh;
     }
 
-    // TIERED PLANETS (Aligned with Repo Assets)
-    addPlanet(25, '8k_mercury.jpg', 800, 0.01);
-    addPlanet(55, '8k_venus_surface.jpg', 1200, 0.008);
-    
-    // Earth & Moon (Tier 2 Bloom)
-    const earth = addPlanet(65, '8k_earth_nightmap.jpg', 1700, 0.005, 0x44ccff, 0.4);
-    const moon = new THREE.Mesh(
-        new THREE.SphereGeometry(15, 32, 32),
-        new THREE.MeshStandardMaterial({ 
-            map: loader.load(assetPath + '8k_moon.jpg'),
-            emissive: 0xffffff,
-            emissiveIntensity: 0.2
-        })
-    );
-    moon.position.x = 130;
-    earth.add(moon);
+    // FULL SYSTEM SYNC
+    spawn(25, '8k_mercury.jpg', 800, 0.012, TIER.PLANET);
+    spawn(55, '8k_venus_surface.jpg', 1200, 0.009, TIER.BRIGHT);
+    const earth = spawn(65, '8k_earth_nightmap.jpg', 1800, 0.006, TIER.BRIGHT);
+    const moon = new THREE.Mesh(new THREE.SphereGeometry(15, 32, 32), new THREE.MeshStandardMaterial({ map: loader.load(assetPath + '8k_moon.jpg'), emissive: 0xffffff, emissiveIntensity: 0.3 }));
+    moon.position.x = 130; earth.add(moon);
+    spawn(35, '8k_mars.jpg', 2300, 0.005, TIER.PLANET);
+    spawn(160, '8k_jupiter.jpg', 3200, 0.002, TIER.PLANET);
+    spawn(140, '8k_saturn.jpg', 4200, 0.001, TIER.PLANET, '8k_saturn_ring_alpha.png');
+    spawn(90, '2k_uranus.jpg', 5200, 0.0007, TIER.PLANET);
+    spawn(85, '2k_neptune.jpg', 6000, 0.0005, TIER.PLANET);
 
-    addPlanet(160, '8k_jupiter.jpg', 2800, 0.002);
-    addPlanet(140, '8k_saturn.jpg', 3800, 0.001, 0x000000, 0, '8k_saturn_ring_alpha.png');
-
-    // LIGHTING
-    const pointLight = new THREE.PointLight(0xffffff, 6, 25000);
-    scene.add(pointLight);
+    scene.add(new THREE.PointLight(0xffffff, 8, 25000));
     scene.add(new THREE.AmbientLight(0xffffff, 0.1));
 
-    // ANIMATION LOOP
     function animate() {
         requestAnimationFrame(animate);
         sun.rotation.y += 0.001;
         stars.rotation.y += 0.00005;
-        bodies.forEach(b => {
-            b.pivot.rotation.y += b.speed;
-            b.mesh.rotation.y += 0.005;
-        });
-        controls.update();
-        composer.render(); // Essential for Bloom
+        bodies.forEach(b => { b.pivot.rotation.y += b.speed; b.mesh.rotation.y += 0.005; });
+        if(controls.enabled) controls.update();
+        composer.render();
     }
     animate();
 
-    // INTERFACE CONTROLS
     window.ignite = () => {
         document.getElementById('gateway').classList.add('hidden');
         document.getElementById('ui-layer').classList.remove('hidden');
+    };
+
+    window.toggleViewport = () => {
+        controls.enabled = !controls.enabled;
+        document.getElementById('ui-layer').classList.toggle('hidden');
     };
 
     window.addEventListener('resize', () => {
