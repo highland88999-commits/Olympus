@@ -22,49 +22,47 @@
         canvas { position: fixed; top: 0; left: 0; z-index: 0; }
         .ui-hidden { opacity: 0 !important; pointer-events: none !important; }
 
-        /* KRAKEN LANDING OVERLAY */
-        #kraken-landing {
+        /* --- LAYER 1: KRAKEN LANDING OVERLAY --- */
+        #kraken-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 5000; background: radial-gradient(circle, rgba(0,26,51,0.8) 0%, rgba(0,0,0,1) 100%);
+            z-index: 5000; background: rgba(0,0,0,0.6);
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            transition: transform 0.8s cubic-bezier(0.85, 0, 0.15, 1), opacity 0.5s;
+            transition: 0.8s cubic-bezier(0.85, 0, 0.15, 1);
         }
 
-        #exit-prompt {
-            position: absolute; top: 30px; font-size: 0.6rem; letter-spacing: 3px;
-            color: var(--spark); text-transform: uppercase; animate: blink 2s infinite;
-            pointer-events: none;
+        #exit-hint {
+            position: absolute; top: 40px; font-size: 0.65rem; color: var(--spark);
+            letter-spacing: 3px; text-transform: uppercase; animation: blink 2s infinite;
+            pointer-events: none; text-align: center;
         }
 
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
-
-        .kraken-ui-box {
-            z-index: 5001; text-align: center; width: 90%; max-width: 450px;
+        .kraken-container {
+            width: 90%; max-width: 420px; text-align: center; z-index: 5001;
         }
 
-        .kraken-main-btn {
-            display: inline-block; width: 100%; padding: 20px;
-            background: var(--bio-high); color: #000; font-weight: bold;
-            text-decoration: none; letter-spacing: 2px; border: none;
-            box-shadow: 0 0 20px var(--bio-high); margin-bottom: 15px;
-            transition: 0.3s; cursor: pointer;
-        }
-        .kraken-main-btn:hover { background: #fff; transform: scale(1.02); }
-
-        #details-trigger {
-            background: rgba(255, 69, 0, 0.1); border: 1px solid var(--fire);
-            color: var(--fire); width: 100%; padding: 12px; cursor: pointer;
-            font-size: 0.7rem; letter-spacing: 1px; transition: 0.3s;
+        .kraken-btn {
+            display: block; background: var(--bio-high); color: #000;
+            padding: 22px; font-weight: bold; text-decoration: none;
+            letter-spacing: 2px; border: none; box-shadow: 0 0 30px rgba(0,242,255,0.4);
+            margin-bottom: 15px; cursor: pointer; font-size: 0.9rem;
         }
 
-        #details-content {
-            max-height: 0; overflow: hidden; transition: max-height 0.5s ease-out;
-            background: rgba(0,0,0,0.8); border: 0px solid var(--fire);
-            text-align: left; font-size: 0.75rem; line-height: 1.4;
+        #details-btn {
+            background: rgba(0,0,0,0.8); border: 1px solid var(--bio-high);
+            color: var(--bio-high); width: 100%; padding: 12px; cursor: pointer;
+            font-size: 0.7rem; letter-spacing: 1px;
         }
-        #details-content.open { max-height: 300px; padding: 15px; border-width: 1px; border-top: 0; }
 
-        /* ORIGINAL STORE UI (HIDDEN UNTIL DISMISSED) */
+        #details-pane {
+            max-height: 0; overflow: hidden; transition: max-height 0.4s ease;
+            background: rgba(0, 10, 20, 0.95); border: 0px solid var(--bio-high);
+            text-align: left; font-size: 0.8rem; line-height: 1.5;
+        }
+        #details-pane.active { max-height: 400px; padding: 20px; border-width: 1px; border-top: 0; }
+
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
+
+        /* --- LAYER 2: ORIGINAL STORE STYLES --- */
         header { 
             position: relative; z-index: 100; height: 70px; display: flex; 
             align-items: center; justify-content: space-between; padding: 0 20px; 
@@ -79,9 +77,9 @@
             width: 94%; margin: 10px auto 0 auto; 
             height: calc(100vh - 175px); 
             overflow-y: auto; scrollbar-width: none;
-            padding-bottom: 10px; 
-            transition: opacity 0.5s ease;
+            padding-bottom: 10px; transition: opacity 0.5s ease;
         }
+        #store-grid::-webkit-scrollbar { display: none; }
 
         .card { 
             position: relative; background: rgba(0, 242, 255, 0.03); border: 1px solid rgba(0, 242, 255, 0.2);
@@ -96,79 +94,65 @@
             background: var(--ui-bg); z-index: 150; 
             display: flex; align-items: center; justify-content: space-between;
             border-top: 1px solid var(--bio-high); padding: 0 15px; box-sizing: border-box;
+            transition: all 0.5s ease;
         }
 
         .footer-btn {
             height: 44px; min-width: 100px; padding: 0 15px; background: rgba(0, 242, 255, 0.05); 
             border: 1px solid var(--bio-high); color: var(--bio-high); 
             font-size: 0.65rem; font-family: inherit; letter-spacing: 1px;
-            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
+            text-transform: uppercase;
         }
+        .footer-btn.active { background: var(--bio-high); color: #000; box-shadow: 0 0 15px var(--bio-high); }
 
-        #modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 6000; display: none; background: rgba(0,0,0,0.95); backdrop-filter: blur(15px); align-items: center; justify-content: center; }
-        .modal-content { width: 92%; max-width: 400px; background: #000; border: 1px solid var(--bio-high); padding: 20px 0; }
-        
-        #side-cart { position: fixed; top: 0; right: -100%; width: 85%; max-width: 350px; height: 100%; background: #000; border-left: 1px solid var(--bio-high); z-index: 7000; transition: 0.4s; }
+        #side-cart { position: fixed; top: 0; right: -100%; width: 85%; max-width: 350px; height: 100%; background: #000; border-left: 1px solid var(--bio-high); z-index: 2000; transition: 0.4s; }
         #side-cart.open { right: 0; }
     </style>
 </head>
-<body ondblclick="window.closeModal(); window.toggleCart(false)">
+<body ondblclick="window.toggleCart(false)">
 
-<div id="kraken-landing" onclick="window.enterStore()">
-    <div id="exit-prompt">Click background to enter Olympian Store</div>
+<div id="kraken-overlay" onclick="window.dismissLanding()">
+    <div id="exit-hint">Click outside buttons to continue to Olympian Store</div>
     
-    <div class="kraken-ui-box" onclick="event.stopPropagation()">
-        <a href="https://invite.kraken.com/JDNW/2yyr243k" target="_blank" class="kraken-main-btn">
-            JOIN KRAKEN // CLAIM 200 CAD
+    <div class="kraken-container" onclick="event.stopPropagation()">
+        <a href="https://invite.kraken.com/JDNW/2yyr243k" target="_blank" class="kraken-btn">
+            CLAIM YOUR 200 CAD BTC →
         </a>
         
-        <button id="details-trigger" onclick="window.toggleKrakenDetails()">
-            VIEW REFERRAL PARAMETERS [+]
+        <button id="details-btn" onclick="window.toggleDetails()">
+            INVITATION PARAMETERS [+]
         </button>
         
-        <div id="details-content">
-            <p style="color:var(--bio-high); margin-top:0;"><strong>Earning Bitcoin together is easy.</strong></p>
-            <p>I'm inviting you to join Kraken. If you use my link and start trading, we both get a bonus of up to 200 CAD in Bitcoin.</p>
-            <p><strong>To qualify:</strong> Simply deposit 200 CAD into your new account and make trades totaling 200 CAD. That's it—once those steps are done, the reward hits both our accounts.</p>
-            <p style="text-align:center; color:var(--spark); font-size:0.6rem;">[ MISSION: COLLABORATE & GROW ]</p>
+        <div id="details-pane">
+            <p style="color:var(--bio-high); margin-top:0;"><strong>Earning together is simple.</strong></p>
+            <p>I’m inviting you to join Kraken. When you use this link to get started, we both earn up to **200 CAD in Bitcoin**.</p>
+            <p><strong>The Steps:</strong> Once you deposit 200 CAD and make trades totaling 200 CAD, the bonus is automatically credited to both of our accounts.</p>
+            <p>It's a win-win for anyone looking to grow their crypto portfolio. Let's get started.</p>
         </div>
     </div>
 </div>
 
-<header id="ui-header">
+<header id="ui-header" class="ui-hidden">
     <h1>OLYMPIAN // DEEP SPACE</h1>
-    <div id="cart-trigger" onclick="window.toggleCart(true)" style="cursor:pointer; color:var(--bio-high); font-size:0.7rem;">
+    <div id="cart-trigger" onclick="window.toggleCart(true)" style="cursor:pointer; color:var(--bio-high); font-size:0.75rem;">
         CART (<span id="cart-count">0</span>)
     </div>
 </header>
 
-<div id="store-grid"></div>
+<div id="store-grid" class="ui-hidden"></div>
 
-<div class="control-footer" id="ui-footer">
-    <button class="footer-btn" onclick="window.toggleHoloframe()">CUSTOM</button>
-    <div class="center-controls" style="text-align:center">
-        <div id="sector-display" style="font-size:0.6rem; color:var(--bio-high);">SECTOR: 01</div>
-    </div>
-    <button class="footer-btn" onclick="window.toggleInteractive()">INTERACTIVE 🪐</button>
-</div>
-
-<div id="modal-overlay" onclick="window.closeModal()">
-    <div class="modal-content" onclick="event.stopPropagation()">
-        <div id="modal-img-container" style="padding:10px; text-align:center;"></div>
-        <div id="modal-title" style="color:var(--bio-high); font-size:0.7rem; text-align:center; padding:10px; letter-spacing:1px; text-transform:uppercase;"></div>
-        <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap: 5px; padding:20px;">
-            <button class="footer-btn" style="min-width:auto;" onclick="window.addToCart('M')">M</button>
-            <button class="footer-btn" style="min-width:auto;" onclick="window.addToCart('L')">L</button>
-            <button class="footer-btn" style="min-width:auto;" onclick="window.addToCart('XL')">XL</button>
-        </div>
-    </div>
+<div class="control-footer ui-hidden" id="ui-footer">
+    <button class="footer-btn">CUSTOM</button>
+    <div style="font-size: 0.65rem; color: var(--bio-high); letter-spacing: 2px;">SECTOR 01</div>
+    <button class="footer-btn" id="interactive-toggle" onclick="window.toggleInteractive()">INTERACTIVE 🪐</button>
 </div>
 
 <div id="side-cart">
     <div style="padding:20px; border-bottom:1px solid var(--bio-high); display:flex; justify-content:space-between; color:var(--bio-high)">
         <span>MANIFEST</span><span onclick="window.toggleCart(false)" style="cursor:pointer;">×</span>
     </div>
-    <div id="cart-items" style="padding:20px; font-size:0.75rem;"></div>
+    <div id="cart-items" style="padding:20px;"></div>
 </div>
 
 <script type="importmap">
@@ -189,87 +173,84 @@
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
 
-    const systemGroup = new THREE.Group();
-    scene.add(systemGroup);
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enabled = false;
+    controls.enableDamping = true;
 
-    // --- THE GEOGRAPHIC MAP GRID (ALIVE) ---
-    const gridGeo = new THREE.PlaneGeometry(5000, 5000, 40, 40);
-    const gridMat = new THREE.MeshBasicMaterial({ 
-        color: 0x00f2ff, 
-        wireframe: true, 
-        transparent: true, 
-        opacity: 0.15 
-    });
-    const geoGrid = new THREE.Mesh(gridGeo, gridMat);
+    // Star Field
+    const starGeo = new THREE.BufferGeometry();
+    const starCoords = [];
+    for (let i = 0; i < 12000; i++) {
+        starCoords.push((Math.random() - 0.5) * 10000, (Math.random() - 0.5) * 10000, (Math.random() - 0.5) * 10000);
+    }
+    starGeo.setAttribute('position', new THREE.Float32BufferAttribute(starCoords, 3));
+    const stars = new THREE.Points(starGeo, new THREE.PointsMaterial({ color: 0xffffff, size: 1.1 }));
+    scene.add(stars);
+
+    // Geographic Pulse Grid (The Landing Visual)
+    const geoGridGeo = new THREE.PlaneGeometry(6000, 6000, 50, 50);
+    const geoGridMat = new THREE.MeshBasicMaterial({ color: 0x00f2ff, wireframe: true, transparent: true, opacity: 0.15 });
+    const geoGrid = new THREE.Mesh(geoGridGeo, geoGridMat);
     geoGrid.rotation.x = -Math.PI / 2;
-    geoGrid.position.y = -500;
+    geoGrid.position.y = -1000;
     scene.add(geoGrid);
 
-    // Data Points (The pulsing geographic markers)
-    const pointsGeo = new THREE.BufferGeometry();
-    const pointsCoords = [];
-    for(let i=0; i<100; i++) {
-        pointsCoords.push((Math.random()-0.5)*4000, -495, (Math.random()-0.5)*4000);
-    }
-    pointsGeo.setAttribute('position', new THREE.Float32BufferAttribute(pointsCoords, 3));
-    const pointsMat = new THREE.PointsMaterial({ color: 0xff4500, size: 15, transparent: true });
-    const geoPoints = new THREE.Points(pointsGeo, pointsMat);
-    scene.add(geoPoints);
+    // Planets
+    const systemGroup = new THREE.Group();
+    scene.add(systemGroup);
+    const sun = new THREE.Mesh(new THREE.SphereGeometry(75, 32, 32), new THREE.MeshStandardMaterial({ emissive: 0xff4500, emissiveIntensity: 2 }));
+    systemGroup.add(sun);
 
-    camera.position.set(0, 800, 1500);
+    scene.add(new THREE.PointLight(0xffffff, 10, 5000));
+    scene.add(new THREE.AmbientLight(0xffffff, 0.4));
+    camera.position.set(0, 1200, 2800);
 
     function animate() {
         requestAnimationFrame(animate);
         const time = Date.now() * 0.001;
-        
-        // Make the grid "breathe"
-        geoGrid.material.opacity = 0.1 + Math.abs(Math.sin(time)) * 0.1;
-        geoPoints.material.opacity = 0.5 + Math.sin(time * 2) * 0.5;
-        
+        geoGrid.material.opacity = 0.05 + Math.abs(Math.sin(time * 0.5)) * 0.15;
+        stars.rotation.y += 0.0001;
+        if (controls.enabled) controls.update();
         renderer.render(scene, camera);
     }
     animate();
 
-    // --- UI LOGIC ---
-    window.enterStore = function() {
-        const landing = document.getElementById('kraken-landing');
-        landing.style.transform = "translateY(-100%)";
-        landing.style.opacity = "0";
-        setTimeout(() => landing.style.display = "none", 800);
+    // --- UI CONTROLS ---
+    window.dismissLanding = function() {
+        document.getElementById('kraken-overlay').style.transform = "translateY(-100%)";
+        const ui = [document.getElementById('ui-header'), document.getElementById('store-grid'), document.getElementById('ui-footer')];
+        ui.forEach(el => el.classList.remove('ui-hidden'));
+        // Fade out geo grid slowly
+        const fade = setInterval(() => {
+            geoGrid.material.opacity -= 0.01;
+            if(geoGrid.material.opacity <= 0) {
+                scene.remove(geoGrid);
+                clearInterval(fade);
+            }
+        }, 50);
     };
 
-    window.toggleKrakenDetails = function() {
-        const content = document.getElementById('details-content');
-        const btn = document.getElementById('details-trigger');
-        content.classList.toggle('open');
-        btn.innerText = content.classList.contains('open') ? "CLOSE DETAILS [-]" : "VIEW REFERRAL PARAMETERS [+]";
+    window.toggleDetails = function() {
+        const pane = document.getElementById('details-pane');
+        const btn = document.getElementById('details-btn');
+        pane.classList.toggle('active');
+        btn.innerText = pane.classList.contains('active') ? "INVITATION PARAMETERS [-]" : "INVITATION PARAMETERS [+]";
     };
 
-    // Store logic (simulated for brevity)
-    window.allProducts = [
-        { name: "Prompt: OLYMPIAN V1", images: ["https://via.placeholder.com/200/00f2ff/000000?text=HOODIE+1"] },
-        { name: "Prompt: DEEP SPACE", images: ["https://via.placeholder.com/200/ff4500/000000?text=HOODIE+2"] }
-    ];
-
-    function renderGrid() {
-        const grid = document.getElementById('store-grid');
-        grid.innerHTML = window.allProducts.map(p => `
-            <div class="card" onclick="window.openModal('${p.name}', '${p.images[0]}')">
-                <img src="${p.images[0]}">
-                <div class="grid-label">${p.name.split(':')[1]}</div>
-            </div>`).join('');
-    }
-    
-    window.openModal = (name, img) => {
-        document.getElementById('modal-overlay').style.display = 'flex';
-        document.getElementById('modal-title').innerText = name;
-        document.getElementById('modal-img-container').innerHTML = `<img src="${img}" style="width:80%">`;
+    window.toggleInteractive = function() {
+        const isInter = document.getElementById('interactive-toggle').classList.toggle('active');
+        const ui = [document.getElementById('ui-header'), document.getElementById('store-grid')];
+        ui.forEach(el => el.classList.toggle('ui-hidden', isInter));
+        controls.enabled = isInter;
     };
-    
-    window.closeModal = () => document.getElementById('modal-overlay').style.display = 'none';
+
     window.toggleCart = (show) => document.getElementById('side-cart').classList.toggle('open', show);
 
-    renderGrid();
+    // Initial store render
+    const grid = document.getElementById('store-grid');
+    for(let i=0; i<8; i++) {
+        grid.innerHTML += `<div class="card"><div class="grid-label">OLYMPIAN HOODIE v${i+1}</div></div>`;
+    }
 </script>
 </body>
 </html>
