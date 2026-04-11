@@ -47,10 +47,9 @@
             position: relative; z-index: 5; display: none; opacity: 0;
             grid-template-columns: repeat(2, 1fr); gap: 15px; 
             width: 95%; margin: 15px auto 0 auto; 
-            /* Height = Total View - Header (60px) - Footer (100px) - 2mm Buffer */
             height: calc(100vh - 160px - 2mm); 
             overflow-y: auto; scrollbar-width: none;
-            padding-bottom: 2mm; /* Added 2mm buffer inside the scroll area */
+            padding-bottom: 2mm; 
             transition: opacity 1s;
         }
         #store-grid::-webkit-scrollbar { display: none; }
@@ -107,7 +106,7 @@
 </div>
 
 <header id="ui-header">
-    <h1>OLYMPIAN // SOLAR OBSERVER</h1>
+    <h1>OLYMPIAN // SYSTEM OBSERVER</h1>
     <div id="cart-trigger" onclick="window.toggleCart(true)" style="color:var(--bio-high); border:1px solid var(--bio-high); padding:8px 15px; font-size:0.8rem; cursor:pointer;">MANIFEST (0)</div>
 </header>
 
@@ -123,6 +122,39 @@
     </div>
 </div>
 
+<div id="holoframe-container">
+    <span class="close-holo" onclick="window.toggleHoloframe()">×</span>
+    <div class="glass-frame">
+        <iframe src="https://georgia-aquarium.vercel.app/" style="width:100%; height:100%; border:none;"></iframe>
+    </div>
+</div>
+
+<div id="modal-overlay" onclick="window.closeModal()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <span class="close-modal" onclick="window.closeModal()">×</span>
+        <div id="modal-img-container" style="padding:10px;"></div>
+        <div style="padding:0 20px;">
+            <div id="modal-title" style="color:var(--bio-high); font-size:0.8rem; margin-bottom:10px; text-transform:uppercase; text-align:center;"></div>
+            <div class="size-grid">
+                <button class="size-btn" onclick="window.selectSize(this, 'S')">S</button>
+                <button class="size-btn" onclick="window.selectSize(this, 'M')">M</button>
+                <button class="size-btn" onclick="window.selectSize(this, 'L')">L</button>
+                <button class="size-btn" onclick="window.selectSize(this, 'XL')">XL</button>
+                <button class="size-btn" onclick="window.selectSize(this, '2XL')">2XL</button>
+            </div>
+            <button onclick="window.addToCart()" style="width:100%; padding:15px; background:var(--bio-high); border:none; font-weight:bold; cursor:pointer; color:#000;">UPLOAD TO MANIFEST</button>
+        </div>
+    </div>
+</div>
+
+<div id="side-cart">
+    <div style="padding:20px; border-bottom:1px solid var(--bio-high); display:flex; justify-content:space-between;"><span style="color:var(--bio-high)">MANIFEST</span><span onclick="window.toggleCart(false)" style="cursor:pointer;">×</span></div>
+    <div id="cart-items" style="padding:20px; font-size:0.7rem;"></div>
+    <div style="position:absolute; bottom:20px; width:100%;">
+        <a href="https://buy.stripe.com/4gMaEWdE3dha4GUgBAcIE01" class="pay-link" style="background:#fff; color:#000;" target="_blank">STRIPE</a>
+    </div>
+</div>
+
 <script type="importmap">
     { "imports": { "three": "https://unpkg.com/three@0.160.0/build/three.module.js" } }
 </script>
@@ -130,74 +162,99 @@
 <script type="module">
     import * as THREE from 'three';
 
+    // UI & STORE DATA
     window.allProducts = []; 
     window.cart = []; 
     window.itemsPerPage = 24; 
     window.selectedSize = null; 
     window.activeProduct = null;
 
+    // --- SYSTEM ENGINE ---
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 2000);
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 10000);
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(window.devicePixelRatio);
     document.body.appendChild(renderer.domElement);
 
     const textureLoader = new THREE.TextureLoader();
-    const sunTexture = textureLoader.load('1000000142.jpg');
-    sunTexture.wrapS = sunTexture.wrapT = THREE.RepeatWrapping;
 
-    const coreGeo = new THREE.SphereGeometry(100, 64, 64);
-    const coreMat = new THREE.MeshStandardMaterial({
-        map: sunTexture,
-        emissive: new THREE.Color(0xff4500),
-        emissiveIntensity: 1.5,
-        metalness: 0,
-        roughness: 1
-    });
-    const sun = new THREE.Mesh(coreGeo, coreMat);
-    scene.add(sun);
+    // Background
+    const bgTexture = textureLoader.load('8k_stars_milky_way.jpg');
+    scene.background = bgTexture;
 
-    const coronaGeo = new THREE.SphereGeometry(105, 64, 64);
-    const coronaMat = new THREE.MeshBasicMaterial({
-        color: 0xffaa00,
-        transparent: true,
-        opacity: 0.2,
-        side: THREE.BackSide,
-        blending: THREE.AdditiveBlending
-    });
-    const corona = new THREE.Mesh(coronaGeo, coronaMat);
-    scene.add(corona);
+    const systemGroup = new THREE.Group();
+    scene.add(systemGroup);
 
-    const flareLight = new THREE.PointLight(0xffaa00, 5, 1000);
-    scene.add(flareLight);
-    scene.add(new THREE.AmbientLight(0x202020, 0.5));
+    function createPlanet(name, size, textureFile, distance, hasRings = false) {
+        const geometry = new THREE.SphereGeometry(size, 64, 64);
+        const material = new THREE.MeshStandardMaterial({
+            map: textureLoader.load(textureFile),
+            metalness: 0.4,
+            roughness: 0.7
+        });
+        const planet = new THREE.Mesh(geometry, material);
+        planet.position.x = distance;
+        planet.name = name;
+        
+        if (hasRings) {
+            const ringGeo = new THREE.RingGeometry(size * 1.4, size * 2.2, 64);
+            const ringMat = new THREE.MeshBasicMaterial({
+                map: textureLoader.load('8k_saturn_ring_alpha.png'),
+                side: THREE.DoubleSide,
+                transparent: true,
+                opacity: 0.8
+            });
+            const rings = new THREE.Mesh(ringGeo, ringMat);
+            rings.rotation.x = Math.PI / 2;
+            planet.add(rings);
+        }
+        systemGroup.add(planet);
+        return planet;
+    }
 
-    camera.position.set(0, 50, 280);
-    camera.lookAt(0, 0, 0);
+    // Mapping Assets
+    const sun = createPlanet("Sun", 50, '1000000142.jpg', 0);
+    sun.material.emissive = new THREE.Color(0xffaa00);
+    sun.material.emissiveIntensity = 1.2;
+
+    const mercury = createPlanet("Mercury", 5, '1000000128.jpg', 80);
+    const venus = createPlanet("Venus", 10, '1000000129.jpg', 120);
+    const earth = createPlanet("Earth", 11, '8k_earth_daymap.jpg', 170);
+    const mars = createPlanet("Mars", 7, '1000000131.jpg', 220);
+    const jupiter = createPlanet("Jupiter", 25, '1000000132.jpg', 320);
+    const saturn = createPlanet("Saturn", 22, '1000000133.jpg', 450, true);
+    const uranus = createPlanet("Uranus", 15, '2k_uranus.jpg', 550);
+    const neptune = createPlanet("Neptune", 15, '2k_neptune.jpg', 630);
+
+    const pointLight = new THREE.PointLight(0xffffff, 5, 1000);
+    scene.add(pointLight);
+    scene.add(new THREE.AmbientLight(0x404040, 0.5));
+
+    camera.position.set(0, 200, 800);
+    camera.lookAt(0,0,0);
 
     const clock = new THREE.Clock();
 
     function animate() {
         requestAnimationFrame(animate);
         const t = clock.getElapsedTime();
-        sunTexture.offset.x += 0.0005;
-        sunTexture.offset.y += 0.0002;
-        sun.rotation.y += 0.0015;
-        const pulse = 1 + Math.sin(t * 0.8) * 0.02;
-        sun.scale.set(pulse, pulse, pulse);
-        coreMat.emissiveIntensity = 1.2 + Math.sin(t * 2) * 0.3;
-        corona.scale.set(pulse * 1.05, pulse * 1.05, pulse * 1.05);
-        coronaMat.opacity = 0.15 + Math.sin(t * 1.5) * 0.05;
-        flareLight.intensity = 4 + Math.random() * 2;
-        flareLight.position.x = Math.sin(t * 0.5) * 20;
+        
+        systemGroup.children.forEach(p => {
+            p.rotation.y += 0.005;
+        });
+
+        // "Alive" Pulse for the Sun
+        sun.material.emissiveIntensity = 1.0 + Math.sin(t * 1.5) * 0.4;
+        pointLight.intensity = 4 + Math.random() * 1.5;
+
         renderer.render(scene, camera);
     }
     animate();
 
+    // --- UI LOGIC ---
     window.enterSystem = function() {
         const overlay = document.getElementById('landing-overlay');
-        document.getElementById('landing-prompt').innerText = "CALIBRATING SOLAR CORE...";
         overlay.style.opacity = '0';
         setTimeout(() => {
             overlay.style.display = 'none';
