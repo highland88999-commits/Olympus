@@ -7,217 +7,304 @@
     <style>
         :root { 
             --neon-cyan: #00f2ff;
-            --ui-bg: rgba(0, 0, 0, 0.9);
+            --neon-orange: #ff4500;
+            --ui-bg: rgba(0, 0, 0, 0.92);
         }
-
         body, html { 
             margin: 0; padding: 0; width: 100%; height: 100%; 
             background: #000; font-family: 'Courier New', monospace; 
             color: var(--neon-cyan); overflow: hidden; 
         }
-        
         canvas { position: fixed; top: 0; left: 0; z-index: 0; }
         .ui-hidden { opacity: 0 !important; pointer-events: none !important; }
 
-        /* --- LAYER 1: KRAKEN LANDING --- */
+        /* Kraken Landing */
         #landing-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 5000; background: rgba(0,0,0,0.8);
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            transition: 0.8s ease; backdrop-filter: blur(10px);
+            z-index: 5000; background: rgba(0,0,0,0.85); display: flex;
+            align-items: center; justify-content: center; transition: 0.8s ease;
+            backdrop-filter: blur(12px);
         }
-
-        .kraken-card { width: 90%; max-width: 400px; text-align: center; }
+        .kraken-card { width: 90%; max-width: 420px; text-align: center; }
         .kraken-btn {
             display: block; background: var(--neon-cyan); color: #000;
-            padding: 20px; font-weight: bold; text-decoration: none;
-            letter-spacing: 2px; border: none; box-shadow: 0 0 20px var(--neon-cyan);
-            margin-bottom: 15px; text-transform: uppercase;
+            padding: 22px; font-weight: bold; letter-spacing: 2px;
+            margin-bottom: 15px; cursor: pointer; text-transform: uppercase;
+            box-shadow: 0 0 30px rgba(0,242,255,0.5);
         }
-        #enter-btn {
+        #details-btn {
             background: transparent; border: 1px solid var(--neon-cyan);
             color: var(--neon-cyan); width: 100%; padding: 12px; cursor: pointer;
-            letter-spacing: 3px; font-size: 0.7rem;
         }
+        #details-pane {
+            max-height: 0; overflow: hidden; transition: max-height 0.4s ease;
+            background: rgba(0,10,20,0.95); margin-top: 10px; padding: 0 20px;
+        }
+        #details-pane.active { max-height: 420px; padding: 20px; }
 
-        /* --- LAYER 2: STORE UI --- */
+        /* Store UI */
         header { 
-            position: fixed; top: 0; width: 100%; z-index: 100; height: 70px; 
-            display: flex; align-items: center; justify-content: space-between; 
-            padding: 0 30px; background: var(--ui-bg); border-bottom: 1px solid var(--neon-cyan); 
-            box-sizing: border-box; transition: 0.5s;
+            position: fixed; top: 0; left: 0; width: 100%; height: 70px; z-index: 100;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 30px; background: var(--ui-bg); border-bottom: 1px solid var(--neon-cyan);
         }
-
         #store-grid { 
-            position: relative; z-index: 5; display: grid;
-            grid-template-columns: repeat(2, 1fr); gap: 20px; 
-            width: 90%; margin: 90px auto 100px auto; 
+            position: relative; z-index: 10; display: grid;
+            grid-template-columns: repeat(2, 1fr); gap: 20px;
+            width: 92%; margin: 90px auto 100px; 
             height: calc(100vh - 190px); overflow-y: auto; scrollbar-width: none;
         }
-
-        .product-card { 
-            background: rgba(0, 242, 255, 0.05); border: 1px solid rgba(0, 242, 255, 0.2);
-            padding: 15px; text-align: center; cursor: pointer;
+        .card {
+            background: rgba(0,242,255,0.03); border: 1px solid rgba(0,242,255,0.25);
+            aspect-ratio: 0.85/1; cursor: pointer; display: flex; align-items: center; justify-content: center;
+            transition: 0.3s;
         }
-        .product-card img { width: 100%; height: auto; mix-blend-mode: screen; }
+        .card:hover { border-color: var(--neon-cyan); box-shadow: 0 0 20px var(--neon-cyan); }
+        .card img { width: 88%; height: 88%; object-fit: contain; mix-blend-mode: screen; }
+        .grid-label {
+            position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,26,51,0.95);
+            font-size: 0.55rem; padding: 6px; text-align: center; border-top: 1px solid var(--neon-cyan);
+        }
 
         footer {
-            position: fixed; bottom: 0; width: 100%; height: 90px;
-            background: var(--ui-bg); z-index: 100; display: flex; 
-            align-items: center; justify-content: space-between;
-            border-top: 1px solid var(--neon-cyan); padding: 0 30px; box-sizing: border-box;
+            position: fixed; bottom: 0; left: 0; width: 100%; height: 90px; z-index: 100;
+            background: var(--ui-bg); display: flex; align-items: center; justify-content: space-between;
+            padding: 0 25px; border-top: 1px solid var(--neon-cyan);
         }
+        .footer-btn {
+            border: 1px solid var(--neon-cyan); background: transparent; color: var(--neon-cyan);
+            padding: 10px 18px; cursor: pointer; font-size: 0.65rem; letter-spacing: 1px;
+        }
+        .footer-btn.active { background: var(--neon-cyan); color: #000; box-shadow: 0 0 15px var(--neon-cyan); }
 
-        .btn-ui { border: 1px solid var(--neon-cyan); background: transparent; color: var(--neon-cyan); padding: 10px 20px; cursor: pointer; text-decoration: none; font-size: 0.7rem; }
-
-        /* --- MODAL --- */
-        #modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 6000; background: rgba(0,0,0,0.95); display: none; align-items: center; justify-content: center; }
-        .modal-box { width: 90%; max-width: 400px; border: 1px solid var(--neon-cyan); background: #000; padding: 30px; text-align: center; }
-        .size-row { display: flex; justify-content: center; gap: 10px; margin: 20px 0; }
-        .size-btn { border: 1px solid var(--neon-cyan); color: #fff; background: none; padding: 10px 15px; cursor: pointer; }
-        .size-btn.active { background: var(--neon-cyan); color: #000; }
+        /* Modal */
+        #modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 6000;
+            background: rgba(0,0,0,0.95); display: none; align-items: center; justify-content: center;
+        }
+        .modal-content {
+            background: #000; border: 1px solid var(--neon-cyan); padding: 30px; width: 92%; max-width: 420px;
+        }
+        .size-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 25px 0;
+        }
+        .size-btn {
+            border: 1px solid var(--neon-cyan); background: transparent; color: white;
+            padding: 12px; cursor: pointer; font-size: 0.65rem;
+        }
+        .size-btn.selected { background: var(--neon-cyan); color: #000; font-weight: bold; }
     </style>
 </head>
-<body>
+<body ondblclick="closeModal(); toggleCart(false)">
 
-<div id="landing-overlay">
-    <div class="kraken-card">
-        <a href="https://invite.kraken.com/JDNW/2yyr243k" target="_blank" class="kraken-btn">CLAIM 200 CAD BTC</a>
-        <button id="enter-btn" onclick="dismissLanding()">ENTER SOLAR CORE</button>
+<!-- Kraken Landing -->
+<div id="landing-overlay" onclick="dismissLanding()">
+    <div class="kraken-card" onclick="event.stopPropagation()">
+        <a href="https://invite.kraken.com/JDNW/2yyr243k" target="_blank" class="kraken-btn">CLAIM YOUR 200 CAD BTC →</a>
+        <button id="details-btn" onclick="toggleDetails()">INVITATION PARAMETERS [+]</button>
+        <div id="details-pane">
+            <p style="color:var(--neon-cyan);"><strong>Earning together is simple.</strong></p>
+            <p>Use this link to join Kraken. Deposit & trade 200 CAD and we both receive up to 200 CAD in Bitcoin.</p>
+        </div>
     </div>
 </div>
 
+<!-- Header -->
 <header id="ui-header" class="ui-hidden">
-    <div style="letter-spacing: 5px;">OLYMPIAN // V1</div>
-    <div id="cart-trigger">MANIFEST (<span id="cart-count">0</span>)</div>
+    <div style="letter-spacing:5px;">OLYMPIAN // SOLAR CORE</div>
+    <div id="cart-trigger" onclick="toggleCart(true)" style="cursor:pointer;">
+        CART (<span id="cart-count">0</span>)
+    </div>
 </header>
 
-<div id="store-grid" class="ui-hidden">
-    <div class="product-card" onclick="openModal('CORE HOODIE V1', './assets/1000000145.jpg')">
-        <img src="./assets/1000000145.jpg">
-        <div style="font-size:0.6rem; margin-top:10px;">CORE_ASSET_V1</div>
-    </div>
-    <div class="product-card" onclick="openModal('CORE HOODIE V2', './assets/1000000147.jpg')">
-        <img src="./assets/1000000147.jpg">
-        <div style="font-size:0.6rem; margin-top:10px;">CORE_ASSET_V2</div>
-    </div>
-</div>
+<!-- Store Grid -->
+<div id="store-grid" class="ui-hidden"></div>
 
+<!-- Footer -->
 <footer id="ui-footer" class="ui-hidden">
-    <a href="mailto:stakeme10000@gmail.com" class="btn-ui">CUSTOM DESIGN</a>
-    <button class="btn-ui" onclick="toggleSim()">INTERACTIVE 🪐</button>
+    <a href="mailto:stakeme10000@gmail.com?subject=Custom Design Inquiry" class="footer-btn">CUSTOM DESIGN</a>
+    <div class="center-controls" id="center-ui">
+        <div id="sector-display">SECTOR 01 / 01</div>
+        <input type="range" id="sector-slider" class="sector-slider" min="1" max="1" value="1" style="width:100%;">
+    </div>
+    <button class="footer-btn" id="interactive-toggle" onclick="toggleInteractive()">INTERACTIVE 🪐</button>
 </footer>
 
-<div id="modal" onclick="closeModal()">
-    <div class="modal-box" onclick="event.stopPropagation()">
-        <div id="modal-title">SELECT SIZE</div>
-        <div class="size-row">
-            <button class="size-btn" onclick="setSize(this)">S</button>
-            <button class="size-btn" onclick="setSize(this)">M</button>
-            <button class="size-btn" onclick="setSize(this)">L</button>
-            <button class="size-btn" onclick="setSize(this)">XL</button>
+<!-- Size Modal -->
+<div id="modal-overlay" onclick="closeModal()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <div id="modal-title" style="margin-bottom:20px; font-size:0.9rem;">SELECT SIZE</div>
+        <div class="size-grid">
+            <button class="size-btn" onclick="selectSize(this,'3XS')">3XS</button>
+            <button class="size-btn" onclick="selectSize(this,'2XS')">2XS</button>
+            <button class="size-btn" onclick="selectSize(this,'XS')">XS</button>
+            <button class="size-btn" onclick="selectSize(this,'S')">S</button>
+            <button class="size-btn" onclick="selectSize(this,'M')">M</button>
+            <button class="size-btn" onclick="selectSize(this,'L')">L</button>
+            <button class="size-btn" onclick="selectSize(this,'XL')">XL</button>
+            <button class="size-btn" onclick="selectSize(this,'2XL')">2XL</button>
+            <button class="size-btn" onclick="selectSize(this,'3XL')">3XL</button>
+            <button class="size-btn" onclick="selectSize(this,'4XL')">4XL</button>
+            <button class="size-btn" onclick="selectSize(this,'5XL')">5XL</button>
+            <button class="size-btn" onclick="selectSize(this,'6XL')">6XL</button>
         </div>
-        <button class="kraken-btn" style="width:100%;" onclick="addToCart()">ADD TO MANIFEST</button>
+        <button onclick="addToCart()" style="width:100%; padding:16px; background:var(--neon-cyan); color:#000; border:none; font-weight:bold; cursor:pointer;">UPLOAD TO CART</button>
     </div>
 </div>
 
 <script type="importmap">
-    { "imports": { "three": "https://unpkg.com/three@0.160.0/build/three.module.js", "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/" } }
+{ "imports": { 
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+}}
 </script>
 
 <script type="module">
-    import * as THREE from 'three';
-    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
-    // --- L3: SOLAR CORE ENGINE ---
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 15000);
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    document.body.appendChild(renderer.domElement);
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(75, innerWidth/innerHeight, 1, 20000);
+const renderer = new THREE.WebGLRenderer({antialias:true, alpha:true});
+renderer.setSize(innerWidth, innerHeight);
+document.body.appendChild(renderer.domElement);
 
-    const controls = new OrbitControls(camera, renderer.domElement);
-    controls.enabled = false;
-    camera.position.set(0, 1000, 2500);
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enabled = false;
+camera.position.set(0, 1200, 2800);
 
-    const texLoader = new THREE.TextureLoader();
-    const path = './assets/';
+const tex = new THREE.TextureLoader();
+const path = './assets/';
 
-    // Background Starfield
-    const starGeo = new THREE.SphereGeometry(8000, 64, 64);
-    const starMat = new THREE.MeshBasicMaterial({ map: texLoader.load(path + '1000000141.jpg'), side: THREE.BackSide });
-    scene.add(new THREE.Mesh(starGeo, starMat));
+scene.background = tex.load(path + '1000000141.jpg');
 
-    const planets = [];
-    const sunGeo = new THREE.SphereGeometry(200, 64, 64);
-    const sunMat = new THREE.MeshBasicMaterial({ map: texLoader.load(path + '1000000142.jpg') });
-    const sun = new THREE.Mesh(sunGeo, sunMat);
-    scene.add(sun);
+// Sun
+const sun = new THREE.Mesh(
+    new THREE.SphereGeometry(180, 64, 64),
+    new THREE.MeshBasicMaterial({ map: tex.load(path + '1000000142.jpg') })
+);
+scene.add(sun);
 
-    function createPlanet(radius, texture, distance, speed, atmosTex = null, ringTex = null) {
-        const pivot = new THREE.Group();
-        scene.add(pivot);
-        const mesh = new THREE.Mesh(new THREE.SphereGeometry(radius, 64, 64), new THREE.MeshStandardMaterial({ map: texLoader.load(path + texture) }));
-        mesh.position.x = distance;
-        pivot.add(mesh);
+// Planets with proper hierarchy
+const planets = [];
 
-        if(atmosTex) {
-            const atmos = new THREE.Mesh(new THREE.SphereGeometry(radius + 2, 64, 64), new THREE.MeshStandardMaterial({ map: texLoader.load(path + atmosTex), transparent: true, opacity: 0.4 }));
-            mesh.add(atmos);
-        }
-        if(ringTex) {
-            const ring = new THREE.Mesh(new THREE.RingGeometry(radius*1.5, radius*2.5, 64), new THREE.MeshBasicMaterial({ map: texLoader.load(path + ringTex), side: THREE.DoubleSide, transparent: true }));
-            ring.rotation.x = Math.PI/2;
-            mesh.add(ring);
-        }
-        const data = { pivot, mesh, speed };
-        planets.push(data);
-        return data;
+function addPlanet(radius, texFile, dist, speed, cloudFile=null, ringFile=null) {
+    const pivot = new THREE.Group();
+    scene.add(pivot);
+    const mesh = new THREE.Mesh(
+        new THREE.SphereGeometry(radius, 64, 64),
+        new THREE.MeshStandardMaterial({ map: tex.load(path + texFile) })
+    );
+    mesh.position.x = dist;
+    pivot.add(mesh);
+
+    if (cloudFile) {
+        const cloud = new THREE.Mesh(
+            new THREE.SphereGeometry(radius + 3, 64, 64),
+            new THREE.MeshStandardMaterial({ map: tex.load(path + cloudFile), transparent: true, opacity: 0.35 })
+        );
+        mesh.add(cloud);
+    }
+    if (ringFile) {
+        const ring = new THREE.Mesh(
+            new THREE.RingGeometry(radius*1.45, radius*2.4, 64),
+            new THREE.MeshBasicMaterial({ map: tex.load(path + ringFile), side: THREE.DoubleSide, transparent: true })
+        );
+        ring.rotation.x = Math.PI / 2;
+        mesh.add(ring);
     }
 
-    createPlanet(12, '1000000128.jpg', 400, 0.012); // Mercury
-    createPlanet(25, '1000000129.jpg', 600, 0.009, '1000000130.jpg'); // Venus
-    const earth = createPlanet(28, '1000000138.jpg', 850, 0.007, '1000000135.jpg'); // Earth
-    
-    const moon = new THREE.Mesh(new THREE.SphereGeometry(6, 32, 32), new THREE.MeshStandardMaterial({ map: texLoader.load(path + '1000000143.jpg') }));
-    moon.position.x = 60;
-    earth.mesh.add(moon); // Moon orbits Earth
+    planets.push({pivot, mesh, speed});
+}
 
-    createPlanet(18, '1000000131.jpg', 1100, 0.006); // Mars
-    createPlanet(75, '1000000132.jpg', 1500, 0.003); // Jupiter
-    createPlanet(65, '1000000133.jpg', 1900, 0.002, null, '1000000134.png'); // Saturn
-    createPlanet(50, '1000000136.jpg', 2300, 0.001); // Neptune
+// Build System
+addPlanet(18, '1000000128.jpg', 420, 0.018);           // Mercury
+addPlanet(32, '1000000129.jpg', 620, 0.012, '1000000130.jpg'); // Venus
+const earthGroup = addPlanet(35, '1000000138.jpg', 850, 0.008, '1000000135.jpg'); // Earth + Atmos
 
-    scene.add(new THREE.PointLight(0xffffff, 2, 10000));
-    scene.add(new THREE.AmbientLight(0xffffff, 0.2));
+// Moon
+const moon = new THREE.Mesh(
+    new THREE.SphereGeometry(8, 32, 32),
+    new THREE.MeshStandardMaterial({ map: tex.load(path + '1000000143.jpg') })
+);
+moon.position.set(65, 0, 0);
+earthGroup.mesh.add(moon);
 
-    function animate() {
-        requestAnimationFrame(animate);
-        sun.rotation.y += 0.002;
-        planets.forEach(p => { p.pivot.rotation.y += p.speed; p.mesh.rotation.y += 0.005; });
-        controls.update();
-        renderer.render(scene, camera);
-    }
-    animate();
+addPlanet(25, '1000000131.jpg', 1150, 0.006);          // Mars
+addPlanet(95, '1000000132.jpg', 1600, 0.003);          // Jupiter
+addPlanet(82, '1000000133.jpg', 2050, 0.002, null, '1000000134.png'); // Saturn + Rings
+addPlanet(68, '1000000136.jpg', 2550, 0.001);          // Neptune
 
-    window.dismissLanding = () => {
-        document.getElementById('landing-overlay').style.display = 'none';
-        ['ui-header', 'store-grid', 'ui-footer'].forEach(id => document.getElementById(id).classList.remove('ui-hidden'));
-    };
+scene.add(new THREE.PointLight(0xffffff, 2.8));
+scene.add(new THREE.AmbientLight(0xaaaaaa, 0.3));
 
-    window.toggleSim = () => {
-        const isInt = !controls.enabled;
-        controls.enabled = isInt;
-        ['ui-header', 'store-grid'].forEach(id => document.getElementById(id).classList.toggle('ui-hidden', isInt));
-    };
-</script>
+function animate() {
+    requestAnimationFrame(animate);
+    sun.rotation.y += 0.002;
+    planets.forEach(p => {
+        p.pivot.rotation.y += p.speed;
+        p.mesh.rotation.y += 0.004;
+    });
+    if (controls.enabled) controls.update();
+    renderer.render(scene, camera);
+}
+animate();
 
-<script>
-    let cart = 0;
-    window.openModal = (title) => { document.getElementById('modal-title').innerText = title; document.getElementById('modal').style.display = 'flex'; };
-    window.closeModal = () => { document.getElementById('modal').style.display = 'none'; };
-    window.setSize = (btn) => { document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active'); };
-    window.addToCart = () => { cart++; document.getElementById('cart-count').innerText = cart; closeModal(); };
+// UI
+window.dismissLanding = () => {
+    document.getElementById('landing-overlay').style.transform = 'translateY(-100%)';
+    setTimeout(() => {
+        document.querySelectorAll('.ui-hidden').forEach(el => el.classList.remove('ui-hidden'));
+        fetchStore();
+    }, 800);
+};
+
+window.toggleDetails = () => {
+    const pane = document.getElementById('details-pane');
+    pane.classList.toggle('active');
+    document.getElementById('details-btn').innerText = pane.classList.contains('active') ? 'INVITATION PARAMETERS [-]' : 'INVITATION PARAMETERS [+]';
+};
+
+window.toggleInteractive = () => {
+    const active = !controls.enabled;
+    controls.enabled = active;
+    document.getElementById('interactive-toggle').classList.toggle('active', active);
+    document.getElementById('store-grid').classList.toggle('ui-hidden', active);
+};
+
+let cart = [];
+window.openModal = (name) => {
+    window.currentProduct = name;
+    document.getElementById('modal-overlay').style.display = 'flex';
+};
+window.closeModal = () => document.getElementById('modal-overlay').style.display = 'none';
+
+window.selectSize = (btn, size) => {
+    document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    window.selectedSize = size;
+};
+
+window.addToCart = () => {
+    if (!window.selectedSize) return alert("SELECT SIZE");
+    cart.push({name: window.currentProduct, size: window.selectedSize});
+    document.getElementById('cart-count').innerText = cart.length;
+    closeModal();
+};
+
+async function fetchStore() {
+    const grid = document.getElementById('store-grid');
+    grid.innerHTML = `
+        <div class="card" onclick="openModal('OLYMPIAN CORE HOODIE V1')"><img src="./assets/1000000145.jpg"><div class="grid-label">CORE HOODIE V1</div></div>
+        <div class="card" onclick="openModal('OLYMPIAN CORE HOODIE V2')"><img src="./assets/1000000147.jpg"><div class="grid-label">CORE HOODIE V2</div></div>
+    `;
+}
+
+window.addEventListener('resize', () => {
+    camera.aspect = innerWidth/innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(innerWidth, innerHeight);
+});
 </script>
 </body>
 </html>
