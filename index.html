@@ -3,53 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>OLYMPIAN // V1</title>
+    <title>OLYMPIAN // SOLAR CORE</title>
     <style>
         :root { --neon: #00f2ff; --bg: #000; }
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: var(--bg); color: var(--neon); font-family: 'Courier New', monospace; overflow: hidden; text-transform: uppercase; }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: var(--bg); overflow: hidden; color: var(--neon); font-family: 'Courier New', monospace; }
         canvas { position: fixed; top: 0; left: 0; z-index: 1; }
         
-        /* THE TRINITY OVERLAYS */
-        #landing { position: fixed; inset: 0; z-index: 5000; background: rgba(0,0,0,0.95); display: flex; align-items: center; justify-content: center; backdrop-filter: blur(20px); transition: opacity 0.8s ease; }
-        header { position: fixed; top: 0; width: 100%; z-index: 100; display: flex; justify-content: space-between; padding: 25px 40px; box-sizing: border-box; background: linear-gradient(to bottom, black, transparent); border-bottom: 1px solid rgba(0,242,255,0.1); }
-        
-        /* DYNAMIC STORE GRID */
-        #store-container { position: relative; z-index: 10; margin-top: 100px; display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 25px; padding: 20px; height: calc(100vh - 200px); overflow-y: auto; scrollbar-width: none; }
-        .product-card { border: 1px solid rgba(0,242,255,0.2); background: rgba(0,242,255,0.03); padding: 20px; text-align: center; cursor: pointer; transition: 0.3s; backdrop-filter: blur(5px); }
-        .product-card:hover { border-color: var(--neon); box-shadow: 0 0 20px var(--neon); background: rgba(0,242,255,0.08); }
-        .product-card img { width: 100%; height: auto; mix-blend-mode: screen; margin-bottom: 15px; }
-
-        footer { position: fixed; bottom: 0; width: 100%; z-index: 100; display: flex; justify-content: space-between; padding: 25px 40px; box-sizing: border-box; background: linear-gradient(to top, black, transparent); border-top: 1px solid rgba(0,242,255,0.1); }
-        .ui-btn { border: 1px solid var(--neon); background: transparent; color: var(--neon); padding: 12px 24px; cursor: pointer; font-size: 0.75rem; letter-spacing: 2px; transition: 0.3s; }
-        .ui-btn:hover { background: var(--neon); color: #000; }
-        
-        .k-btn { background: var(--neon); color: #000; padding: 18px 36px; font-weight: bold; text-decoration: none; display: inline-block; box-shadow: 0 0 25px var(--neon); margin-bottom: 25px; letter-spacing: 3px; }
-        .hidden { display: none !important; }
-        #loading-text { font-size: 0.6rem; margin-top: 15px; opacity: 0.6; }
+        /* OVERLAYS */
+        #gateway { position: fixed; inset: 0; z-index: 5000; background: #000; display: flex; align-items: center; justify-content: center; transition: opacity 1s ease; }
+        .ui-header { position: fixed; top: 0; width: 100%; z-index: 100; padding: 30px; display: flex; justify-content: space-between; background: linear-gradient(to bottom, black, transparent); letter-spacing: 5px; font-weight: bold; }
+        .k-btn { background: var(--neon); color: #000; padding: 15px 35px; text-decoration: none; font-weight: bold; box-shadow: 0 0 20px var(--neon); letter-spacing: 3px; cursor: pointer; border: none; }
+        .hidden { opacity: 0 !important; pointer-events: none !important; }
     </style>
 </head>
 <body>
 
-<div id="landing">
-    <div style="text-align: center;">
-        <a href="https://invite.kraken.com/JDNW/2yyr243k" target="_blank" class="k-btn">CLAIM 200 CAD BTC</a><br>
-        <button class="ui-btn" onclick="initializeSystem()">INITIALIZE OLYMPUS</button>
-        <div id="loading-text">SYSTEM STATUS: READY // ASSETS VERIFIED</div>
+<div id="gateway">
+    <div style="text-align:center;">
+        <button class="k-btn" onclick="ignite()">IGNITE SOLAR CORE</button>
+        <p style="font-size: 0.6rem; margin-top: 20px; opacity: 0.5;">ASSETS: 8K_RESOURCES_CONNECTED</p>
     </div>
 </div>
 
-<header class="ui-layer hidden">
-    <div style="letter-spacing: 5px; font-weight: bold;">OLYMPIAN // MAIN</div>
-    <div id="sync-status">CORE SYNC: PRINTFUL</div>
-</header>
-
-<div id="store-container" class="ui-layer hidden">
-    </div>
-
-<footer class="ui-layer hidden">
-    <button class="ui-btn" onclick="toggleViewport()">TOGGLE VIEWPORT 🪐</button>
-    <a href="mailto:stakeme10000@gmail.com" class="ui-btn" style="text-decoration:none">CUSTOM DESIGN</a>
-</footer>
+<div class="ui-header">
+    <div>OLYMPIAN // V1</div>
+    <div id="coords">ORBITAL SYNC: ACTIVE</div>
+</div>
 
 <script type="importmap">
     { "imports": { "three": "https://unpkg.com/three@0.160.0/build/three.module.js", "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/" } }
@@ -59,132 +38,94 @@
     import * as THREE from 'three';
     import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
-    // --- EXACT REPO FILENAMES ---
-    const TEX = {
+    // --- REPO-DRIVEN ASSET MAP ---
+    const ASSETS = {
         stars: '8k_stars_milky_way.jpg',
         sun: '8k_sun.jpg',
         earth: '8k_earth_nightmap.jpg',
         moon: '8k_moon.jpg',
         saturn: '8k_saturn.jpg',
         rings: '8k_saturn_ring_alpha.png',
-        neptune: '2k_neptune.jpg'
+        neptune: '2k_neptune.jpg',
+        jupiter: '8k_jupiter.jpg',
+        mars: '8k_mars.jpg',
+        venus: '8k_venus_surface.jpg',
+        mercury: '8k_mercury.jpg'
     };
 
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 25000);
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 30000);
+    const renderer = new THREE.WebGLRenderer({ antialias: true, logarithmicDepthBuffer: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(window.devicePixelRatio);
     document.body.appendChild(renderer.domElement);
 
     const controls = new OrbitControls(camera, renderer.domElement);
-    controls.enabled = false;
-    camera.position.set(0, 1200, 3000);
+    camera.position.set(0, 1500, 4000);
 
     const loader = new THREE.TextureLoader();
-    const assetPath = './assets/';
+    const path = './assets/';
 
-    // Starfield Wrapping
-    const stars = new THREE.Mesh(
-        new THREE.SphereGeometry(15000, 64, 64),
-        new THREE.MeshBasicMaterial({ map: loader.load(assetPath + TEX.stars), side: THREE.BackSide })
-    );
-    scene.add(stars);
+    // 1. STARFIELD WRAP
+    const starGeo = new THREE.SphereGeometry(15000, 64, 64);
+    const starMat = new THREE.MeshBasicMaterial({ map: loader.load(path + ASSETS.stars), side: THREE.BackSide });
+    scene.add(new THREE.Mesh(starGeo, starMat));
 
-    // Solar Core
-    const sun = new THREE.Mesh(
-        new THREE.SphereGeometry(350, 64, 64),
-        new THREE.MeshBasicMaterial({ map: loader.load(assetPath + TEX.sun) })
-    );
+    // 2. THE SUN
+    const sun = new THREE.Mesh(new THREE.SphereGeometry(400, 64, 64), new THREE.MeshBasicMaterial({ map: loader.load(path + ASSETS.sun) }));
     scene.add(sun);
 
-    const planets = [];
-    function createBody(size, texture, distance, speed, ringMap = null) {
+    // 3. PLANETARY FACTORY
+    const bodies = [];
+    function createPlanet(rad, tex, dist, speed, ringTex = null) {
         const pivot = new THREE.Group();
         scene.add(pivot);
-        const mesh = new THREE.Mesh(
-            new THREE.SphereGeometry(size, 64, 64),
-            new THREE.MeshStandardMaterial({ map: loader.load(assetPath + texture) })
-        );
-        mesh.position.x = distance;
+        const mesh = new THREE.Mesh(new THREE.SphereGeometry(rad, 64, 64), new THREE.MeshStandardMaterial({ map: loader.load(path + tex) }));
+        mesh.position.x = dist;
         pivot.add(mesh);
-
-        if (ringMap) {
-            const rings = new THREE.Mesh(
-                new THREE.RingGeometry(size * 1.6, size * 2.8, 64),
-                new THREE.MeshBasicMaterial({ map: loader.load(assetPath + ringMap), side: THREE.DoubleSide, transparent: true })
-            );
-            rings.rotation.x = Math.PI / 2;
+        
+        if(ringTex) {
+            const rings = new THREE.Mesh(new THREE.RingGeometry(rad*1.6, rad*3, 64), new THREE.MeshBasicMaterial({ map: loader.load(path + ringTex), side: THREE.DoubleSide, transparent: true }));
+            rings.rotation.x = Math.PI/2;
             mesh.add(rings);
         }
-        planets.push({ pivot, mesh, speed });
+        bodies.push({ pivot, mesh, speed });
         return mesh;
     }
 
-    // Initialize Solar System
-    const earth = createBody(70, TEX.earth, 1400, 0.004);
-    const saturn = createBody(130, TEX.saturn, 2800, 0.0015, TEX.rings);
-    
-    const moon = new THREE.Mesh(
-        new THREE.SphereGeometry(15, 32, 32),
-        new THREE.MeshStandardMaterial({ map: loader.load(assetPath + TEX.moon) })
-    );
-    moon.position.x = 120;
+    // Alignment based on your Repo Content
+    createPlanet(20, ASSETS.mercury, 600, 0.015);
+    createPlanet(45, ASSETS.venus, 900, 0.01);
+    const earth = createPlanet(50, ASSETS.earth, 1300, 0.007);
+    createPlanet(30, ASSETS.mars, 1700, 0.005);
+    createPlanet(150, ASSETS.jupiter, 2500, 0.002);
+    createPlanet(120, ASSETS.saturn, 3500, 0.001, ASSETS.rings);
+    createPlanet(90, ASSETS.neptune, 4500, 0.0008);
+
+    // Moon Orbit (Parented to Earth)
+    const moon = new THREE.Mesh(new THREE.SphereGeometry(12, 32, 32), new THREE.MeshStandardMaterial({ map: loader.load(path + ASSETS.moon) }));
+    moon.position.x = 100;
     earth.add(moon);
 
-    const sunLight = new THREE.PointLight(0xffffff, 4, 15000);
-    scene.add(sunLight);
-    scene.add(new THREE.AmbientLight(0xffffff, 0.1));
+    // Lighting
+    const pointLight = new THREE.PointLight(0xffffff, 5, 20000);
+    scene.add(pointLight);
+    scene.add(new THREE.AmbientLight(0xffffff, 0.15));
 
     function animate() {
         requestAnimationFrame(animate);
         sun.rotation.y += 0.001;
-        planets.forEach(p => {
-            p.pivot.rotation.y += p.speed;
-            p.mesh.rotation.y += 0.005;
+        bodies.forEach(b => {
+            b.pivot.rotation.y += b.speed;
+            b.mesh.rotation.y += 0.005;
         });
-        if (controls.enabled) controls.update();
+        controls.update();
         renderer.render(scene, camera);
     }
     animate();
 
-    // --- PRINTFUL API SYNC ---
-    async function fetchProducts() {
-        const container = document.getElementById('store-container');
-        try {
-            // This assumes your Vercel/Serverless API is at /api/products
-            const response = await fetch('/api/products'); 
-            const data = await response.json();
-            
-            if (data && data.result) {
-                container.innerHTML = data.result.map(p => `
-                    <div class="product-card" onclick="window.open('${p.external_url || '#'}', '_blank')">
-                        <img src="${p.thumbnail_url}" alt="${p.name}">
-                        <div style="font-size:0.65rem; letter-spacing:1px;">${p.name}</div>
-                    </div>
-                `).join('');
-            }
-        } catch (err) {
-            console.error("Store Sync Error");
-            container.innerHTML = '<div style="grid-column: 1/-1;">SYNC ERROR: RECHECK API ENDPOINT</div>';
-        }
-    }
-
-    // GLOBAL INTERFACE ACTIONS
-    window.initializeSystem = () => {
-        document.getElementById('landing').style.opacity = '0';
-        setTimeout(() => {
-            document.getElementById('landing').classList.add('hidden');
-            document.querySelectorAll('.ui-layer').forEach(el => el.classList.remove('hidden'));
-            fetchProducts();
-        }, 800);
-    };
-
-    window.toggleViewport = () => {
-        const active = !controls.enabled;
-        controls.enabled = active;
-        document.getElementById('store-container').classList.toggle('hidden', active);
-        document.querySelector('header').classList.toggle('hidden', active);
+    window.ignite = () => {
+        document.getElementById('gateway').classList.add('hidden');
     };
 
     window.addEventListener('resize', () => {
