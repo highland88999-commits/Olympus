@@ -106,7 +106,7 @@
 </div>
 
 <header id="ui-header">
-    <h1>OLYMPIAN // SYSTEM OBSERVER</h1>
+    <h1>OLYMPIAN // DEEP SPACE OBSERVER</h1>
     <div id="cart-trigger" onclick="window.toggleCart(true)" style="color:var(--bio-high); border:1px solid var(--bio-high); padding:8px 15px; font-size:0.8rem; cursor:pointer;">MANIFEST (0)</div>
 </header>
 
@@ -162,16 +162,15 @@
 <script type="module">
     import * as THREE from 'three';
 
-    // UI & STORE DATA
     window.allProducts = []; 
     window.cart = []; 
     window.itemsPerPage = 24; 
     window.selectedSize = null; 
     window.activeProduct = null;
 
-    // --- SYSTEM ENGINE ---
+    // --- COSMOS ENGINE ---
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 10000);
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(window.devicePixelRatio);
@@ -179,59 +178,82 @@
 
     const textureLoader = new THREE.TextureLoader();
 
-    // Background
+    // Starfield Background
     const bgTexture = textureLoader.load('8k_stars_milky_way.jpg');
     scene.background = bgTexture;
+
+    // Amplified Star Field (3D Particles)
+    const starGeo = new THREE.BufferGeometry();
+    const starCoords = [];
+    for (let i = 0; i < 10000; i++) {
+        const x = (Math.random() - 0.5) * 5000;
+        const y = (Math.random() - 0.5) * 5000;
+        const z = (Math.random() - 0.5) * 5000;
+        starCoords.push(x, y, z);
+    }
+    starGeo.setAttribute('position', new THREE.Float32BufferAttribute(starCoords, 3));
+    const starMat = new THREE.PointsMaterial({ color: 0xffffff, size: 0.8, transparent: true, opacity: 0.8 });
+    const starField = new THREE.Points(starGeo, starMat);
+    scene.add(starField);
 
     const systemGroup = new THREE.Group();
     scene.add(systemGroup);
 
-    function createPlanet(name, size, textureFile, distance, hasRings = false) {
+    // Planets Array for Orbits
+    const planets = [];
+
+    function createPlanet(name, size, textureFile, distance, orbitSpeed, hasRings = false) {
         const geometry = new THREE.SphereGeometry(size, 64, 64);
         const material = new THREE.MeshStandardMaterial({
             map: textureLoader.load(textureFile),
-            metalness: 0.4,
-            roughness: 0.7
+            metalness: 0.4, roughness: 0.7
         });
         const planet = new THREE.Mesh(geometry, material);
-        planet.position.x = distance;
-        planet.name = name;
         
+        const orbitData = {
+            mesh: planet,
+            distance: distance,
+            speed: orbitSpeed,
+            angle: Math.random() * Math.PI * 2
+        };
+
         if (hasRings) {
             const ringGeo = new THREE.RingGeometry(size * 1.4, size * 2.2, 64);
             const ringMat = new THREE.MeshBasicMaterial({
                 map: textureLoader.load('8k_saturn_ring_alpha.png'),
-                side: THREE.DoubleSide,
-                transparent: true,
-                opacity: 0.8
+                side: THREE.DoubleSide, transparent: true, opacity: 0.8
             });
             const rings = new THREE.Mesh(ringGeo, ringMat);
             rings.rotation.x = Math.PI / 2;
             planet.add(rings);
         }
+
         systemGroup.add(planet);
+        planets.push(orbitData);
         return planet;
     }
 
-    // Mapping Assets
-    const sun = createPlanet("Sun", 50, '1000000142.jpg', 0);
-    sun.material.emissive = new THREE.Color(0xffaa00);
-    sun.material.emissiveIntensity = 1.2;
+    // Solar Center
+    const sun = createPlanet("Sun", 60, '1000000142.jpg', 0, 0);
+    sun.material.emissive = new THREE.Color(0xff4500);
+    sun.material.emissiveIntensity = 1.5;
 
-    const mercury = createPlanet("Mercury", 5, '1000000128.jpg', 80);
-    const venus = createPlanet("Venus", 10, '1000000129.jpg', 120);
-    const earth = createPlanet("Earth", 11, '8k_earth_daymap.jpg', 170);
-    const mars = createPlanet("Mars", 7, '1000000131.jpg', 220);
-    const jupiter = createPlanet("Jupiter", 25, '1000000132.jpg', 320);
-    const saturn = createPlanet("Saturn", 22, '1000000133.jpg', 450, true);
-    const uranus = createPlanet("Uranus", 15, '2k_uranus.jpg', 550);
-    const neptune = createPlanet("Neptune", 15, '2k_neptune.jpg', 630);
+    // System Mapping: distance, speed
+    createPlanet("Mercury", 5, '1000000128.jpg', 120, 0.02);
+    createPlanet("Venus", 10, '1000000129.jpg', 180, 0.015);
+    createPlanet("Earth", 11, '8k_earth_daymap.jpg', 250, 0.01);
+    createPlanet("Mars", 8, '1000000131.jpg', 320, 0.008);
+    createPlanet("Jupiter", 30, '1000000132.jpg', 480, 0.004);
+    createPlanet("Saturn", 25, '1000000133.jpg', 650, 0.002, true);
+    createPlanet("Uranus", 18, '2k_uranus.jpg', 800, 0.0015);
+    createPlanet("Neptune", 18, '2k_neptune.jpg', 950, 0.001);
 
-    const pointLight = new THREE.PointLight(0xffffff, 5, 1000);
+    const pointLight = new THREE.PointLight(0xffffff, 8, 2000);
     scene.add(pointLight);
-    scene.add(new THREE.AmbientLight(0x404040, 0.5));
+    scene.add(new THREE.AmbientLight(0x404040, 0.8));
 
-    camera.position.set(0, 200, 800);
+    // ZOOMED OUT VIEW
+    camera.position.set(0, 600, 1600);
     camera.lookAt(0,0,0);
 
     const clock = new THREE.Clock();
@@ -240,19 +262,28 @@
         requestAnimationFrame(animate);
         const t = clock.getElapsedTime();
         
-        systemGroup.children.forEach(p => {
-            p.rotation.y += 0.005;
+        // Orbital Math: x = cos(angle) * radius, z = sin(angle) * radius
+        planets.forEach(p => {
+            if(p.distance > 0) {
+                p.angle += p.speed;
+                p.mesh.position.x = Math.cos(p.angle) * p.distance;
+                p.mesh.position.z = Math.sin(p.angle) * p.distance;
+            }
+            p.mesh.rotation.y += 0.005;
         });
 
-        // "Alive" Pulse for the Sun
-        sun.material.emissiveIntensity = 1.0 + Math.sin(t * 1.5) * 0.4;
-        pointLight.intensity = 4 + Math.random() * 1.5;
+        // Sun Pulse
+        sun.material.emissiveIntensity = 1.2 + Math.sin(t * 1.5) * 0.5;
+        pointLight.intensity = 6 + Math.random() * 2;
+        
+        // Starfield Shimmer
+        starField.rotation.y += 0.0002;
 
         renderer.render(scene, camera);
     }
     animate();
 
-    // --- UI LOGIC ---
+    // --- UI INTEGRATION ---
     window.enterSystem = function() {
         const overlay = document.getElementById('landing-overlay');
         overlay.style.opacity = '0';
