@@ -3,66 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>OLYMPIAN | DEEP SPACE</title>
+    <title>OLYMPIAN | KRAKEN // DEEP SPACE REFERRAL</title>
     <style>
-        :root { 
-            --fire: #ff4500; 
-            --spark: #ffae00; 
-            --bio-low: #001a33; 
-            --bio-high: #00f2ff; 
+        :root {
+            --fire: #ff4500;
+            --spark: #ffae00;
+            --bio-low: #001a33;
+            --bio-high: #00f2ff;
             --ui-bg: rgba(0, 0, 0, 0.9);
+            --kraken-teal: #00f2ff; /* Using bio-high for Kraken Teal */
         }
 
-        body, html { 
-            margin: 0; padding: 0; width: 100%; height: 100%; 
-            background: #000; font-family: 'Courier New', monospace; 
-            color: white; overflow: hidden; 
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            background: #000; font-family: 'Courier New', monospace;
+            color: white; overflow: hidden;
         }
-        
+
         canvas { position: fixed; top: 0; left: 0; z-index: 0; }
         .ui-hidden { opacity: 0 !important; pointer-events: none !important; }
 
-        header { 
-            position: relative; z-index: 100; height: 70px; display: flex; 
-            align-items: center; justify-content: space-between; padding: 0 20px; 
-            background: var(--ui-bg); border-bottom: 1px solid var(--bio-high); 
-            transition: opacity 0.5s ease; 
-        }
-        h1 { letter-spacing: 4px; color: var(--bio-high); text-shadow: 0 0 10px var(--bio-high); font-size: 0.85rem; margin: 0; }
-
-        /* RECTIFIED GRID PLACEMENT */
-        #store-grid { 
-            position: relative; z-index: 5; display: grid;
-            grid-template-columns: repeat(2, 1fr); gap: 15px; 
-            width: 94%; margin: 10px auto 0 auto; 
-            /* Fixed height to sit exactly above the 90px footer */
-            height: calc(100vh - 175px); 
-            overflow-y: auto; scrollbar-width: none;
-            padding-bottom: 10px; 
+        header {
+            position: relative; z-index: 100; height: 70px; display: flex;
+            align-items: center; justify-content: space-between; padding: 0 20px;
+            background: var(--ui-bg); border-bottom: 1px solid var(--bio-high);
             transition: opacity 0.5s ease;
         }
-        #store-grid::-webkit-scrollbar { display: none; }
+        h1 { letter-spacing: 4px; color: var(--bio-high); text-shadow: 0 0 10px var(--bio-high); font-size: 0.85rem; margin: 0; }
+        h1 .kraken-logo-text { font-family: 'Montserrat', sans-serif; font-weight: 700; text-transform: none; margin-right: 5px;}
 
-        .card { 
-            position: relative; background: rgba(0, 242, 255, 0.03); border: 1px solid rgba(0, 242, 255, 0.2);
-            aspect-ratio: 0.85 / 1; cursor: pointer; display: flex; align-items: center; justify-content: center;
-            backdrop-filter: blur(5px); transition: 0.3s;
+        /* MAIN CONTENT AREA - GRID REPLACED */
+        #central-display {
+            position: absolute; top: 70px; bottom: 90px;
+            left: 0; width: 100%; z-index: 5;
+            display: flex; flex-direction: column; align-items: center;
+            justify-content: center;
+            padding: 20px; box-sizing: border-box;
+            transition: opacity 0.5s ease;
+            overflow: visible;
         }
-        .card img { width: 90%; height: 90%; object-fit: contain; mix-blend-mode: screen; }
-        .grid-label { position: absolute; bottom: 0; width: 100%; background: rgba(0,26,51,0.95); font-size: 0.55rem; text-align: center; padding: 6px 0; color: var(--bio-high); border-top: 1px solid var(--bio-high); letter-spacing: 1px; overflow: hidden; white-space: nowrap; }
+
+        /* 3D MAP CANVAS FOR REFERRAL BACKGROUND */
+        #map-canvas { position: fixed; top: 0; left: 0; z-index: 1; }
+
+        /* JOIN BUTTON - Modified for new layout */
+        .referral-button-container {
+            display: flex; flex-direction: column; align-items: center; gap: 10px; z-index: 10;
+        }
+
+        .primary-referral-btn {
+            background-color: var(--kraken-teal); color: #000;
+            border: none; padding: 18px 40px; font-size: 1.1rem;
+            font-weight: bold; border-radius: 50px; cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 242, 255, 0.4);
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-decoration: none; display: flex; align-items: center; gap: 8px;
+            font-family: 'Montserrat', sans-serif; text-transform: uppercase;
+        }
+        .primary-referral-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0, 242, 255, 0.6); }
+
+        .referral-link-text { color: var(--bio-high); font-size: 0.75rem; text-decoration: underline; opacity: 0.8; z-index: 10;}
+
+        /* REFERRAL INFO OVERLAY - TACTICAL OLYMPIAN STYLE */
+        #referral-info-display {
+            position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+            width: 90%; max-width: 700px;
+            background: rgba(0, 0, 0, 0.9);
+            border: 2px solid var(--fire);
+            border-image: linear-gradient(45deg, var(--fire), var(--bio-high), var(--fire)) 1;
+            box-shadow: 0 0 20px rgba(255, 69, 0, 0.4), 0 0 20px rgba(0, 242, 255, 0.4);
+            color: #fff; font-family: 'Courier New', monospace; padding: 25px;
+            text-align: left; z-index: 10; transition: all 0.5s ease;
+        }
+
+        #referral-info-display h2 { color: var(--fire); text-transform: uppercase; letter-spacing: 2px; font-size: 1rem; margin-top: 0; margin-bottom: 10px; border-bottom: 1px solid var(--fire); padding-bottom: 5px; }
+        #referral-info-display p { font-size: 0.75rem; line-height: 1.6; margin: 0 0 10px; }
+        #referral-info-display strong { color: var(--bio-high); font-weight: bold; }
+        #referral-info-display .tac-status { color: var(--spark); font-weight: bold; letter-spacing: 1px; }
 
         /* FOOTER REBALANCE */
         .control-footer {
             position: fixed; bottom: 0; width: 100%; height: 90px;
-            background: var(--ui-bg); z-index: 150; 
+            background: var(--ui-bg); z-index: 150;
             display: flex; align-items: center; justify-content: space-between;
             border-top: 1px solid var(--bio-high); padding: 0 15px; box-sizing: border-box;
             transition: all 0.5s ease;
         }
 
         .footer-btn {
-            height: 44px; min-width: 100px; padding: 0 15px; background: rgba(0, 242, 255, 0.05); 
-            border: 1px solid var(--bio-high); color: var(--bio-high); 
+            height: 44px; min-width: 100px; padding: 0 15px; background: rgba(0, 242, 255, 0.05);
+            border: 1px solid var(--bio-high); color: var(--bio-high);
             font-size: 0.65rem; font-family: inherit; letter-spacing: 1px;
             cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
             text-transform: uppercase;
@@ -73,89 +103,54 @@
             flex-grow: 1; max-width: 45%; display: flex; flex-direction: column; align-items: center; gap: 6px;
         }
         #sector-display { font-size: 0.65rem; color: var(--bio-high); letter-spacing: 2px; }
-        .sector-slider { width: 100%; accent-color: var(--bio-high); }
 
-        /* CART BUTTON STYLING */
-        #cart-trigger {
-            display: flex; align-items: center; gap: 10px;
-            border: 1px solid var(--bio-high); color: var(--bio-high); 
-            padding: 8px 15px; font-size: 0.75rem; cursor: pointer;
-            background: rgba(0, 242, 255, 0.05);
-        }
-        .cart-icon-wrapper { position: relative; display: flex; flex-direction: column-reverse; align-items: center; width: 24px; height: 24px; }
-        .hoodie-layer { 
-            width: 18px; height: 4px; background: var(--bio-high); 
-            border: 1px solid #000; border-radius: 1px; margin-bottom: -2px; 
-        }
+        /* CART BUTTON STYLING (HIDING FOR THIS DEMO) */
+        #cart-trigger { display: none; }
 
-        /* SIZE MODAL */
-        #modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1000; display: none; background: rgba(0,0,0,0.95); backdrop-filter: blur(15px); align-items: center; justify-content: center; }
-        .modal-content { width: 92%; max-width: 400px; background: #000; border: 1px solid var(--bio-high); padding: 20px 0; }
-        .size-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 20px; }
-        .size-btn { border: 1px solid var(--bio-high); background: transparent; color: #fff; padding: 12px 0; cursor: pointer; font-size: 0.65rem; }
-        .size-btn.selected { background: var(--bio-high); color: #000; font-weight: bold; }
-
-        #side-cart { position: fixed; top: 0; right: -100%; width: 85%; max-width: 350px; height: 100%; background: #000; border-left: 1px solid var(--bio-high); z-index: 2000; transition: 0.4s; }
-        #side-cart.open { right: 0; }
+        /* SIDE CART (HIDING FOR THIS DEMO) */
+        #side-cart { display: none; }
     </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body ondblclick="window.closeModal(); window.toggleCart(false)">
 
 <header id="ui-header">
-    <h1>OLYMPIAN // DEEP SPACE</h1>
-    <div id="cart-trigger" onclick="window.toggleCart(true)">
-        <div class="cart-icon-wrapper" id="cart-stack">
-            🛒 </div>
-        <span>CART (<span id="cart-count">0</span>)</span>
-    </div>
+    <h1><span class="kraken-logo-text">Kraken</span> CANADA // REFERRAL PROGRAM</h1>
 </header>
 
-<div id="store-grid"></div>
+<div id="central-display">
+    <div class="referral-button-container">
+        <a href="https://invite.kraken.com/JDNW/2yyr243k" target="_blank" class="primary-referral-btn">
+            JOIN KRAKEN NOW →
+        </a>
+        <a href="https://invite.kraken.com/JDNW/2yyr243k" target="_blank" class="referral-link-text">
+            invite.kraken.com/JDNW/2yyr243k
+        </a>
+    </div>
+
+    <div id="referral-info-display">
+        <h2>MISSION PROFILE: REFERRAL PROGRAM</h2>
+        <p>MISSION OBJECTIVE: Collaborate with allies in the crypto sector. <span class="tac-status">[OPERATIONAL]</span></p>
+        <p>By inviting friends to the Kraken deep space network, both parties are eligible for a substantial reward. Upon meeting specific mission parameters, you both earn up to <strong>200 CAD in Bitcoin</strong>.</p>
+        <p>PARAMETER ALPHA (Referee): <span class="tac-status">Deposit 200 CAD</span>. PARAMETER BETA (Referee): <span class="tac-status">Trade 200 CAD total</span>.</p>
+        <p>MISSION INITIALIZATION: Distribute your unique link to potential deep-space analysts. <strong>They join, they trade, you both gain.</strong></p>
+    </div>
+</div>
 
 <div class="control-footer" id="ui-footer">
-    <button class="footer-btn" id="design-toggle" onclick="window.toggleHoloframe()">CUSTOM</button>
+    <button class="footer-btn">STATUS</button>
     
     <div class="center-controls" id="center-ui">
-        <div id="sector-display">SYNCING...</div>
-        <input type="range" id="sector-slider" class="sector-slider" min="1" max="1" value="1">
+        <div id="sector-display">GEOGRAPHIC SECTOR 35 // ACTIVE</div>
     </div>
 
-    <button class="footer-btn" id="interactive-toggle" onclick="window.toggleInteractive()">
-        INTERACTIVE 🪐
-    </button>
-</div>
-
-<div id="modal-overlay" onclick="window.closeModal()">
-    <div class="modal-content" onclick="event.stopPropagation()">
-        <div id="modal-img-container" style="padding:10px; text-align:center;"></div>
-        <div id="modal-title" style="color:var(--bio-high); font-size:0.7rem; text-align:center; padding:10px; letter-spacing:1px; text-transform:uppercase;"></div>
-        <div class="size-grid">
-            <button class="size-btn" onclick="window.selectSize(this, '3XS')">3XS</button>
-            <button class="size-btn" onclick="window.selectSize(this, '2XS')">2XS</button>
-            <button class="size-btn" onclick="window.selectSize(this, 'XS')">XS</button>
-            <button class="size-btn" onclick="window.selectSize(this, 'S')">S</button>
-            <button class="size-btn" onclick="window.selectSize(this, 'M')">M</button>
-            <button class="size-btn" onclick="window.selectSize(this, 'L')">L</button>
-            <button class="size-btn" onclick="window.selectSize(this, 'XL')">XL</button>
-            <button class="size-btn" onclick="window.selectSize(this, '2XL')">2XL</button>
-            <button class="size-btn" onclick="window.selectSize(this, '3XL')">3XL</button>
-            <button class="size-btn" onclick="window.selectSize(this, '4XL')">4XL</button>
-            <button class="size-btn" onclick="window.selectSize(this, '5XL')">5XL</button>
-            <button class="size-btn" onclick="window.selectSize(this, '6XL')">6XL</button>
-        </div>
-        <button onclick="window.addToCart()" style="width:90%; margin:10px 5%; padding:15px; background:var(--bio-high); border:none; font-weight:bold; cursor:pointer; color:#000; letter-spacing:2px;">UPLOAD TO CART</button>
-    </div>
-</div>
-
-<div id="side-cart">
-    <div style="padding:20px; border-bottom:1px solid var(--bio-high); display:flex; justify-content:space-between; color:var(--bio-high)">
-        <span>CART MANIFEST</span><span onclick="window.toggleCart(false)" style="cursor:pointer; font-size:1.5rem;">×</span>
-    </div>
-    <div id="cart-items" style="padding:20px; font-size:0.75rem;"></div>
+    <button class="footer-btn active">DEEP SPACE</button>
 </div>
 
 <script type="importmap">
-    { "imports": { 
+    { "imports": {
         "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
         "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
     } }
@@ -165,184 +160,106 @@
     import * as THREE from 'three';
     import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
-    window.allProducts = []; 
-    window.cart = []; 
-    window.itemsPerPage = 24; 
-    window.isInteractive = false;
-
-    // --- COSMOS ENGINE ---
+    // --- GEOGRAPHIC CYBERPUNK MAP ENGINE ---
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 15000);
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
+    camera.position.set(0, 1500, 2000);
+    camera.lookAt(0, 0, 0);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, canvas: document.getElementById('map-canvas') || undefined});
+    // Create the map canvas if it doesn't exist
+    if(!document.getElementById('map-canvas')){
+        renderer.domElement.id = 'map-canvas';
+        document.body.appendChild(renderer.domElement);
+    }
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(window.devicePixelRatio);
-    document.body.appendChild(renderer.domElement);
+    
+    // Add background grid (dark bio-high)
+    const gridHelper = new THREE.GridHelper(5000, 50, 0x001a33, 0x001a33);
+    gridHelper.position.y = -100;
+    scene.add(gridHelper);
 
-    const controls = new OrbitControls(camera, renderer.domElement);
-    controls.enabled = false;
-    controls.enableDamping = true;
+    // --- Create Geometric World Map ---
+    const mapGroup = new THREE.Group();
+    scene.add(mapGroup);
+    
+    // Use an existing world outline geojson or simplified outline as points/lines
+    const loader = new THREE.FileLoader();
+    loader.load(
+        'https://raw.githubusercontent.com/datasets/geo-boundaries-world-110m/master/data/world-geojson-with-simplification.geojson', // Simple GeoJSON source
+        (data) => {
+            const geoJson = JSON.parse(data);
+            const countries = geoJson.features;
+            const pointsData = [];
+            const firePointsData = [];
+            const countryLinesMaterial = new THREE.LineBasicMaterial({ color: 0x00f2ff, transparent: true, opacity: 0.6 });
 
-    const textureLoader = new THREE.TextureLoader();
-    scene.background = textureLoader.load('8k_stars_milky_way.jpg');
+            countries.forEach(country => {
+                let coords = country.geometry.coordinates;
+                // Normalize geometry to polygons
+                if (country.geometry.type === 'Polygon') { coords = [coords]; }
+                
+                coords.forEach(polygon => {
+                    polygon.forEach(ring => {
+                        const geometry = new THREE.BufferGeometry();
+                        const vertices = [];
+                        
+                        ring.forEach(point => {
+                            const lon = point[0]; const lat = point[1];
+                            const {x, y, z} = latLonToCartesian(lat, lon, 1000);
+                            vertices.push(x, y, z);
+                            pointsData.push(x, y, z);
+                            
+                            // Randomly add fire orange points
+                            if(Math.random() < 0.1){ firePointsData.push(x, y, z); }
+                        });
+                        
+                        geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+                        const line = new THREE.Line(geometry, countryLinesMaterial);
+                        mapGroup.add(line);
+                    });
+                });
+            });
 
-    // Star Field Restoration
-    const starGeo = new THREE.BufferGeometry();
-    const starCoords = [];
-    for (let i = 0; i < 12000; i++) {
-        starCoords.push((Math.random() - 0.5) * 10000, (Math.random() - 0.5) * 10000, (Math.random() - 0.5) * 10000);
-    }
-    starGeo.setAttribute('position', new THREE.Float32BufferAttribute(starCoords, 3));
-    const stars = new THREE.Points(starGeo, new THREE.PointsMaterial({ color: 0xffffff, size: 1.1, transparent: true, opacity: 0.8 }));
-    scene.add(stars);
-
-    const systemGroup = new THREE.Group();
-    scene.add(systemGroup);
-    const planets = [];
-
-    function createPlanet(name, size, textureFile, distance, orbitSpeed, hasRings = false) {
-        const planet = new THREE.Mesh(
-            new THREE.SphereGeometry(size, 64, 64),
-            new THREE.MeshStandardMaterial({ map: textureLoader.load(textureFile), metalness: 0.3, roughness: 0.8 })
-        );
-        const orbitData = { mesh: planet, distance, speed: orbitSpeed, angle: Math.random() * Math.PI * 2 };
-        if (hasRings) {
-            const rings = new THREE.Mesh(new THREE.RingGeometry(size * 1.5, size * 2.5, 64), new THREE.MeshBasicMaterial({ map: textureLoader.load('8k_saturn_ring_alpha.png'), side: THREE.DoubleSide, transparent: true }));
-            rings.rotation.x = Math.PI / 2; planet.add(rings);
+            // --- Add glowing points ---
+            const pointsGeo = new THREE.BufferGeometry();
+            pointsGeo.setAttribute('position', new THREE.Float32BufferAttribute(pointsData, 3));
+            const pointsMat = new THREE.PointsMaterial({ color: 0x00f2ff, size: 2.5, transparent: true, opacity: 0.8, blending: THREE.AdditiveBlending });
+            const points = new THREE.Points(pointsGeo, pointsMat);
+            mapGroup.add(points);
+            
+            const firePointsGeo = new THREE.BufferGeometry();
+            firePointsGeo.setAttribute('position', new THREE.Float32BufferAttribute(firePointsData, 3));
+            const firePointsMat = new THREE.PointsMaterial({ color: 0xff4500, size: 4, transparent: true, opacity: 1, blending: THREE.AdditiveBlending });
+            const firePoints = new THREE.Points(firePointsGeo, firePointsMat);
+            mapGroup.add(firePoints);
         }
-        systemGroup.add(planet); planets.push(orbitData);
-        return planet;
+    );
+
+    // Convert lat/lon to 3D Cartesian coords on a simplified plane/sphere
+    function latLonToCartesian(lat, lon, radius) {
+        const phi = (90 - lat) * (Math.PI / 180);
+        const theta = (lon + 180) * (Math.PI / 180);
+        const x = -(radius * Math.sin(phi) * Math.cos(theta));
+        const z = radius * Math.sin(phi) * Math.sin(theta);
+        const y = radius * Math.cos(phi);
+        return { x, y: y * 0.2, z }; // Flatten sphere for map feel
     }
 
-    const sun = createPlanet("Sun", 75, '1000000142.jpg', 0, 0);
-    sun.material.emissive = new THREE.Color(0xff4500);
-    sun.material.emissiveIntensity = 2.0;
-
-    createPlanet("Mercury", 6, '1000000128.jpg', 180, 0.012);
-    createPlanet("Venus", 12, '1000000129.jpg', 280, 0.009);
-    createPlanet("Earth", 13, '8k_earth_daymap.jpg', 400, 0.007);
-    createPlanet("Jupiter", 45, '1000000132.jpg', 700, 0.003);
-    createPlanet("Saturn", 38, '1000000133.jpg', 950, 0.002, true);
-
-    scene.add(new THREE.PointLight(0xffffff, 12, 5000));
-    scene.add(new THREE.AmbientLight(0xffffff, 0.5));
-    camera.position.set(0, 1200, 2800);
+    // --- Orbital Controls for Map View ---
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableZoom = false; controls.enablePan = false;
+    controls.autoRotate = true; controls.autoRotateSpeed = 0.3;
+    controls.target.set(0, 0, 0); controls.update();
 
     function animate() {
         requestAnimationFrame(animate);
-        planets.forEach(p => {
-            if(p.distance > 0) {
-                p.angle += p.speed;
-                p.mesh.position.x = Math.cos(p.angle) * p.distance;
-                p.mesh.position.z = Math.sin(p.angle) * p.distance;
-            }
-            p.mesh.rotation.y += 0.005;
-        });
-        stars.rotation.y += 0.0001;
-        if (controls.enabled) controls.update();
+        controls.update(); // Update auto-rotation
         renderer.render(scene, camera);
     }
     animate();
 
-    // --- UI LOGIC ---
-    window.toggleInteractive = function() {
-        window.isInteractive = !window.isInteractive;
-        const uiElements = [document.getElementById('ui-header'), document.getElementById('store-grid'), document.getElementById('center-ui'), document.getElementById('design-toggle')];
-        const btn = document.getElementById('interactive-toggle');
-        const footer = document.getElementById('ui-footer');
-
-        if (window.isInteractive) {
-            uiElements.forEach(el => el.classList.add('ui-hidden'));
-            btn.classList.add('active');
-            footer.style.background = 'transparent';
-            footer.style.border = 'none';
-            controls.enabled = true;
-        } else {
-            uiElements.forEach(el => el.classList.remove('ui-hidden'));
-            btn.classList.remove('active');
-            footer.style.background = 'var(--ui-bg)';
-            footer.style.borderTop = '1px solid var(--bio-high)';
-            controls.enabled = false;
-        }
-    };
-
-    async function fetchStore() {
-        try {
-            const res = await fetch('/api/artemis-2.js');
-            const data = await res.json();
-            if (data.products) { 
-                window.allProducts = data.products; 
-                setupNavigation();
-                renderGrid(1); 
-            }
-        } catch (e) {}
-    }
-
-    function setupNavigation() {
-        const slider = document.getElementById('sector-slider');
-        const totalPages = Math.ceil(window.allProducts.length / window.itemsPerPage);
-        slider.max = totalPages;
-        slider.oninput = (e) => {
-            document.getElementById('sector-display').innerText = `SECTOR ${e.target.value.padStart(2, '0')} / ${totalPages.toString().padStart(2, '0')}`;
-            renderGrid(parseInt(e.target.value));
-        };
-    }
-
-    function renderGrid(page) {
-        const grid = document.getElementById('store-grid');
-        const items = window.allProducts.slice((page - 1) * window.itemsPerPage, page * window.itemsPerPage);
-        grid.innerHTML = items.map(p => `
-            <div class="card" onclick="window.openModal('${p.name.replace(/'/g, "\\'")}', '${p.images[0]}')">
-                <img src="${p.images[0]}" loading="lazy">
-                <div class="grid-label">${p.name.split('Prompt:')[1] || 'OLYMPIAN'}</div>
-            </div>`).join('');
-    }
-
-    window.openModal = function(name, img) {
-        window.activeProduct = { name, img }; window.selectedSize = null;
-        document.getElementById('modal-title').innerText = name;
-        document.getElementById('modal-img-container').innerHTML = `<img src="${img}" style="width:100%; max-height:280px; object-fit:contain; mix-blend-mode:screen;">`;
-        document.getElementById('modal-overlay').style.display = 'flex';
-        document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected'));
-    };
-
-    window.selectSize = function(btn, size) { 
-        window.selectedSize = size; 
-        document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected')); 
-        btn.classList.add('selected'); 
-    };
-
-    window.closeModal = function() { document.getElementById('modal-overlay').style.display = 'none'; };
-    window.toggleCart = function(show) { document.getElementById('side-cart').classList.toggle('open', show); };
-
-    window.updateCartUI = function() {
-        document.getElementById('cart-count').innerText = window.cart.length;
-        const stack = document.getElementById('cart-stack');
-        stack.innerHTML = '🛒'; // Reset to icon
-        // Add layers for each hoodie (limit to 5 for visual clarity)
-        const layers = Math.min(window.cart.length, 5);
-        for(let i=0; i<layers; i++) {
-            const div = document.createElement('div');
-            div.className = 'hoodie-layer';
-            div.style.bottom = `${12 + (i*3)}px`;
-            div.style.position = 'absolute';
-            stack.appendChild(div);
-        }
-        document.getElementById('cart-items').innerHTML = window.cart.map(i => `
-            <div style="padding:15px; border-bottom:1px solid #222; display:flex; gap:10px; align-items:center;">
-                <img src="${i.img}" style="width:40px; mix-blend-mode:screen;">
-                <div>${i.name}<br><span style="color:var(--bio-high)">SIZE: ${i.size}</span></div>
-            </div>`).join('');
-    };
-
-    window.addToCart = function() {
-        if(!window.selectedSize) return alert("SELECT SIZE");
-        window.cart.push({...window.activeProduct, size: window.selectedSize});
-        window.updateCartUI();
-        window.closeModal(); 
-        window.toggleCart(true);
-    };
-
-    fetchStore();
     window.addEventListener('resize', () => {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
