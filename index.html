@@ -10,7 +10,7 @@
             --spark: #ffae00; 
             --bio-low: #001a33; 
             --bio-high: #00f2ff; 
-            --ui-bg: rgba(0, 0, 0, 0.85);
+            --ui-bg: rgba(0, 0, 0, 0.9);
         }
 
         body, html { 
@@ -20,70 +20,79 @@
         }
         
         canvas { position: fixed; top: 0; left: 0; z-index: 0; }
-        
         .ui-hidden { opacity: 0 !important; pointer-events: none !important; }
 
-        /* HEADER */
         header { 
-            position: relative; z-index: 100; height: 65px; display: none; opacity: 0; 
+            position: relative; z-index: 100; height: 70px; display: flex; 
             align-items: center; justify-content: space-between; padding: 0 20px; 
             background: var(--ui-bg); border-bottom: 1px solid var(--bio-high); 
             transition: opacity 0.5s ease; 
         }
-        h1 { letter-spacing: 4px; color: var(--bio-high); text-shadow: 0 0 10px var(--bio-high); font-size: 0.85rem; }
+        h1 { letter-spacing: 4px; color: var(--bio-high); text-shadow: 0 0 10px var(--bio-high); font-size: 0.85rem; margin: 0; }
 
-        /* GRID */
+        /* RECTIFIED GRID PLACEMENT */
         #store-grid { 
-            position: relative; z-index: 5; display: none; opacity: 0;
-            grid-template-columns: repeat(2, 1fr); gap: 12px; 
-            width: 92%; margin: 15px auto 0 auto; 
-            height: calc(100vh - 180px); 
+            position: relative; z-index: 5; display: grid;
+            grid-template-columns: repeat(2, 1fr); gap: 15px; 
+            width: 94%; margin: 10px auto 0 auto; 
+            /* Fixed height to sit exactly above the 90px footer */
+            height: calc(100vh - 175px); 
             overflow-y: auto; scrollbar-width: none;
-            padding-bottom: 5px; 
+            padding-bottom: 10px; 
             transition: opacity 0.5s ease;
         }
         #store-grid::-webkit-scrollbar { display: none; }
 
         .card { 
-            position: relative; background: rgba(0, 242, 255, 0.02); border: 1px solid rgba(0, 242, 255, 0.2);
+            position: relative; background: rgba(0, 242, 255, 0.03); border: 1px solid rgba(0, 242, 255, 0.2);
             aspect-ratio: 0.85 / 1; cursor: pointer; display: flex; align-items: center; justify-content: center;
-            backdrop-filter: blur(4px); transition: 0.3s;
+            backdrop-filter: blur(5px); transition: 0.3s;
         }
-        .card:hover { border-color: var(--bio-high); box-shadow: 0 0 15px var(--bio-high); }
         .card img { width: 90%; height: 90%; object-fit: contain; mix-blend-mode: screen; }
-        .grid-label { position: absolute; bottom: 0; width: 100%; background: rgba(0,26,51,0.95); font-size: 0.5rem; text-align: center; padding: 5px 0; color: var(--bio-high); border-top: 1px solid var(--bio-high); letter-spacing: 1px; }
+        .grid-label { position: absolute; bottom: 0; width: 100%; background: rgba(0,26,51,0.95); font-size: 0.55rem; text-align: center; padding: 6px 0; color: var(--bio-high); border-top: 1px solid var(--bio-high); letter-spacing: 1px; overflow: hidden; white-space: nowrap; }
 
-        /* REBALANCED FOOTER */
+        /* FOOTER REBALANCE */
         .control-footer {
             position: fixed; bottom: 0; width: 100%; height: 90px;
             background: var(--ui-bg); z-index: 150; 
-            display: none; opacity: 0; align-items: center; justify-content: space-between;
+            display: flex; align-items: center; justify-content: space-between;
             border-top: 1px solid var(--bio-high); padding: 0 15px; box-sizing: border-box;
             transition: all 0.5s ease;
         }
 
         .footer-btn {
-            height: 45px; padding: 0 12px; background: rgba(0, 242, 255, 0.05); 
+            height: 44px; min-width: 100px; padding: 0 15px; background: rgba(0, 242, 255, 0.05); 
             border: 1px solid var(--bio-high); color: var(--bio-high); 
             font-size: 0.65rem; font-family: inherit; letter-spacing: 1px;
             cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
-            text-transform: uppercase; transition: 0.3s;
+            text-transform: uppercase;
         }
-        .footer-btn:active { transform: scale(0.95); background: var(--bio-high); color: #000; }
         .footer-btn.active { background: var(--bio-high); color: #000; box-shadow: 0 0 15px var(--bio-high); }
 
         .center-controls {
-            flex-grow: 1; max-width: 40%; display: flex; flex-direction: column; align-items: center; gap: 8px;
-            transition: opacity 0.5s;
+            flex-grow: 1; max-width: 45%; display: flex; flex-direction: column; align-items: center; gap: 6px;
         }
-        #sector-display { font-size: 0.6rem; color: var(--bio-high); letter-spacing: 2px; }
-        .sector-slider { width: 100%; accent-color: var(--bio-high); cursor: pointer; }
+        #sector-display { font-size: 0.65rem; color: var(--bio-high); letter-spacing: 2px; }
+        .sector-slider { width: 100%; accent-color: var(--bio-high); }
 
-        /* MODALS & SIZES */
-        #modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1000; display: none; background: rgba(0,0,0,0.96); backdrop-filter: blur(15px); align-items: center; justify-content: center; }
-        .modal-content { width: 92%; max-width: 400px; background: #000; border: 1px solid var(--bio-high); padding: 20px 0; position: relative; }
+        /* CART BUTTON STYLING */
+        #cart-trigger {
+            display: flex; align-items: center; gap: 10px;
+            border: 1px solid var(--bio-high); color: var(--bio-high); 
+            padding: 8px 15px; font-size: 0.75rem; cursor: pointer;
+            background: rgba(0, 242, 255, 0.05);
+        }
+        .cart-icon-wrapper { position: relative; display: flex; flex-direction: column-reverse; align-items: center; width: 24px; height: 24px; }
+        .hoodie-layer { 
+            width: 18px; height: 4px; background: var(--bio-high); 
+            border: 1px solid #000; border-radius: 1px; margin-bottom: -2px; 
+        }
+
+        /* SIZE MODAL */
+        #modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1000; display: none; background: rgba(0,0,0,0.95); backdrop-filter: blur(15px); align-items: center; justify-content: center; }
+        .modal-content { width: 92%; max-width: 400px; background: #000; border: 1px solid var(--bio-high); padding: 20px 0; }
         .size-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 20px; }
-        .size-btn { border: 1px solid var(--bio-high); background: transparent; color: #fff; padding: 12px 0; cursor: pointer; font-size: 0.6rem; transition: 0.2s; }
+        .size-btn { border: 1px solid var(--bio-high); background: transparent; color: #fff; padding: 12px 0; cursor: pointer; font-size: 0.65rem; }
         .size-btn.selected { background: var(--bio-high); color: #000; font-weight: bold; }
 
         #side-cart { position: fixed; top: 0; right: -100%; width: 85%; max-width: 350px; height: 100%; background: #000; border-left: 1px solid var(--bio-high); z-index: 2000; transition: 0.4s; }
@@ -94,7 +103,11 @@
 
 <header id="ui-header">
     <h1>OLYMPIAN // DEEP SPACE</h1>
-    <div id="cart-trigger" onclick="window.toggleCart(true)" style="border:1px solid var(--bio-high); color:var(--bio-high); padding:10px 15px; font-size:0.7rem; cursor:pointer;">MANIFEST (0)</div>
+    <div id="cart-trigger" onclick="window.toggleCart(true)">
+        <div class="cart-icon-wrapper" id="cart-stack">
+            🛒 </div>
+        <span>CART (<span id="cart-count">0</span>)</span>
+    </div>
 </header>
 
 <div id="store-grid"></div>
@@ -115,7 +128,7 @@
 <div id="modal-overlay" onclick="window.closeModal()">
     <div class="modal-content" onclick="event.stopPropagation()">
         <div id="modal-img-container" style="padding:10px; text-align:center;"></div>
-        <div id="modal-title" style="color:var(--bio-high); font-size:0.75rem; text-align:center; padding:10px; letter-spacing:1px;"></div>
+        <div id="modal-title" style="color:var(--bio-high); font-size:0.7rem; text-align:center; padding:10px; letter-spacing:1px; text-transform:uppercase;"></div>
         <div class="size-grid">
             <button class="size-btn" onclick="window.selectSize(this, '3XS')">3XS</button>
             <button class="size-btn" onclick="window.selectSize(this, '2XS')">2XS</button>
@@ -130,15 +143,15 @@
             <button class="size-btn" onclick="window.selectSize(this, '5XL')">5XL</button>
             <button class="size-btn" onclick="window.selectSize(this, '6XL')">6XL</button>
         </div>
-        <button onclick="window.addToCart()" style="width:90%; margin:10px 5%; padding:15px; background:var(--bio-high); border:none; font-weight:bold; cursor:pointer; color:#000;">UPLOAD TO MANIFEST</button>
+        <button onclick="window.addToCart()" style="width:90%; margin:10px 5%; padding:15px; background:var(--bio-high); border:none; font-weight:bold; cursor:pointer; color:#000; letter-spacing:2px;">UPLOAD TO CART</button>
     </div>
 </div>
 
 <div id="side-cart">
     <div style="padding:20px; border-bottom:1px solid var(--bio-high); display:flex; justify-content:space-between; color:var(--bio-high)">
-        <span>MANIFEST</span><span onclick="window.toggleCart(false)" style="cursor:pointer;">×</span>
+        <span>CART MANIFEST</span><span onclick="window.toggleCart(false)" style="cursor:pointer; font-size:1.5rem;">×</span>
     </div>
-    <div id="cart-items" style="padding:20px; font-size:0.7rem;"></div>
+    <div id="cart-items" style="padding:20px; font-size:0.75rem;"></div>
 </div>
 
 <script type="importmap">
@@ -168,76 +181,54 @@
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enabled = false;
     controls.enableDamping = true;
-    controls.dampingFactor = 0.05;
 
     const textureLoader = new THREE.TextureLoader();
-    
-    // Background Restore
-    const bgTexture = textureLoader.load('8k_stars_milky_way.jpg');
-    scene.background = bgTexture;
+    scene.background = textureLoader.load('8k_stars_milky_way.jpg');
 
-    // Enhanced Star Field (Former Glory)
+    // Star Field Restoration
     const starGeo = new THREE.BufferGeometry();
     const starCoords = [];
-    for (let i = 0; i < 15000; i++) {
-        starCoords.push((Math.random() - 0.5) * 8000, (Math.random() - 0.5) * 8000, (Math.random() - 0.5) * 8000);
+    for (let i = 0; i < 12000; i++) {
+        starCoords.push((Math.random() - 0.5) * 10000, (Math.random() - 0.5) * 10000, (Math.random() - 0.5) * 10000);
     }
     starGeo.setAttribute('position', new THREE.Float32BufferAttribute(starCoords, 3));
-    const starMat = new THREE.PointsMaterial({ color: 0xffffff, size: 1.2, transparent: true, opacity: 0.9 });
-    const stars = new THREE.Points(starGeo, starMat);
+    const stars = new THREE.Points(starGeo, new THREE.PointsMaterial({ color: 0xffffff, size: 1.1, transparent: true, opacity: 0.8 }));
     scene.add(stars);
 
     const systemGroup = new THREE.Group();
     scene.add(systemGroup);
-
     const planets = [];
 
     function createPlanet(name, size, textureFile, distance, orbitSpeed, hasRings = false) {
-        const geometry = new THREE.SphereGeometry(size, 64, 64);
-        const material = new THREE.MeshStandardMaterial({ 
-            map: textureLoader.load(textureFile), 
-            metalness: 0.3, 
-            roughness: 0.8 
-        });
-        const planet = new THREE.Mesh(geometry, material);
+        const planet = new THREE.Mesh(
+            new THREE.SphereGeometry(size, 64, 64),
+            new THREE.MeshStandardMaterial({ map: textureLoader.load(textureFile), metalness: 0.3, roughness: 0.8 })
+        );
         const orbitData = { mesh: planet, distance, speed: orbitSpeed, angle: Math.random() * Math.PI * 2 };
-        
         if (hasRings) {
-            const ringGeo = new THREE.RingGeometry(size * 1.5, size * 2.5, 64);
-            const ringMat = new THREE.MeshBasicMaterial({ map: textureLoader.load('8k_saturn_ring_alpha.png'), side: THREE.DoubleSide, transparent: true, opacity: 0.8 });
-            const rings = new THREE.Mesh(ringGeo, ringMat);
+            const rings = new THREE.Mesh(new THREE.RingGeometry(size * 1.5, size * 2.5, 64), new THREE.MeshBasicMaterial({ map: textureLoader.load('8k_saturn_ring_alpha.png'), side: THREE.DoubleSide, transparent: true }));
             rings.rotation.x = Math.PI / 2; planet.add(rings);
         }
-        systemGroup.add(planet);
-        planets.push(orbitData);
+        systemGroup.add(planet); planets.push(orbitData);
         return planet;
     }
 
-    // Solar Core
-    const sun = createPlanet("Sun", 70, '1000000142.jpg', 0, 0);
+    const sun = createPlanet("Sun", 75, '1000000142.jpg', 0, 0);
     sun.material.emissive = new THREE.Color(0xff4500);
     sun.material.emissiveIntensity = 2.0;
 
-    createPlanet("Mercury", 6, '1000000128.jpg', 160, 0.015);
-    createPlanet("Venus", 12, '1000000129.jpg', 240, 0.01);
-    createPlanet("Earth", 13, '8k_earth_daymap.jpg', 350, 0.008);
-    createPlanet("Mars", 9, '1000000131.jpg', 460, 0.006);
-    createPlanet("Jupiter", 40, '1000000132.jpg', 650, 0.004);
-    createPlanet("Saturn", 35, '1000000133.jpg', 900, 0.002, true);
-    createPlanet("Uranus", 22, '2k_uranus.jpg', 1200, 0.001);
-    createPlanet("Neptune", 22, '2k_neptune.jpg', 1450, 0.0008);
+    createPlanet("Mercury", 6, '1000000128.jpg', 180, 0.012);
+    createPlanet("Venus", 12, '1000000129.jpg', 280, 0.009);
+    createPlanet("Earth", 13, '8k_earth_daymap.jpg', 400, 0.007);
+    createPlanet("Jupiter", 45, '1000000132.jpg', 700, 0.003);
+    createPlanet("Saturn", 38, '1000000133.jpg', 950, 0.002, true);
 
-    const sunLight = new THREE.PointLight(0xffffff, 10, 4000);
-    scene.add(sunLight);
-    scene.add(new THREE.AmbientLight(0xffffff, 0.4));
-
-    camera.position.set(0, 1000, 2500);
-    camera.lookAt(0,0,0);
+    scene.add(new THREE.PointLight(0xffffff, 12, 5000));
+    scene.add(new THREE.AmbientLight(0xffffff, 0.5));
+    camera.position.set(0, 1200, 2800);
 
     function animate() {
         requestAnimationFrame(animate);
-        const t = Date.now() * 0.001;
-        
         planets.forEach(p => {
             if(p.distance > 0) {
                 p.angle += p.speed;
@@ -246,16 +237,13 @@
             }
             p.mesh.rotation.y += 0.005;
         });
-
-        sun.material.emissiveIntensity = 1.5 + Math.sin(t * 2) * 0.5;
         stars.rotation.y += 0.0001;
-        
         if (controls.enabled) controls.update();
         renderer.render(scene, camera);
     }
     animate();
 
-    // --- UI CONTROLS ---
+    // --- UI LOGIC ---
     window.toggleInteractive = function() {
         window.isInteractive = !window.isInteractive;
         const uiElements = [document.getElementById('ui-header'), document.getElementById('store-grid'), document.getElementById('center-ui'), document.getElementById('design-toggle')];
@@ -277,16 +265,6 @@
         }
     };
 
-    // Initialize System
-    setTimeout(() => {
-        ['ui-header', 'store-grid', 'ui-footer'].forEach(id => {
-            const el = document.getElementById(id);
-            el.style.display = (id === 'store-grid') ? 'grid' : 'flex';
-            setTimeout(() => el.style.opacity = '1', 50);
-        });
-        fetchStore();
-    }, 100);
-
     async function fetchStore() {
         try {
             const res = await fetch('/api/artemis-2.js');
@@ -296,7 +274,7 @@
                 setupNavigation();
                 renderGrid(1); 
             }
-        } catch (e) { document.getElementById('sector-display').innerText = "OFFLINE"; }
+        } catch (e) {}
     }
 
     function setupNavigation() {
@@ -322,7 +300,7 @@
     window.openModal = function(name, img) {
         window.activeProduct = { name, img }; window.selectedSize = null;
         document.getElementById('modal-title').innerText = name;
-        document.getElementById('modal-img-container').innerHTML = `<img src="${img}" style="width:100%; max-height:300px; object-fit:contain; mix-blend-mode:screen;">`;
+        document.getElementById('modal-img-container').innerHTML = `<img src="${img}" style="width:100%; max-height:280px; object-fit:contain; mix-blend-mode:screen;">`;
         document.getElementById('modal-overlay').style.display = 'flex';
         document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected'));
     };
@@ -336,13 +314,35 @@
     window.closeModal = function() { document.getElementById('modal-overlay').style.display = 'none'; };
     window.toggleCart = function(show) { document.getElementById('side-cart').classList.toggle('open', show); };
 
+    window.updateCartUI = function() {
+        document.getElementById('cart-count').innerText = window.cart.length;
+        const stack = document.getElementById('cart-stack');
+        stack.innerHTML = '🛒'; // Reset to icon
+        // Add layers for each hoodie (limit to 5 for visual clarity)
+        const layers = Math.min(window.cart.length, 5);
+        for(let i=0; i<layers; i++) {
+            const div = document.createElement('div');
+            div.className = 'hoodie-layer';
+            div.style.bottom = `${12 + (i*3)}px`;
+            div.style.position = 'absolute';
+            stack.appendChild(div);
+        }
+        document.getElementById('cart-items').innerHTML = window.cart.map(i => `
+            <div style="padding:15px; border-bottom:1px solid #222; display:flex; gap:10px; align-items:center;">
+                <img src="${i.img}" style="width:40px; mix-blend-mode:screen;">
+                <div>${i.name}<br><span style="color:var(--bio-high)">SIZE: ${i.size}</span></div>
+            </div>`).join('');
+    };
+
     window.addToCart = function() {
         if(!window.selectedSize) return alert("SELECT SIZE");
         window.cart.push({...window.activeProduct, size: window.selectedSize});
-        document.getElementById('cart-trigger').innerText = `MANIFEST (${window.cart.length})`;
-        window.closeModal(); window.toggleCart(true);
+        window.updateCartUI();
+        window.closeModal(); 
+        window.toggleCart(true);
     };
 
+    fetchStore();
     window.addEventListener('resize', () => {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
