@@ -5,8 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>OLYMPIAN | AXIOM 24</title>
     <style>
-        :root { --fire: #ff4500; --spark: #ffae00; --bio-low: #001a33; --bio-high: #00f2ff; --cyan-bloom: rgba(0, 255, 255, 0.15); --cyan-border: rgba(0, 255, 255, 0.4); --cyan-glow: 0 0 20px rgba(0, 255, 255, 0.3); }
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: #000; font-family: 'Courier New', monospace; color: white; overflow: hidden; }
+        :root { 
+            --fire: #ff4500; 
+            --spark: #ffae00; 
+            --bio-low: #001a33; 
+            --bio-high: #00f2ff; 
+            --cyan-glow: 0 0 20px rgba(0, 255, 255, 0.3); 
+        }
+
+        body, html { 
+            margin: 0; padding: 0; width: 100%; height: 100%; 
+            background: #000; font-family: 'Courier New', monospace; 
+            color: white; overflow: hidden; 
+        }
         
         canvas { position: fixed; top: 0; left: 0; z-index: 0; pointer-events: none; }
         
@@ -24,7 +35,12 @@
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
 
         /* UI ELEMENTS */
-        header { position: relative; z-index: 100; height: 60px; display: none; opacity: 0; align-items: center; justify-content: space-between; padding: 0 20px; background: rgba(0,0,0,0.9); border-bottom: 1px solid var(--bio-high); transition: opacity 1s; }
+        header { 
+            position: relative; z-index: 100; height: 60px; display: none; opacity: 0; 
+            align-items: center; justify-content: space-between; padding: 0 20px; 
+            background: rgba(0,0,0,0.9); border-bottom: 1px solid var(--bio-high); 
+            transition: opacity 1s; 
+        }
         h1 { letter-spacing: 5px; color: var(--bio-high); text-shadow: 0 0 15px var(--bio-high); font-size: 0.9rem; }
 
         #store-grid { 
@@ -81,21 +97,21 @@
         .pay-link { display: block; width: 90%; margin: 10px auto; padding: 15px 0; text-align: center; font-size: 0.8rem; text-decoration: none; font-weight: bold; }
     </style>
 </head>
-<body ondblclick="closeModal(); toggleCart(false)">
+<body ondblclick="window.closeModal(); window.toggleCart(false)">
 
-<div id="landing-overlay" onclick="enterSystem()">
+<div id="landing-overlay" onclick="window.enterSystem()">
     <div id="landing-prompt">SYSTEM READY // CLICK TO SYNC</div>
 </div>
 
 <header id="ui-header">
-    <h1>OLYMPIAN // SOLAR CORE</h1>
-    <div id="cart-trigger" onclick="toggleCart(true)" style="color:var(--bio-high); border:1px solid var(--bio-high); padding:8px 15px; font-size:0.8rem; cursor:pointer;">MANIFEST (0)</div>
+    <h1>OLYMPIAN // SOLAR OBSERVER</h1>
+    <div id="cart-trigger" onclick="window.toggleCart(true)" style="color:var(--bio-high); border:1px solid var(--bio-high); padding:8px 15px; font-size:0.8rem; cursor:pointer;">MANIFEST (0)</div>
 </header>
 
 <div id="store-grid"></div>
 
 <div class="control-footer" id="ui-footer">
-    <button id="design-toggle" onclick="toggleHoloframe()">
+    <button id="design-toggle" onclick="window.toggleHoloframe()">
         <span>Custom Design</span>
     </button>
     <div class="slider-wrapper">
@@ -105,32 +121,32 @@
 </div>
 
 <div id="holoframe-container">
-    <span class="close-holo" onclick="toggleHoloframe()">×</span>
+    <span class="close-holo" onclick="window.toggleHoloframe()">×</span>
     <div class="glass-frame">
         <iframe src="https://georgia-aquarium.vercel.app/" style="width:100%; height:100%; border:none;"></iframe>
     </div>
 </div>
 
-<div id="modal-overlay" onclick="closeModal()">
+<div id="modal-overlay" onclick="window.closeModal()">
     <div class="modal-content" onclick="event.stopPropagation()">
-        <span class="close-modal" onclick="closeModal()">×</span>
+        <span class="close-modal" onclick="window.closeModal()">×</span>
         <div id="modal-img-container" style="padding:10px;"></div>
         <div style="padding:0 20px;">
             <div id="modal-title" style="color:var(--bio-high); font-size:0.8rem; margin-bottom:10px; text-transform:uppercase; text-align:center;"></div>
             <div class="size-grid">
-                <button class="size-btn" onclick="selectSize(this, 'S')">S</button>
-                <button class="size-btn" onclick="selectSize(this, 'M')">M</button>
-                <button class="size-btn" onclick="selectSize(this, 'L')">L</button>
-                <button class="size-btn" onclick="selectSize(this, 'XL')">XL</button>
-                <button class="size-btn" onclick="selectSize(this, '2XL')">2XL</button>
+                <button class="size-btn" onclick="window.selectSize(this, 'S')">S</button>
+                <button class="size-btn" onclick="window.selectSize(this, 'M')">M</button>
+                <button class="size-btn" onclick="window.selectSize(this, 'L')">L</button>
+                <button class="size-btn" onclick="window.selectSize(this, 'XL')">XL</button>
+                <button class="size-btn" onclick="window.selectSize(this, '2XL')">2XL</button>
             </div>
-            <button onclick="addToCart()" style="width:100%; padding:15px; background:var(--bio-high); border:none; font-weight:bold; cursor:pointer; color:#000;">UPLOAD TO MANIFEST</button>
+            <button onclick="window.addToCart()" style="width:100%; padding:15px; background:var(--bio-high); border:none; font-weight:bold; cursor:pointer; color:#000;">UPLOAD TO MANIFEST</button>
         </div>
     </div>
 </div>
 
 <div id="side-cart">
-    <div style="padding:20px; border-bottom:1px solid var(--bio-high); display:flex; justify-content:space-between;"><span style="color:var(--bio-high)">MANIFEST</span><span onclick="toggleCart(false)" style="cursor:pointer;">×</span></div>
+    <div style="padding:20px; border-bottom:1px solid var(--bio-high); display:flex; justify-content:space-between;"><span style="color:var(--bio-high)">MANIFEST</span><span onclick="window.toggleCart(false)" style="cursor:pointer;">×</span></div>
     <div id="cart-items" style="padding:20px; font-size:0.7rem;"></div>
     <div style="position:absolute; bottom:20px; width:100%;">
         <a href="https://buy.stripe.com/4gMaEWdE3dha4GUgBAcIE01" class="pay-link" style="background:#fff; color:#000;" target="_blank">STRIPE</a>
@@ -144,58 +160,89 @@
 <script type="module">
     import * as THREE from 'three';
 
-    // GLOBAL STORE LOGIC (Merged)
+    // GLOBAL STORE & UI STATE
     window.allProducts = []; 
     window.cart = []; 
     window.itemsPerPage = 24; 
     window.selectedSize = null; 
     window.activeProduct = null;
 
-    // SOLAR ENGINE INITIALIZATION
+    // --- SOLAR CORE ENGINE ---
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 2000);
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(window.devicePixelRatio);
     document.body.appendChild(renderer.domElement);
 
     const textureLoader = new THREE.TextureLoader();
-    const geometry = new THREE.SphereGeometry(100, 64, 64);
-    const material = new THREE.MeshStandardMaterial({
-        map: textureLoader.load('1000000142.jpg'),
-        metalness: 0.1,
-        roughness: 0.8,
-        emissive: new THREE.Color(0xff8800),
-        emissiveIntensity: 0.8
+    const sunTexture = textureLoader.load('1000000142.jpg');
+    sunTexture.wrapS = sunTexture.wrapT = THREE.RepeatWrapping;
+
+    // The Plasma Core
+    const coreGeo = new THREE.SphereGeometry(100, 64, 64);
+    const coreMat = new THREE.MeshStandardMaterial({
+        map: sunTexture,
+        emissive: new THREE.Color(0xff4500),
+        emissiveIntensity: 1.5,
+        metalness: 0,
+        roughness: 1
     });
-    const sun = new THREE.Mesh(geometry, material);
+    const sun = new THREE.Mesh(coreGeo, coreMat);
     scene.add(sun);
 
-    const pointLight = new THREE.PointLight(0xffffff, 3, 500);
-    scene.add(pointLight);
-    const ambientLight = new THREE.AmbientLight(0x404040, 1);
-    scene.add(ambientLight);
+    // The Shimmering Corona
+    const coronaGeo = new THREE.SphereGeometry(105, 64, 64);
+    const coronaMat = new THREE.MeshBasicMaterial({
+        color: 0xffaa00,
+        transparent: true,
+        opacity: 0.2,
+        side: THREE.BackSide,
+        blending: THREE.AdditiveBlending
+    });
+    const corona = new THREE.Mesh(coronaGeo, coronaMat);
+    scene.add(corona);
 
-    camera.position.z = 250;
-    camera.position.y = 50;
-    camera.lookAt(0,0,0);
+    // Dynamic Solar Flares (Light)
+    const flareLight = new THREE.PointLight(0xffaa00, 5, 1000);
+    scene.add(flareLight);
+    scene.add(new THREE.AmbientLight(0x202020, 0.5));
+
+    camera.position.set(0, 50, 280);
+    camera.lookAt(0, 0, 0);
+
+    const clock = new THREE.Clock();
 
     function animate() {
         requestAnimationFrame(animate);
-        sun.rotation.y += 0.002;
+        const t = clock.getElapsedTime();
+
+        // 1. Plasma Drift (Texture Flow)
+        sunTexture.offset.x += 0.0005;
+        sunTexture.offset.y += 0.0002;
+        sun.rotation.y += 0.0015;
+
+        // 2. Vitality Pulse (Breathing)
+        const pulse = 1 + Math.sin(t * 0.8) * 0.02;
+        sun.scale.set(pulse, pulse, pulse);
+        coreMat.emissiveIntensity = 1.2 + Math.sin(t * 2) * 0.3;
+
+        // 3. Corona Shimmer
+        corona.scale.set(pulse * 1.05, pulse * 1.05, pulse * 1.05);
+        coronaMat.opacity = 0.15 + Math.sin(t * 1.5) * 0.05;
+
+        // 4. Solar Flare Flicker
+        flareLight.intensity = 4 + Math.random() * 2;
+        flareLight.position.x = Math.sin(t * 0.5) * 20;
+
         renderer.render(scene, camera);
     }
     animate();
 
-    window.addEventListener('resize', () => {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-    });
-
-    // UI CONTROLS
+    // --- UI INTERFACE LOGIC ---
     window.enterSystem = function() {
         const overlay = document.getElementById('landing-overlay');
-        document.getElementById('landing-prompt').innerText = "SYNCING SOLAR CORE...";
+        document.getElementById('landing-prompt').innerText = "CALIBRATING SOLAR CORE...";
         overlay.style.opacity = '0';
         setTimeout(() => {
             overlay.style.display = 'none';
@@ -217,7 +264,9 @@
                 setupNavigation();
                 renderGrid(1); 
             }
-        } catch (e) { document.getElementById('sector-display').innerText = "LINK SEVERED"; }
+        } catch (e) { 
+            document.getElementById('sector-display').innerText = "SIGNAL LOST"; 
+        }
     }
 
     function setupNavigation() {
@@ -237,7 +286,7 @@
         const start = (page - 1) * window.itemsPerPage;
         const items = window.allProducts.slice(start, start + window.itemsPerPage);
         grid.innerHTML = items.map(p => `
-            <div class="card" onclick="openModal('${p.name.replace(/'/g, "\\'")}', '${p.images[0]}')">
+            <div class="card" onclick="window.openModal('${p.name.replace(/'/g, "\\'")}', '${p.images[0]}')">
                 <img src="${p.images[0]}" loading="lazy">
                 <div class="grid-label">${p.name.split('Prompt:')[1] || 'OLYMPIAN'}</div>
             </div>`).join('');
@@ -260,6 +309,7 @@
 
     window.closeModal = function() { document.getElementById('modal-overlay').style.display = 'none'; };
     window.toggleCart = function(show) { document.getElementById('side-cart').classList.toggle('open', show); };
+    
     window.toggleHoloframe = function() {
         const frame = document.getElementById('holoframe-container');
         if (frame.style.display === 'block') {
@@ -278,6 +328,12 @@
         document.getElementById('cart-items').innerHTML = window.cart.map(i => `<div style="padding:10px; border-bottom:1px solid #111;">${i.name}<br><span style="color:var(--bio-high)">${i.size}</span></div>`).join('');
         window.closeModal(); window.toggleCart(true);
     };
+
+    window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    });
 </script>
 </body>
 </html>
