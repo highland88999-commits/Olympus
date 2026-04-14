@@ -1,8 +1,40 @@
 {
   "status": "ONLINE",
-  "lastSync": "2026-04-14T05:19:45.678Z",
-  "totalItems": 356,
+  "lastSync": "2026-04-14T07:08:23.467Z",
+  "totalItems": 360,
   "products": [
+    {
+      "id": 428063267,
+      "name": "Grafitti Wear ",
+      "images": [
+        "https://files.cdn.printful.com/files/fba/fbaf9e6d1322c880fb12ba28831bac60_preview.png"
+      ],
+      "price": 95
+    },
+    {
+      "id": 428063212,
+      "name": "Grafitti Wear",
+      "images": [
+        "https://files.cdn.printful.com/files/405/40510c4e64b4111059740b6df959974c_preview.png"
+      ],
+      "price": 95
+    },
+    {
+      "id": 428063177,
+      "name": "Mud Camo",
+      "images": [
+        "https://files.cdn.printful.com/files/955/955cf5c110929cc21c284b9139bea775_preview.png"
+      ],
+      "price": 95
+    },
+    {
+      "id": 428063142,
+      "name": "Mud Camo",
+      "images": [
+        "https://files.cdn.printful.com/files/a5f/a5f62fa2b62ae7b3c89c45cc5e8fc684_preview.png"
+      ],
+      "price": 95
+    },
     {
       "id": 422728811,
       "name": "Unisex Hoodie - Camo",
