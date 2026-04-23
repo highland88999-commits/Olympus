@@ -1,4 +1,4 @@
-const CACHE_NAME = 'olympian-core-v1';
+const CACHE_NAME = 'olympian-core-v2';
 const ASSETS_TO_CACHE = [
     '/',
     '/index.html',
@@ -6,30 +6,25 @@ const ASSETS_TO_CACHE = [
     './assets/8k_sun.jpg',
     './assets/8k_earth_nightmap.jpg',
     './assets/8k_moon.jpg',
-    'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js'
+    'https://unpkg.com/three@0.160.0/build/three.module.js'
 ];
 
-// Install Event: Caches critical assets
 self.addEventListener('install', (event) => {
     event.waitUntil(
         caches.open(CACHE_NAME).then((cache) => {
-            console.log('Opened Olympian Cache');
             return cache.addAll(ASSETS_TO_CACHE);
         })
     );
 });
 
-// Fetch Event: Serves from cache if offline
 self.addEventListener('fetch', (event) => {
     event.respondWith(
         caches.match(event.request).then((response) => {
-            // Return cached version or fetch from network
             return response || fetch(event.request);
         })
     );
 });
 
-// Activate Event: Cleans up old caches
 self.addEventListener('activate', (event) => {
     event.waitUntil(
         caches.keys().then((cacheNames) => {
