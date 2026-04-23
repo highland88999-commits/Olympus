@@ -2,26 +2,35 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>OLYMPIAN | AXIOM 24</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="format-detection" content="telephone=no">
+    <title>OLYMPIAN HOODIES X MAPS | ORBITAL ECLIPSE</title>
+    
+    <link rel="manifest" href="./manifest.json">
+    <meta name="theme-color" content="#000000">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="./assets/icon-192.png">
+
     <style>
         :root { 
-            --fire: #ff4500; 
-            --spark: #ffae00; 
-            --bio-low: #001a33; 
-            --bio-high: #00f2ff; 
-            --cyan-bloom: rgba(0, 255, 255, 0.15); 
-            --cyan-border: rgba(0, 255, 255, 0.4); 
+            --fire: #ff4500; --blood: #ff0033;
+            --bio-low: #001a33; --bio-high: #00f2ff; 
         }
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: #000; font-family: 'Courier New', monospace; color: white; overflow: hidden; text-transform: uppercase; }
         
-        canvas { position: fixed; top: 0; left: 0; z-index: 0; pointer-events: none; }
+        /* STRICT SELECTION BLOCKS FOR NATIVE APP FEEL */
+        body, html { 
+            margin: 0; padding: 0; width: 100%; height: 100%; background: #000; 
+            font-family: 'Courier New', monospace; color: white; overflow: hidden; text-transform: uppercase;
+            -webkit-user-select: none; user-select: none; -webkit-touch-callout: none;
+        }
         
-        /* --- 1. KRAKEN LANDING OVERLAY --- */
+        canvas { position: fixed; top: 0; left: 0; z-index: 0; pointer-events: auto; outline: none; }
+        
         #kraken-lander {
-            position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(12px);
-            z-index: 5000; display: flex; flex-direction: column; align-items: center; justify-content: center;
-            transition: transform 1s cubic-bezier(0.85, 0, 0.15, 1), opacity 1s;
+            position: fixed; inset: 0; background: #000; z-index: 5000; 
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            transition: transform 1s cubic-bezier(0.85, 0, 0.15, 1); pointer-events: auto;
         }
         .lander-card {
             width: 90%; max-width: 420px; text-align: center; border: 1px solid var(--bio-high);
@@ -32,141 +41,70 @@
             text-decoration: none; font-weight: bold; margin-bottom: 25px;
             letter-spacing: 2px; box-shadow: 0 0 20px var(--bio-high); transition: 0.3s;
         }
-        .kraken-btn:hover { transform: scale(1.02); }
         .btn-core {
-            background: transparent; border: 1px solid var(--bio-high); color: var(--bio-high);
+            background: rgba(0,0,0,0.5); border: 1px solid var(--bio-high); color: var(--bio-high);
             padding: 12px 24px; cursor: pointer; font-size: 0.7rem; letter-spacing: 3px;
-            backdrop-filter: blur(5px); transition: 0.3s; text-decoration: none; width: 100%; box-sizing: border-box;
+            backdrop-filter: blur(5px); transition: 0.3s; outline: none;
         }
-        .btn-core:hover { background: var(--bio-high); color: #000; }
 
-        /* --- 2. UI LAYER (HIDDEN INITIALLY) --- */
-        .ui-element { transition: opacity 0.8s ease; opacity: 0; display: none; }
-        
-        header { position: relative; z-index: 100; height: 70px; align-items: center; justify-content: space-between; padding: 0 30px; background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent); border-bottom: 1px solid var(--bio-high); }
+        #ui-layer { position: fixed; inset: 0; z-index: 100; pointer-events: none; display: flex; flex-direction: column; justify-content: space-between; padding: 30px 20px; box-sizing: border-box; opacity: 0; transition: opacity 1s; }
+        header, footer { display: flex; justify-content: space-between; pointer-events: auto; align-items: center; }
         h1 { letter-spacing: 5px; color: var(--bio-high); text-shadow: 0 0 15px var(--bio-high); font-size: 1rem; margin: 0; }
 
-        /* CART MANIFEST & STACK */
-        #cart-trigger { display: flex; align-items: center; gap: 10px; color: var(--bio-high); border: 1px solid var(--bio-high); padding: 8px 15px; font-size: 0.8rem; cursor: pointer; background: rgba(0, 242, 255, 0.05); }
-        .cart-icon-wrapper { position: relative; width: 20px; height: 20px; display: flex; align-items: flex-end; justify-content: center; }
-        #visual-stack { display: flex; flex-direction: column-reverse; gap: 2px; width: 100%; position: absolute; bottom: 0; }
-        .hoodie-fold { width: 100%; height: 4px; background: var(--bio-high); border-radius: 1px; box-shadow: 0 0 5px var(--bio-high); }
-
-        #store-grid { 
-            position: relative; z-index: 5; grid-template-columns: repeat(2, 1fr); gap: 15px; 
-            width: 95%; max-width: 1000px; margin: 15px auto 0 auto; 
-            height: calc(100vh - 185px); overflow-y: auto; scrollbar-width: none; padding-bottom: 10px; pointer-events: auto;
+        #hud-center { position: absolute; top: 20%; left: 50%; transform: translateX(-50%); text-align: center; pointer-events: none; width: 90%; max-width: 400px; }
+        .alert-box { 
+            border: 1px solid var(--bio-high); background: rgba(0, 242, 255, 0.1); color: var(--bio-high); 
+            padding: 15px 10px; font-weight: bold; letter-spacing: 3px; box-shadow: 0 0 20px rgba(0, 242, 255, 0.4); 
+            opacity: 0; transition: opacity 0.5s ease; margin-bottom: 15px; text-shadow: 0 0 10px; font-size: 0.8rem;
         }
+        .alert-box.active { opacity: 1; animation: pulse 1s infinite; }
+        .alert-box.blood { border-color: var(--blood); color: var(--blood); background: rgba(255, 0, 51, 0.1); box-shadow: 0 0 20px rgba(255, 0, 51, 0.4); }
 
-        .card { 
-            position: relative; background: rgba(0, 242, 255, 0.03); border: 1px solid rgba(0, 242, 255, 0.2);
-            aspect-ratio: 0.8 / 1; cursor: pointer; display: flex; align-items: center; justify-content: center;
-            box-shadow: inset 0 0 15px var(--bio-low); transition: 0.3s; backdrop-filter: blur(5px);
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+        #map-holoframe {
+            position: fixed; inset: 0; z-index: 6000; display: none; opacity: 0;
+            background: rgba(0, 26, 51, 0.4); backdrop-filter: blur(8px);
+            align-items: center; justify-content: center; transition: opacity 0.4s ease; pointer-events: auto;
         }
-        .card:hover { border-color: var(--bio-high); box-shadow: 0 0 20px var(--bio-high); }
-        .card img { width: 85%; height: 85%; object-fit: contain; mix-blend-mode: screen; filter: drop-shadow(0 0 8px var(--bio-high)); }
-        .grid-label { position: absolute; bottom: 0; width: 100%; background: rgba(0,26,51,0.9); font-size: 0.55rem; text-align: center; padding: 6px 0; color: var(--bio-high); border-top: 1px solid var(--bio-high); }
-
-        footer {
-            position: fixed; bottom: 0; width: 100%; height: 90px;
-            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent); z-index: 150; 
-            align-items: center; justify-content: space-between; padding: 0 30px; box-sizing: border-box;
-            border-top: 1px solid var(--bio-high); pointer-events: auto;
+        .map-glass-container {
+            width: 90%; height: 80%; max-width: 1000px; position: relative;
+            border: 2px solid var(--bio-high); border-radius: 5px; background: rgba(0,0,0,0.5); overflow: hidden;
         }
-
-        .slider-wrapper { flex-grow: 1; display: flex; flex-direction: column; align-items: center; max-width: 40%; }
-        .sector-slider { width: 100%; accent-color: var(--bio-high); cursor: pointer; }
-        #sector-display { font-size: 0.7rem; color: var(--bio-high); margin-bottom: 5px; letter-spacing: 2px; }
-
-        /* --- 3. MODALS, HOLOFRAME & SIDE CART --- */
-        #holoframe-container { position: fixed; top: 10%; left: 5%; width: 90%; height: 75%; z-index: 9999; display: none; opacity: 0; transform: scale(0.9); transition: all 0.4s ease; pointer-events: auto; }
-        .glass-frame { width: 100%; height: 100%; background: #000; border: 2px solid var(--bio-high); border-radius: 5px; box-shadow: 0 0 50px var(--bio-low); overflow: hidden; position: relative; }
-        .close-holo { position: absolute; top: -15px; right: -10px; color: var(--bio-high); font-size: 2.5rem; cursor: pointer; z-index: 10001; font-weight: bold; }
-
-        #modal-overlay { position: fixed; inset: 0; z-index: 6000; display: none; background: rgba(0,0,0,0.95); backdrop-filter: blur(12px); align-items: center; justify-content: center; pointer-events: auto; }
-        .modal-content { width: 90%; max-width: 420px; background: #000; border: 2px solid var(--bio-high); position: relative; padding-bottom: 20px; }
-        .close-modal { position: absolute; top: 5px; right: 15px; font-size: 2rem; color: var(--bio-high); cursor: pointer; z-index: 100; }
-        .size-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 15px 20px; }
-        .size-btn { border: 1px solid var(--bio-high); background: #000; color: #fff; padding: 12px 0; cursor: pointer; font-size: 0.7rem; transition: 0.2s; }
-        .size-btn.selected { background: var(--bio-high); color: #000; font-weight: bold; }
-        
-        #side-cart { position: fixed; top: 0; right: -100%; width: 85%; max-width: 350px; height: 100%; background: #000; border-left: 1px solid var(--bio-high); z-index: 7000; transition: 0.4s; pointer-events: auto; }
-        #side-cart.open { right: 0; }
-        .pay-link { display: block; width: 90%; margin: 10px auto; padding: 15px 0; text-align: center; font-size: 0.8rem; text-decoration: none; font-weight: bold; letter-spacing: 2px; }
+        .close-map { position: absolute; top: 15px; right: 20px; color: var(--bio-high); font-size: 2.5rem; cursor: pointer; z-index: 6001; font-weight: bold; }
+        #map-iframe { width: 100%; height: 100%; border: none; filter: contrast(1.2) hue-rotate(180deg) invert(1); }
     </style>
 </head>
-<body ondblclick="closeModal(); toggleCart(false)">
+<body spellcheck="false" translate="no">
 
 <div id="kraken-lander">
     <div class="lander-card">
-        <div style="font-size: 0.7rem; letter-spacing: 5px; margin-bottom: 25px; color: var(--bio-high);">SECURE CONNECTION ESTABLISHED</div>
+        <div style="font-size: 0.7rem; letter-spacing: 5px; margin-bottom: 25px; color: var(--bio-high);">SYSTEM READY</div>
         <a href="https://invite.kraken.com/JDNW/anm1u9c0" target="_blank" class="kraken-btn">CLAIM 200 CAD BTC REWARD</a>
-        <button class="btn-core" onclick="enterSystem()">INITIALIZE SOLAR CORE</button>
+        <button class="btn-core" style="width: 100%;" onclick="ignite()">INITIALIZE OLYMPUS</button>
     </div>
 </div>
 
-<header id="ui-header" class="ui-element">
-    <h1>OLYMPIAN</h1>
-    <div id="cart-trigger" onclick="toggleCart(true)">
-        <div class="cart-icon-wrapper">
-            🛒
-            <div id="visual-stack"></div>
-        </div>
-        <span>CART MANIFEST (<span id="cart-count">0</span>)</span>
-    </div>
-</header>
+<div id="ui-layer">
+    <header>
+        <h1>OLYMPIAN</h1>
+        <div style="color:var(--bio-high); border:1px solid var(--bio-high); padding:8px 15px; font-size:0.7rem; cursor:pointer; pointer-events: auto;" onclick="alert('Manifest Access')">MANIFEST (0)</div>
+    </header>
 
-<div id="store-grid" class="ui-element"></div>
-
-<footer id="ui-footer" class="ui-element">
-    <button class="btn-core" onclick="toggleHoloframe()" style="width: auto;">CUSTOM DESIGN</button>
-
-    <div class="slider-wrapper">
-        <div id="sector-display">SYNCING...</div>
-        <input type="range" id="sector-slider" class="sector-slider" min="1" max="1" value="1">
+    <div id="hud-center">
+        <div id="eclipse-alert" class="alert-box">TOTAL SOLAR ECLIPSE</div>
     </div>
 
-    <button class="btn-core" onclick="toggleViewport()" style="width: auto;" id="viewport-btn">VIEWPORT 🪐</button>
-</footer>
-
-<div id="holoframe-container">
-    <span class="close-holo" onclick="toggleHoloframe()">×</span>
-    <div class="glass-frame">
-        <iframe src="https://georgia-aquarium.vercel.app/" style="width:100%; height:100%; border:none;"></iframe>
-    </div>
+    <footer>
+        <button class="btn-core" onclick="alert('Custom Design Active')">CUSTOM DESIGN</button>
+        <button class="btn-core" id="viewport-btn" onclick="toggleViewport()">VIEWPORT 🪐</button>
+    </footer>
 </div>
 
-<div id="modal-overlay" onclick="closeModal()">
-    <div class="modal-content" onclick="event.stopPropagation()">
-        <span class="close-modal" onclick="closeModal()">×</span>
-        <div id="modal-img-container" style="padding:15px;"></div>
-        <div style="padding:0 20px;">
-            <div id="modal-title" style="color:var(--bio-high); font-size:0.8rem; margin-bottom:10px; text-align:center;"></div>
-            <div class="size-grid">
-                <button class="size-btn" onclick="selectSize(this, 'S')">S</button>
-                <button class="size-btn" onclick="selectSize(this, 'M')">M</button>
-                <button class="size-btn" onclick="selectSize(this, 'L')">L</button>
-                <button class="size-btn" onclick="selectSize(this, 'XL')">XL</button>
-                <button class="size-btn" onclick="selectSize(this, '2XL')">2XL</button>
-                <button class="size-btn" onclick="selectSize(this, '3XL')">3XL</button>
-                <button class="size-btn" onclick="selectSize(this, '4XL')">4XL</button>
-                <button class="size-btn" onclick="selectSize(this, '5XL')">5XL</button>
-                <button class="size-btn" onclick="selectSize(this, '6XL')">6XL</button>
-            </div>
-            <button class="btn-core" style="width:100%; margin-top: 10px; background:var(--bio-high); color:#000;" onclick="addToCart()">UPLOAD TO MANIFEST</button>
-        </div>
-    </div>
-</div>
-
-<div id="side-cart">
-    <div style="padding:20px; border-bottom:1px solid var(--bio-high); display:flex; justify-content:space-between; align-items: center;">
-        <span style="color:var(--bio-high); letter-spacing: 2px;">CART MANIFEST</span>
-        <span onclick="toggleCart(false)" style="cursor:pointer; font-size: 1.5rem; color: var(--bio-high);">×</span>
-    </div>
-    <div id="cart-items" style="padding:20px; font-size:0.75rem; color: #fff; overflow-y: auto; height: calc(100% - 180px);"></div>
-    <div style="position:absolute; bottom:20px; width:100%;">
-        <a href="https://buy.stripe.com/4gMaEWdE3dha4GUgBAcIE01" class="pay-link" style="background:#fff; color:#000;" target="_blank">STRIPE SECURE</a>
-        <a href="https://nowpayments.io/payment/?iid=6087329696" class="pay-link" style="background:var(--fire); color:#fff;" target="_blank">CRYPTO CHECKOUT</a>
+<div id="map-holoframe">
+    <div class="map-glass-container" id="map-glass">
+        <span class="close-map" onclick="closeMapHoloframe()">×</span>
+        <iframe id="map-iframe" src=""></iframe>
     </div>
 </div>
 
@@ -181,103 +119,191 @@
     import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
     import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 
-    // --- 1. CORE ENGINE ---
+    // --- ENGINE ---
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 40000);
+    const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 60000);
     const renderer = new THREE.WebGLRenderer({ antialias: true, logarithmicDepthBuffer: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.toneMapping = THREE.ReinhardToneMapping;
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     document.body.appendChild(renderer.domElement);
 
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
-    controls.enabled = false; // Disabled while in store
-    camera.position.set(0, 2000, 5000);
-    controls.target.set(0, 0, 0);
+    controls.enabled = false;
 
     const loader = new THREE.TextureLoader();
     const assetPath = './assets/';
 
-    // --- 2. TIERED BLOOM ---
-    const renderScene = new RenderPass(scene, camera);
-    const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
-    bloomPass.threshold = 0.1; bloomPass.strength = 1.4; bloomPass.radius = 0.7;
+    // --- ADAPTIVE POSITIONING ---
+    let camBasePos = new THREE.Vector3(900, 2500, 6000);
+    let camTarget = new THREE.Vector3(900, 0, 0);
 
-    const composer = new EffectComposer(renderer);
-    composer.addPass(renderScene);
-    composer.addPass(bloomPass);
-
-    const TIER = {
-        SUN: { em: 0xffffff, int: 2.0 },
-        BRIGHT: { em: 0x44ccff, int: 0.8 },
-        PLANET: { em: 0x222222, int: 0.3 }
-    };
-
-    // --- 3. PROCEDURAL STARS ---
-    const starGeo = new THREE.BufferGeometry();
-    const starCount = 15000;
-    const posArray = new Float32Array(starCount * 3);
-    for(let i=0; i < starCount * 3; i++) { posArray[i] = (Math.random() - 0.5) * 30000; }
-    starGeo.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-    const stars = new THREE.Points(starGeo, new THREE.PointsMaterial({ color: 0xffffff, size: 1.1, sizeAttenuation: true }));
-    scene.add(stars);
-
-    // --- 4. PLANETARY SYSTEM (REPO SYNC) ---
-    const sun = new THREE.Mesh(new THREE.SphereGeometry(500, 64, 64), new THREE.MeshBasicMaterial({ map: loader.load(assetPath + '8k_sun.jpg') }));
-    scene.add(sun);
-
-    const bodies = [];
-    function spawn(size, tex, dist, speed, tier, ring = null) {
-        const pivot = new THREE.Group();
-        scene.add(pivot);
-        const mesh = new THREE.Mesh(
-            new THREE.SphereGeometry(size, 64, 64),
-            new THREE.MeshStandardMaterial({ map: loader.load(assetPath + tex), emissive: new THREE.Color(tier.em), emissiveIntensity: tier.int })
-        );
-        mesh.position.x = dist;
-        pivot.add(mesh);
-        if(ring) {
-            const r = new THREE.Mesh(new THREE.RingGeometry(size*1.8, size*3.2, 64), new THREE.MeshBasicMaterial({ map: loader.load(assetPath + ring), side: THREE.DoubleSide, transparent: true }));
-            r.rotation.x = Math.PI/2; mesh.add(r);
+    function updateCamera() {
+        const aspect = window.innerWidth / window.innerHeight;
+        camBasePos.z = aspect < 1 ? 10000 : 6500;
+        if (!eventActive) {
+            camera.position.lerp(camBasePos, 0.1);
+            controls.target.lerp(camTarget, 0.1);
         }
-        bodies.push({ pivot, mesh, speed });
-        return mesh;
     }
 
-    spawn(28, '8k_mercury.jpg', 900, 0.012, TIER.PLANET);
-    spawn(60, '8k_venus_surface.jpg', 1350, 0.009, TIER.BRIGHT);
-    const earth = spawn(70, '8k_earth_nightmap.jpg', 1900, 0.006, TIER.BRIGHT);
-    const moon = new THREE.Mesh(new THREE.SphereGeometry(16, 32, 32), new THREE.MeshStandardMaterial({ map: loader.load(assetPath + '8k_moon.jpg'), emissive: 0xffffff, emissiveIntensity: 0.4 }));
-    moon.position.x = 140; earth.add(moon);
-    spawn(40, '8k_mars.jpg', 2500, 0.005, TIER.PLANET);
-    spawn(180, '8k_jupiter.jpg', 3500, 0.002, TIER.PLANET);
-    spawn(155, '8k_saturn.jpg', 4600, 0.001, TIER.PLANET, '8k_saturn_ring_alpha.png');
-    spawn(95, '2k_uranus.jpg', 5600, 0.0007, TIER.PLANET);
-    spawn(90, '2k_neptune.jpg', 6500, 0.0005, TIER.PLANET);
+    // --- BLOOM ---
+    const composer = new EffectComposer(renderer);
+    composer.addPass(new RenderPass(scene, camera));
+    const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.6, 0.4, 0.85);
+    composer.addPass(bloomPass);
 
-    scene.add(new THREE.PointLight(0xffffff, 10, 25000));
+    // --- STARS ---
+    const starGeo = new THREE.BufferGeometry();
+    const posArray = new Float32Array(20000 * 3);
+    for(let i=0; i<20000*3; i++) posArray[i] = (Math.random()-0.5)*45000;
+    starGeo.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+    scene.add(new THREE.Points(starGeo, new THREE.PointsMaterial({color: 0xffffff, size: 1.5})));
+
+    // --- BODIES ---
+    const sun = new THREE.Mesh(
+        new THREE.SphereGeometry(450, 64, 64),
+        new THREE.MeshBasicMaterial({ 
+            map: loader.load(assetPath + '8k_sun.jpg'),
+            transparent: true, opacity: 1
+        })
+    );
+    scene.add(sun);
+
+    const sunLight = new THREE.PointLight(0xffffff, 8, 30000);
+    sunLight.castShadow = true;
+    sunLight.shadow.mapSize.set(2048, 2048);
+    scene.add(sunLight);
     scene.add(new THREE.AmbientLight(0xffffff, 0.05));
+
+    const earthOrbit = new THREE.Group();
+    scene.add(earthOrbit);
+
+    const earth = new THREE.Mesh(
+        new THREE.SphereGeometry(150, 64, 64),
+        new THREE.MeshStandardMaterial({ 
+            map: loader.load(assetPath + '8k_earth_nightmap.jpg'),
+            emissive: 0xffffff, emissiveMap: loader.load(assetPath + '8k_earth_nightmap.jpg'), emissiveIntensity: 0.6
+        })
+    );
+    earth.position.x = 2200;
+    earth.castShadow = true; earth.receiveShadow = true;
+    earthOrbit.add(earth);
+
+    const atmos = new THREE.Mesh(
+        new THREE.SphereGeometry(155, 64, 64),
+        new THREE.MeshStandardMaterial({ color: 0x00f2ff, transparent: true, opacity: 0.1, blending: THREE.AdditiveBlending, side: THREE.FrontSide, depthWrite: false })
+    );
+    earth.add(atmos);
+
+    const moonOrbit = new THREE.Group();
+    earth.add(moonOrbit);
+
+    const moon = new THREE.Mesh(
+        new THREE.SphereGeometry(45, 32, 32),
+        new THREE.MeshStandardMaterial({ map: loader.load(assetPath + '8k_moon.jpg') })
+    );
+    moon.position.x = 450;
+    moon.castShadow = true; moon.receiveShadow = true;
+    moonOrbit.add(moon);
+
+    // --- RAYCASTER (CLICK TO MAP) ---
+    const raycaster = new THREE.Raycaster();
+    const mouse = new THREE.Vector2();
+    let isMoving = false;
+    let startPos = new THREE.Vector2();
+
+    renderer.domElement.addEventListener('pointerdown', (e) => { startPos.set(e.clientX, e.clientY); isMoving = false; });
+    renderer.domElement.addEventListener('pointermove', (e) => { if(startPos.distanceTo(new THREE.Vector2(e.clientX, e.clientY)) > 10) isMoving = true; });
+    renderer.domElement.addEventListener('pointerup', (e) => {
+        if (!isMoving) {
+            mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+            raycaster.setFromCamera(mouse, camera);
+            if(raycaster.intersectObject(earth, true).length > 0) openMap();
+        }
+    });
+
+    // --- TIMELINE ---
+    const clock = new THREE.Clock();
+    let eventActive = false;
 
     function animate() {
         requestAnimationFrame(animate);
+        const cycle = clock.getElapsedTime() % 90;
+        const alert = document.getElementById('eclipse-alert');
+
         sun.rotation.y += 0.001;
-        stars.rotation.y += 0.00003;
-        bodies.forEach(b => { b.pivot.rotation.y += b.speed; b.mesh.rotation.y += 0.004; });
-        if(controls.enabled) controls.update();
+        earth.rotation.y += 0.003;
+        moonOrbit.rotation.y += 0.005;
+        earthOrbit.rotation.y += 0.0005;
+
+        let earthWP = new THREE.Vector3(); earth.getWorldPosition(earthWP);
+        let zoomPos = earthWP.clone().add(new THREE.Vector3(0, 500, 2000));
+        let panPos = earthWP.clone().add(new THREE.Vector3(1500, 1000, 2500));
+
+        if (cycle < 30) {
+            moonOrbit.rotation.y = Math.PI/2 + (cycle/30) * Math.PI;
+            if (cycle > 7.5 && cycle < 22.5) {
+                eventActive = true;
+                alert.innerText = "TOTAL SOLAR ECLIPSE"; alert.className = "alert-box active";
+                sunLight.intensity = THREE.MathUtils.lerp(sunLight.intensity, 1, 0.05);
+                sun.material.opacity = THREE.MathUtils.lerp(sun.material.opacity, 0.2, 0.05); 
+                camera.position.lerp(zoomPos, 0.05); controls.target.lerp(earthWP, 0.05);
+            } else { 
+                eventActive = false; alert.classList.remove('active', 'blood');
+                sun.material.opacity = THREE.MathUtils.lerp(sun.material.opacity, 1, 0.05);
+            }
+            moon.material.emissiveIntensity = 0;
+        } else if (cycle < 60) {
+            moonOrbit.rotation.y = 1.5*Math.PI + ((cycle-30)/30) * Math.PI;
+            if (cycle > 37.5 && cycle < 52.5) {
+                eventActive = true;
+                alert.innerText = "LUNAR ECLIPSE"; alert.className = "alert-box active";
+                camera.position.lerp(zoomPos, 0.05); controls.target.lerp(earthWP, 0.05);
+            } else { eventActive = false; alert.classList.remove('active'); }
+            sunLight.intensity = THREE.MathUtils.lerp(sunLight.intensity, 8, 0.05);
+        } else {
+            moonOrbit.rotation.y = Math.PI/2 - ((cycle-60)/30) * Math.PI;
+            if (cycle > 67.5 && cycle < 82.5) {
+                eventActive = true;
+                alert.innerText = "BLOOD MOON SEQUENCE"; alert.className = "alert-box blood active";
+                moon.material.emissive = new THREE.Color(0xff0000); moon.material.emissiveIntensity = 1;
+                camera.position.lerp(panPos, 0.02); controls.target.lerp(earthWP, 0.02);
+            } else { eventActive = false; alert.classList.remove('active', 'blood'); moon.material.emissiveIntensity = 0; }
+        }
+
+        if(!eventActive) updateCamera();
+        controls.update();
         composer.render();
     }
     animate();
 
-    // --- 5. GLOBAL UI BINDINGS ---
+    window.ignite = () => {
+        document.getElementById('kraken-lander').style.transform = 'translateY(-100%)';
+        setTimeout(() => document.getElementById('ui-layer').style.opacity = '1', 500);
+    };
+
     window.toggleViewport = () => {
         controls.enabled = !controls.enabled;
-        const state = controls.enabled ? '0' : '1';
-        const pointer = controls.enabled ? 'none' : 'auto';
-        document.getElementById('ui-header').style.opacity = state;
-        document.getElementById('store-grid').style.opacity = state;
-        document.getElementById('store-grid').style.pointerEvents = pointer;
-        document.getElementById('viewport-btn').innerText = controls.enabled ? "EXIT VIEWPORT" : "VIEWPORT 🪐";
+        document.getElementById('ui-layer').style.opacity = controls.enabled ? '0.3' : '1';
+        document.getElementById('viewport-btn').innerText = controls.enabled ? "EXIT 🪐" : "VIEWPORT 🪐";
+    };
+
+    window.openMap = () => {
+        const frame = document.getElementById('map-holoframe');
+        document.getElementById('map-iframe').src = "https://www.google.com/maps/@0,0,15000m/data=!3m1!1e3";
+        frame.style.display = 'flex';
+        setTimeout(() => frame.style.opacity = '1', 50);
+    };
+
+    window.closeMapHoloframe = () => {
+        const frame = document.getElementById('map-holoframe');
+        frame.style.opacity = '0';
+        setTimeout(() => { frame.style.display = 'none'; document.getElementById('map-iframe').src = ""; }, 400);
     };
 
     window.addEventListener('resize', () => {
@@ -289,116 +315,13 @@
 </script>
 
 <script>
-    // --- UI & STORE LOGIC ---
-    let allProducts = [], cart = [], itemsPerPage = 24, selectedSize = null, activeProduct = null;
-
-    function enterSystem() {
-        const lander = document.getElementById('kraken-lander');
-        lander.style.transform = 'translateY(-100%)';
-        lander.style.opacity = '0';
-        
-        setTimeout(() => {
-            lander.style.display = 'none';
-            document.querySelectorAll('.ui-element').forEach(el => {
-                el.style.display = (el.tagName === 'DIV') ? 'grid' : 'flex';
-                setTimeout(() => el.style.opacity = '1', 50);
-            });
-            fetchStore();
-        }, 1000);
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('./sw.js')
+                .then((reg) => console.log('Olympian Service Worker Registered'))
+                .catch((err) => console.log('Service Worker Failed: ', err));
+        });
     }
-
-    async function fetchStore() {
-        try {
-            const res = await fetch('/api/artemis-2.js');
-            const data = await res.json();
-            if (data.products) { 
-                allProducts = data.products; 
-                setupNavigation();
-                renderGrid(1); 
-            }
-        } catch (e) { 
-            document.getElementById('sector-display').innerText = "API LINK SEVERED"; 
-            // Fallback for visual testing
-            allProducts = Array(12).fill({ name: "OLYMPIAN DEFAULT", images: ["https://via.placeholder.com/400x500/001a33/00f2ff?text=SECURED+ASSET"] });
-            setupNavigation(); renderGrid(1);
-        }
-    }
-
-    function setupNavigation() {
-        const slider = document.getElementById('sector-slider');
-        const display = document.getElementById('sector-display');
-        const totalPages = Math.ceil(allProducts.length / itemsPerPage) || 1;
-        slider.max = totalPages;
-        display.innerText = `SECTOR 01 / ${totalPages.toString().padStart(2, '0')}`;
-        slider.oninput = (e) => {
-            display.innerText = `SECTOR ${e.target.value.padStart(2, '0')} / ${totalPages.toString().padStart(2, '0')}`;
-            renderGrid(parseInt(e.target.value));
-        };
-    }
-
-    function renderGrid(page) {
-        const grid = document.getElementById('store-grid');
-        const start = (page - 1) * itemsPerPage;
-        const items = allProducts.slice(start, start + itemsPerPage);
-        grid.innerHTML = items.map(p => `
-            <div class="card" onclick="openModal('${p.name.replace(/'/g, "\\'")}', '${p.images[0]}')">
-                <img src="${p.images[0]}" loading="lazy">
-                <div class="grid-label">${p.name.split('Prompt:')[1] || p.name}</div>
-            </div>`).join('');
-        grid.scrollTop = 0;
-    }
-
-    window.openModal = (name, img) => {
-        activeProduct = { name, img }; selectedSize = null;
-        document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected'));
-        document.getElementById('modal-title').innerText = name;
-        document.getElementById('modal-img-container').innerHTML = `<img src="${img}" style="width:100%; mix-blend-mode:screen; filter:drop-shadow(0 0 15px var(--bio-high));">`;
-        document.getElementById('modal-overlay').style.display = 'flex';
-    };
-
-    window.selectSize = (btn, size) => { 
-        selectedSize = size; 
-        document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected')); 
-        btn.classList.add('selected'); 
-    };
-    
-    window.closeModal = () => document.getElementById('modal-overlay').style.display = 'none';
-    window.toggleCart = (show) => document.getElementById('side-cart').classList.toggle('open', show);
-    
-    window.addToCart = () => {
-        if(!selectedSize) return alert("SELECT SIZE");
-        cart.push({...activeProduct, size: selectedSize});
-        
-        // Update Stack & Count
-        document.getElementById('cart-count').innerText = cart.length;
-        const stack = document.getElementById('visual-stack');
-        stack.innerHTML = cart.map(() => `<div class="hoodie-fold"></div>`).join('');
-        
-        // Update Cart Sidebar
-        document.getElementById('cart-items').innerHTML = cart.map(i => `
-            <div style="padding:10px 0; border-bottom:1px solid rgba(0, 242, 255, 0.3); display: flex; align-items: center; gap: 10px;">
-                <img src="${i.img}" style="width: 40px; height: 40px; object-fit: contain;">
-                <div>
-                    <div>${i.name}</div>
-                    <div style="color:var(--bio-high); margin-top: 4px;">SIZE: ${i.size}</div>
-                </div>
-            </div>`).join('');
-        
-        closeModal(); 
-        toggleCart(true);
-    };
-
-    window.toggleHoloframe = () => {
-        const frame = document.getElementById('holoframe-container');
-        if (frame.style.display === 'block') {
-            frame.style.opacity = '0';
-            frame.style.transform = 'scale(0.9)';
-            setTimeout(() => { frame.style.display = 'none'; }, 400);
-        } else {
-            frame.style.display = 'block';
-            setTimeout(() => { frame.style.opacity = '1'; frame.style.transform = 'scale(1)'; }, 10);
-        }
-    };
 </script>
 </body>
 </html>
