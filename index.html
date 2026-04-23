@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="format-detection" content="telephone=no">
-    <title>OLYMPUS x MAPS | ORBITAL EVENTS</title>
+    <title>OLYMPUS x MAPS | ORBITAL</title>
     
     <link rel="manifest" href="./manifest.json">
     <meta name="theme-color" content="#000000">
@@ -42,21 +42,24 @@
         }
         .btn-core {
             background: rgba(0,0,0,0.5); border: 1px solid var(--bio-high); color: var(--bio-high);
-            padding: 12px 24px; cursor: pointer; font-size: 0.7rem; letter-spacing: 3px;
-            backdrop-filter: blur(5px); transition: 0.3s; outline: none; text-align: center;
+            padding: 12px 10px; cursor: pointer; font-size: 0.65rem; letter-spacing: 2px;
+            backdrop-filter: blur(5px); transition: 0.3s; outline: none; text-align: center; width: 100%; box-sizing: border-box;
         }
         .btn-core:hover { background: var(--bio-high); color: #000; box-shadow: 0 0 15px var(--bio-high); }
 
         /* --- UI LAYER --- */
         #ui-layer { position: fixed; inset: 0; z-index: 100; pointer-events: none; display: flex; flex-direction: column; justify-content: space-between; padding: 30px 20px; box-sizing: border-box; opacity: 0; transition: opacity 1s; }
-        header, footer { display: flex; justify-content: space-between; pointer-events: auto; align-items: center; }
-        h1 { letter-spacing: 5px; color: var(--bio-high); text-shadow: 0 0 15px var(--bio-high); font-size: 1rem; margin: 0; }
+        header { display: flex; justify-content: space-between; pointer-events: auto; align-items: center; }
+        h1 { letter-spacing: 3px; color: var(--bio-high); text-shadow: 0 0 15px var(--bio-high); font-size: 0.9rem; margin: 0; }
+        
+        /* 4 BUTTON FOOTER GRID */
+        #ui-layer footer { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; pointer-events: auto; width: 100%; }
 
         /* STORE GRID */
         #store-grid { 
             position: relative; z-index: 5; grid-template-columns: repeat(2, 1fr); gap: 15px; 
             width: 100%; max-width: 1000px; margin: 20px auto 0 auto; 
-            height: calc(100vh - 200px); overflow-y: auto; scrollbar-width: none; pointer-events: auto;
+            height: calc(100vh - 220px); overflow-y: auto; scrollbar-width: none; pointer-events: auto;
             transition: opacity 0.5s ease; display: none; opacity: 0;
         }
         .card { 
@@ -69,10 +72,10 @@
         .grid-label { position: absolute; bottom: 0; width: 100%; background: rgba(0,26,51,0.9); font-size: 0.55rem; text-align: center; padding: 6px 0; color: var(--bio-high); border-top: 1px solid var(--bio-high); }
 
         /* CART & HUD */
-        #cart-trigger { display: flex; align-items: center; gap: 10px; color: var(--bio-high); border: 1px solid var(--bio-high); padding: 8px 15px; font-size: 0.7rem; cursor: pointer; background: rgba(0, 242, 255, 0.05); }
-        .cart-icon-wrapper { position: relative; width: 20px; height: 20px; display: flex; align-items: flex-end; justify-content: center; font-size: 1rem; }
+        #cart-trigger { display: flex; align-items: center; gap: 10px; color: var(--bio-high); border: 1px solid var(--bio-high); padding: 8px 10px; font-size: 0.65rem; cursor: pointer; background: rgba(0, 242, 255, 0.05); }
+        .cart-icon-wrapper { position: relative; width: 15px; height: 15px; display: flex; align-items: flex-end; justify-content: center; font-size: 0.8rem; }
         #visual-stack { display: flex; flex-direction: column-reverse; gap: 2px; width: 100%; position: absolute; bottom: 0; }
-        .hoodie-fold { width: 100%; height: 4px; background: var(--bio-high); box-shadow: 0 0 5px var(--bio-high); }
+        .hoodie-fold { width: 100%; height: 3px; background: var(--bio-high); box-shadow: 0 0 5px var(--bio-high); }
 
         #hud-center { position: absolute; top: 20%; left: 50%; transform: translateX(-50%); text-align: center; pointer-events: none; width: 90%; max-width: 400px; }
         .alert-box { border: 1px solid var(--bio-high); background: rgba(0, 242, 255, 0.1); color: var(--bio-high); padding: 15px 10px; font-weight: bold; letter-spacing: 3px; box-shadow: 0 0 20px rgba(0, 242, 255, 0.4); opacity: 0; transition: opacity 0.5s ease; margin-bottom: 15px; text-shadow: 0 0 10px; font-size: 0.8rem; }
@@ -97,7 +100,7 @@
         #map-holoframe { position: fixed; inset: 0; z-index: 6000; display: none; opacity: 0; background: rgba(0, 26, 51, 0.4); backdrop-filter: blur(8px); align-items: center; justify-content: center; transition: opacity 0.4s ease; pointer-events: auto; }
         .map-glass-container { width: 90%; height: 80%; max-width: 1000px; position: relative; border: 2px solid var(--bio-high); border-radius: 5px; background: rgba(0,0,0,0.5); overflow: hidden; transform: scale(0.95); transition: transform 0.4s ease; }
         .close-map { position: absolute; top: 10px; right: 20px; color: var(--bio-high); font-size: 2.5rem; cursor: pointer; z-index: 6001; font-weight: bold; text-shadow: 0 0 10px #000; }
-        #map-iframe { width: 100%; height: 100%; border: none; filter: contrast(1.2) hue-rotate(180deg) invert(1); }
+        #map-iframe { width: 100%; height: 100%; border: none; filter: contrast(1.1) saturate(1.2); }
     </style>
 </head>
 <body spellcheck="false" translate="no">
@@ -106,13 +109,13 @@
     <div class="lander-card">
         <div style="font-size: 0.7rem; letter-spacing: 5px; margin-bottom: 25px; color: var(--bio-high);">SYSTEM READY</div>
         <a href="https://invite.kraken.com/JDNW/anm1u9c0" target="_blank" class="kraken-btn">CLAIM 200 CAD BTC REWARD</a>
-        <button class="btn-core" style="width: 100%;" onclick="ignite()">INITIALIZE OLYMPUS</button>
+        <button class="btn-core" onclick="ignite()">INITIALIZE OLYMPUS</button>
     </div>
 </div>
 
 <div id="ui-layer">
     <header>
-        <h1>OLYMPIAN</h1>
+        <h1>OLYMPUS x MAPS</h1>
         <div id="cart-trigger" onclick="toggleCart(true)">
             <div class="cart-icon-wrapper">🛒<div id="visual-stack"></div></div>
             <span>MANIFEST (<span id="cart-count">0</span>)</span>
@@ -126,7 +129,9 @@
     </div>
 
     <footer>
-        <button class="btn-core" onclick="customDesign()">CUSTOM DESIGN</button>
+        <button class="btn-core" onclick="window.location.href='mailto:stakeme10000@gmail.com?subject=Olympus%20Custom%20Design'">CUSTOM DESIGN</button>
+        <button class="btn-core" onclick="window.open('https://nexusvortex.ca', '_blank')">ONLINE MALL</button>
+        <button class="btn-core" onclick="window.open('https://thevortex.world', '_blank')">OLYMPIAN ENGINE</button>
         <button class="btn-core" id="viewport-btn" onclick="toggleViewport()">VIEWPORT 🪐</button>
     </footer>
 </div>
@@ -345,7 +350,7 @@
 
         if(!window.eventActive) updateCamera();
         
-        // Fix: ALWAYS call controls.update() so the camera turns to look at its target
+        // ALWAYS call controls.update() so the camera turns to look at its target
         controls.update();
         
         composer.render();
@@ -415,10 +420,6 @@
         }
     };
 
-    window.customDesign = () => {
-        window.location.href = "mailto:stakeme10000@gmail.com?subject=Olympian%20Custom%20Design%20Inquiry";
-    };
-
     // --- MODAL & CART LOGIC ---
     window.openModal = (name, img) => {
         activeProduct = { name, img }; selectedSize = null;
@@ -460,8 +461,8 @@
     window.openMap = () => {
         const frame = document.getElementById('map-holoframe');
         const glass = document.getElementById('map-glass');
-        // Real Google Maps Satellite Embed Link
-        document.getElementById('map-iframe').src = "https://maps.google.com/maps?q=Earth&t=k&z=2&ie=UTF8&iwloc=&output=embed";
+        // Valid embedded Google Map URL querying "Earth" using Satellite mode
+        document.getElementById('map-iframe').src = "https://maps.google.com/maps?q=Earth&t=k&z=3&output=embed";
         
         frame.style.display = 'flex';
         setTimeout(() => { frame.style.opacity = '1'; glass.style.transform = 'scale(1)'; }, 50);
