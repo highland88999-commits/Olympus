@@ -5,19 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NEXUSVORTEX | TERMINAL</title>
     <style>
-        :root { --neon: #00f2ff; --bg: #000; --card-bg: rgba(0, 242, 255, 0.03); }
+        :root { --neon: #00f2ff; --bg: #000; --card-bg: rgba(0, 242, 255, 0.05); }
         
         body { 
-            margin: 0; padding: 0; background: transparent; font-family: 'Courier New', monospace; 
+            margin: 0; padding: 0; background: var(--bg); font-family: 'Courier New', monospace; 
             color: white; overflow: hidden; border: 1px solid var(--neon); border-radius: 8px;
             box-shadow: 0 0 15px rgba(0, 242, 255, 0.2); display: flex; flex-direction: column; height: 100vh;
-            box-sizing: border-box;
+            box-sizing: border-box; position: relative;
         }
 
-        /* WIDGET HEADER */
+        /* EVOLVING STARFIELD CANVAS */
+        #starfield {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none;
+        }
+
+        /* WIDGET CONTENT OVERLAY */
+        #widget-content {
+            position: relative; z-index: 10; display: flex; flex-direction: column; height: 100%;
+        }
+
+        /* HEADER */
         .widget-header { 
             display: flex; justify-content: space-between; padding: 12px 15px; 
-            border-bottom: 1px solid rgba(0, 242, 255, 0.3); align-items: center; background: #001a33;
+            border-bottom: 1px solid rgba(0, 242, 255, 0.3); align-items: center; background: rgba(0, 26, 51, 0.8);
+            backdrop-filter: blur(5px);
         }
         .brand { 
             font-size: 0.85rem; font-weight: bold; color: var(--neon); letter-spacing: 3px; 
@@ -30,62 +41,125 @@
         }
         .shop-btn:hover { background: #fff; box-shadow: 0 0 15px #fff; }
 
-        /* HORIZONTAL SCROLLING CAROUSEL */
-        .carousel-container {
-            display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 15px; padding: 15px;
-            scrollbar-width: none; /* Firefox */ flex-grow: 1; align-items: center; background: rgba(0,0,0,0.8);
+        /* PRODUCT GRID */
+        .grid-container {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 10px; padding: 15px;
+            flex-grow: 1; align-items: center; overflow: hidden;
         }
-        .carousel-container::-webkit-scrollbar { display: none; /* Chrome/Safari */ }
         
         .card {
-            flex: 0 0 140px; scroll-snap-align: start; background: var(--card-bg); border: 1px solid rgba(0, 242, 255, 0.3);
-            border-radius: 6px; padding: 15px 10px; text-decoration: none; color: white; text-align: center;
-            transition: 0.3s; display: flex; flex-direction: column; justify-content: space-between; height: 180px;
-            backdrop-filter: blur(5px);
+            background: var(--card-bg); border: 1px solid rgba(0, 242, 255, 0.3);
+            border-radius: 6px; padding: 10px; text-decoration: none; color: white; text-align: center;
+            transition: 0.3s; display: flex; flex-direction: column; justify-content: space-between; height: 160px;
+            backdrop-filter: blur(3px); cursor: pointer;
         }
-        .card:hover { border-color: var(--neon); box-shadow: inset 0 0 15px rgba(0, 242, 255, 0.2); transform: translateY(-3px); }
-        .card img { width: 100%; height: 110px; object-fit: contain; mix-blend-mode: screen; filter: drop-shadow(0 0 5px var(--neon)); }
+        .card:hover { border-color: var(--neon); box-shadow: inset 0 0 15px rgba(0, 242, 255, 0.3); transform: translateY(-2px); }
+        .card img { width: 100%; height: 95px; object-fit: contain; mix-blend-mode: screen; filter: drop-shadow(0 0 5px var(--neon)); }
         
         .card-title { 
-            font-size: 0.6rem; text-transform: uppercase; margin-top: 10px; 
+            font-size: 0.55rem; text-transform: uppercase; margin-top: 8px; 
             overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #fff;
         }
-        .view-txt { font-size: 0.55rem; color: var(--neon); margin-top: 5px; font-weight: bold; }
+        .view-txt { font-size: 0.5rem; color: var(--neon); margin-top: 4px; font-weight: bold; }
+
+        /* SELECTABLE PAGINATION */
+        .pagination {
+            display: flex; justify-content: center; gap: 5px; padding: 10px; background: rgba(0,0,0,0.6);
+            border-top: 1px solid rgba(0, 242, 255, 0.3); backdrop-filter: blur(5px); flex-wrap: wrap;
+        }
+        .page-btn {
+            background: transparent; border: 1px solid var(--neon); color: var(--neon);
+            padding: 4px 8px; cursor: pointer; font-family: 'Courier New', monospace;
+            font-size: 0.6rem; transition: 0.2s; border-radius: 3px;
+        }
+        .page-btn:hover { background: rgba(0, 242, 255, 0.2); }
+        .page-btn.active { background: var(--neon); color: #000; font-weight: bold; box-shadow: 0 0 8px var(--neon); }
     </style>
 </head>
 <body>
 
-    <div class="widget-header">
-        <a href="https://nexusvortex.ca" target="_blank" class="brand">NEXUSVORTEX</a>
-        <a href="https://hermes-landing-nu.vercel.app/" target="_blank" class="shop-btn">ENTER MALL</a>
-    </div>
+    <canvas id="starfield"></canvas>
 
-    <div class="carousel-container" id="carousel">
-        <div style="font-size: 0.7rem; color: var(--neon); margin: auto; text-align: center;">SYNCHRONIZING MANIFEST...</div>
+    <div id="widget-content">
+        <div class="widget-header">
+            <a href="https://nexusvortex.ca" target="_blank" class="brand">NEXUSVORTEX</a>
+            <a href="https://nexusvortex.ca" target="_blank" class="shop-btn">ENTER OLYMPUS</a>
+        </div>
+
+        <div class="grid-container" id="grid">
+            <div style="font-size: 0.7rem; color: var(--neon); margin: auto; text-align: center; grid-column: 1 / -1;">SYNCHRONIZING MANIFEST...</div>
+        </div>
+
+        <div class="pagination" id="pagination">
+            </div>
     </div>
 
     <script>
+        // --- EVOLVING STARFIELD LOGIC ---
+        const canvas = document.getElementById('starfield');
+        const ctx = canvas.getContext('2d');
+        let stars = [];
+
+        function initStars() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            stars = Array(150).fill().map(() => ({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                radius: Math.random() * 1.5,
+                speed: Math.random() * 0.5 + 0.1
+            }));
+        }
+
+        function animateStars() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#ffffff';
+            stars.forEach(s => {
+                ctx.beginPath();
+                ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
+                ctx.fill();
+                // Move stars sideways to simulate planetary orbit/panning
+                s.x -= s.speed; 
+                if (s.x < 0) s.x = canvas.width;
+            });
+            requestAnimationFrame(animateStars);
+        }
+
+        window.addEventListener('resize', initStars);
+        initStars();
+        animateStars();
+
+        // --- WIDGET DATA & PAGINATION LOGIC ---
+        let allProducts = [];
+        let currentPage = 1;
+        const itemsPerPage = 3; // Adjust based on how many fit cleanly in the iframe width
+
         async function loadWidgetData() {
-            const container = document.getElementById('carousel');
             try {
-                // Fetching from the Olympus repo's own API
                 const res = await fetch('/api/artemis-2.js');
                 const data = await res.json();
-                const products = data.products || [];
-                
-                renderCarousel(products.slice(0, 10)); // Display the first 10 items
+                allProducts = data.products || [];
+                renderPage(1);
             } catch (e) {
                 console.error("Widget Sync Failed", e);
-                container.innerHTML = `<div style="color:#ff0033; margin:auto; font-size:0.7rem;">UPLINK SEVERED</div>`;
+                document.getElementById('grid').innerHTML = `<div style="color:#ff0033; margin:auto; font-size:0.7rem; grid-column: 1 / -1;">UPLINK SEVERED</div>`;
             }
         }
 
-        function renderCarousel(items) {
-            const container = document.getElementById('carousel');
-            container.innerHTML = items.map(p => {
+        function renderPage(page) {
+            currentPage = page;
+            const startIndex = (page - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const items = allProducts.slice(startIndex, endIndex);
+
+            const grid = document.getElementById('grid');
+            grid.innerHTML = items.map(p => {
                 const cleanName = p.name.split('Prompt:')[1] || p.name;
+                // Deep link parameter added so Olympus can read it if you set up auto-open logic later
+                const itemLink = `https://nexusvortex.ca/?item=${encodeURIComponent(cleanName)}`;
+                
                 return `
-                <a href="https://hermes-landing-nu.vercel.app/" target="_blank" class="card">
+                <a href="${itemLink}" target="_blank" class="card">
                     <img src="${p.images[0]}" alt="${cleanName}" loading="lazy">
                     <div>
                         <div class="card-title">${cleanName}</div>
@@ -93,8 +167,25 @@
                     </div>
                 </a>`;
             }).join('');
+
+            renderPagination();
         }
 
+        function renderPagination() {
+            const totalPages = Math.ceil(allProducts.length / itemsPerPage);
+            const paginator = document.getElementById('pagination');
+            
+            // Limit page buttons so it doesn't clutter the bottom if there are 100 items
+            let buttonsHTML = '';
+            for(let i = 1; i <= Math.min(totalPages, 10); i++) {
+                buttonsHTML += `<button class="page-btn ${i === currentPage ? 'active' : ''}" onclick="renderPage(${i})">${i}</button>`;
+            }
+            if(totalPages > 10) buttonsHTML += `<span style="color:var(--neon); font-size:0.6rem; align-self:center;">...</span>`;
+            
+            paginator.innerHTML = buttonsHTML;
+        }
+
+        // Initialize
         loadWidgetData();
     </script>
 </body>
