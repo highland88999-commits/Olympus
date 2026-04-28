@@ -1,4 +1,4 @@
-const CACHE_NAME = 'olympian-core-v2';
+const CACHE_NAME = 'olympian-core-v3';
 const ASSETS_TO_CACHE = [
     '/',
     '/index.html',
