@@ -55,11 +55,12 @@
         /* 4 BUTTON FOOTER GRID */
         #ui-layer footer { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; pointer-events: auto; width: 100%; }
 
-        /* STORE GRID */
+        /* STORE GRID & PAGINATION */
         #store-grid { 
             position: relative; z-index: 5; grid-template-columns: repeat(2, 1fr); gap: 15px; 
             width: 100%; max-width: 1000px; margin: 20px auto 0 auto; 
-            height: calc(100vh - 220px); overflow-y: auto; scrollbar-width: none; pointer-events: auto;
+            height: calc(100vh - 270px); /* Adjusted for paginator */
+            overflow-y: auto; scrollbar-width: none; pointer-events: auto;
             transition: opacity 0.5s ease; display: none; opacity: 0;
         }
         .card { 
@@ -70,6 +71,19 @@
         .card:hover { border-color: var(--bio-high); box-shadow: 0 0 20px var(--bio-high); }
         .card img { width: 85%; height: 85%; object-fit: contain; mix-blend-mode: screen; filter: drop-shadow(0 0 8px var(--bio-high)); }
         .grid-label { position: absolute; bottom: 0; width: 100%; background: rgba(0,26,51,0.9); font-size: 0.55rem; text-align: center; padding: 6px 0; color: var(--bio-high); border-top: 1px solid var(--bio-high); }
+
+        #store-pagination {
+            display: none; justify-content: center; align-items: center; gap: 15px;
+            pointer-events: auto; margin-bottom: 15px; opacity: 0; transition: opacity 0.5s ease;
+        }
+        .btn-page {
+            background: transparent; border: 1px solid var(--bio-high); color: var(--bio-high);
+            padding: 8px 15px; cursor: pointer; font-family: 'Courier New', monospace;
+            font-weight: bold; font-size: 0.7rem; transition: 0.3s;
+        }
+        .btn-page:hover:not(:disabled) { background: var(--bio-high); color: #000; }
+        .btn-page:disabled { opacity: 0.3; cursor: not-allowed; border-color: rgba(0, 242, 255, 0.3); color: rgba(0, 242, 255, 0.3); }
+        #page-indicator { color: var(--bio-high); font-size: 0.7rem; letter-spacing: 2px; }
 
         /* CART & HUD */
         #cart-trigger { display: flex; align-items: center; gap: 10px; color: var(--bio-high); border: 1px solid var(--bio-high); padding: 8px 10px; font-size: 0.65rem; cursor: pointer; background: rgba(0, 242, 255, 0.05); }
@@ -128,12 +142,20 @@
         <div id="eclipse-alert" class="alert-box">TOTAL SOLAR ECLIPSE</div>
     </div>
 
-    <footer>
-        <button class="btn-core" onclick="window.location.href='mailto:stakeme10000@gmail.com?subject=Olympus%20Custom%20Design'">CUSTOM DESIGN</button>
-        <button class="btn-core" onclick="window.open('https://nexusvortex.ca', '_blank')">ONLINE MALL</button>
-        <button class="btn-core" onclick="window.open('https://thevortex.world', '_blank')">OLYMPIAN ENGINE</button>
-        <button class="btn-core" id="viewport-btn" onclick="toggleViewport()">VIEWPORT 🪐</button>
-    </footer>
+    <div>
+        <div id="store-pagination">
+            <button id="btn-prev" class="btn-page" onclick="changePage(-1)">&#9664; PREV</button>
+            <span id="page-indicator">[ PAGE 1 / 1 ]</span>
+            <button id="btn-next" class="btn-page" onclick="changePage(1)">NEXT &#9654;</button>
+        </div>
+        
+        <footer>
+            <button class="btn-core" onclick="window.location.href='mailto:stakeme10000@gmail.com?subject=Olympus%20Custom%20Design'">CUSTOM DESIGN</button>
+            <button class="btn-core" onclick="window.open('https://nexusvortex.ca', '_blank')">ONLINE MALL</button>
+            <button class="btn-core" onclick="window.open('https://thevortex.world', '_blank')">OLYMPIAN ENGINE</button>
+            <button class="btn-core" id="viewport-btn" onclick="toggleViewport()">VIEWPORT 🪐</button>
+        </footer>
+    </div>
 </div>
 
 <div id="side-cart">
@@ -362,6 +384,8 @@
 <script>
     // --- STORE LOGIC & STATE MANAGEMENT ---
     let allProducts = [], cart = [], selectedSize = null, activeProduct = null;
+    let currentPage = 1;
+    const itemsPerPage = 8; // Number of items to show per page
     window.viewportActive = false;
 
     window.ignite = () => {
@@ -369,7 +393,11 @@
         setTimeout(() => {
             document.getElementById('ui-layer').style.opacity = '1';
             document.getElementById('store-grid').style.display = 'grid';
-            setTimeout(() => document.getElementById('store-grid').style.opacity = '1', 50);
+            document.getElementById('store-pagination').style.display = 'flex';
+            setTimeout(() => {
+                document.getElementById('store-grid').style.opacity = '1';
+                document.getElementById('store-pagination').style.opacity = '1';
+            }, 50);
             fetchStore();
         }, 500);
     };
@@ -382,32 +410,63 @@
             renderGrid();
         } catch (e) { 
             console.error("API Link Severed - Using Fallback"); 
-            allProducts = Array(8).fill({ name: "OLYMPIAN ARTIFACT", images: ["https://via.placeholder.com/400x500/001a33/00f2ff?text=SECURED+ASSET"] });
+            allProducts = Array(12).fill({ name: "OLYMPIAN ARTIFACT", images: ["https://via.placeholder.com/400x500/001a33/00f2ff?text=SECURED+ASSET"] });
             renderGrid();
         }
     }
 
     function renderGrid() {
         const grid = document.getElementById('store-grid');
-        grid.innerHTML = allProducts.slice(0, 24).map(p => `
+        const totalPages = Math.ceil(allProducts.length / itemsPerPage) || 1;
+        
+        // Safety bounds
+        if (currentPage > totalPages) currentPage = totalPages;
+        if (currentPage < 1) currentPage = 1;
+
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+        const currentItems = allProducts.slice(startIndex, endIndex);
+
+        grid.innerHTML = currentItems.map(p => `
             <div class="card" onclick="openModal('${p.name.replace(/'/g, "\\'")}', '${p.images[0]}')">
                 <img src="${p.images[0]}" loading="lazy">
                 <div class="grid-label">${p.name.split('Prompt:')[1] || p.name}</div>
             </div>`).join('');
+
+        // Update Pagination Controls
+        document.getElementById('page-indicator').innerText = `[ PAGE ${currentPage} / ${totalPages} ]`;
+        document.getElementById('btn-prev').disabled = currentPage === 1;
+        document.getElementById('btn-next').disabled = currentPage === totalPages;
     }
+
+    window.changePage = (direction) => {
+        currentPage += direction;
+        document.getElementById('store-grid').scrollTop = 0; // Scroll back to top of grid
+        renderGrid();
+    };
 
     window.toggleViewport = () => {
         window.viewportActive = !window.viewportActive;
         window.toggleOrbitalControls(window.viewportActive);
         
         const grid = document.getElementById('store-grid');
+        const paginator = document.getElementById('store-pagination');
+        
         if (window.viewportActive) {
             grid.style.opacity = '0';
-            setTimeout(() => grid.style.display = 'none', 500);
+            paginator.style.opacity = '0';
+            setTimeout(() => {
+                grid.style.display = 'none';
+                paginator.style.display = 'none';
+            }, 500);
             document.getElementById('viewport-btn').innerText = "EXIT VIEWPORT 🪐";
         } else {
             grid.style.display = 'grid';
-            setTimeout(() => grid.style.opacity = '1', 50);
+            paginator.style.display = 'flex';
+            setTimeout(() => {
+                grid.style.opacity = '1';
+                paginator.style.opacity = '1';
+            }, 50);
             document.getElementById('viewport-btn').innerText = "VIEWPORT 🪐";
         }
     };
