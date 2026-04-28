@@ -1,7 +1,8 @@
-const CACHE_NAME = 'olympian-core-v3';
+const CACHE_NAME = 'olympian-core-v6';
+
+// We removed the explicit '/index.html' to prevent routing errors on custom domains
 const ASSETS_TO_CACHE = [
     '/',
-    '/index.html',
     '/manifest.json',
     './assets/8k_sun.jpg',
     './assets/8k_earth_nightmap.jpg',
@@ -15,12 +16,20 @@ self.addEventListener('install', (event) => {
             return cache.addAll(ASSETS_TO_CACHE);
         })
     );
+    self.skipWaiting(); // Forces the new service worker to activate immediately
 });
 
 self.addEventListener('fetch', (event) => {
+    // We only want to cache GET requests.
+    if (event.request.method !== 'GET') return;
+
     event.respondWith(
-        caches.match(event.request).then((response) => {
-            return response || fetch(event.request);
+        fetch(event.request).catch(() => {
+            // If the network fails, try to return the cached version
+            return caches.match(event.request).then((response) => {
+                // If we can't find the exact request, default to the root '/'
+                return response || caches.match('/');
+            });
         })
     );
 });
@@ -31,10 +40,11 @@ self.addEventListener('activate', (event) => {
             return Promise.all(
                 cacheNames.map((cache) => {
                     if (cache !== CACHE_NAME) {
-                        return caches.delete(cache);
+                        return caches.delete(cache); // Deletes old versions of the cache
                     }
                 })
             );
         })
     );
+    self.clients.claim(); // Take control of the page immediately
 });
