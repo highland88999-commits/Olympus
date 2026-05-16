@@ -152,7 +152,7 @@
         <footer>
             <button class="btn-core" onclick="window.location.href='mailto:stakeme10000@gmail.com?subject=Olympus%20Custom%20Design'">CUSTOM DESIGN</button>
             <button class="btn-core" onclick="window.open('https://hermes-landing-nu.vercel.app/', '_blank')">ONLINE MALL</button>
-            <button class="btn-core" onclick="window.open('https://nexusvortex.ca', '_blank')">NEXUS VORTEX</button>
+            <button class="btn-core" onclick="window.open('https://nexus-vortex.vercel.app/', '_blank')">NEXUS VORTEX</button>
             <button class="btn-core" id="viewport-btn" onclick="toggleViewport()">VIEWPORT 🪐</button>
         </footer>
     </div>
@@ -234,7 +234,6 @@
         if(tower.children.length > 5) tower.removeChild(tower.firstChild);
     };
 
-    // --- VERIFIED APIS FLOW AND PARSING ---
     async function fetchStore() {
         try {
             const res = await fetch('/api/artemis-2.js');
@@ -255,7 +254,6 @@
         const currentItems = allProducts.slice(startIndex, startIndex + itemsPerPage);
         
         grid.innerHTML = currentItems.map(p => {
-            // Robust parsing logic handles varying Printful configurations or directly mapped assets
             const imgSrc = (p.images && p.images[0]) ? p.images[0] : (p.thumbnail_url || './assets/icon-192.png');
             const parsedLabel = p.name.includes('Prompt:') ? p.name.split('Prompt:')[1] : p.name;
             
@@ -276,7 +274,6 @@
         renderGrid();
     }
 
-    // --- PREVENTS THE VIEWPORT SUN CLIPPING ---
     window.toggleViewport = () => {
         window.viewportActive = !window.viewportActive;
         if(window.toggleOrbitalControls) window.toggleOrbitalControls(window.viewportActive);
@@ -303,7 +300,6 @@
         setTimeout(() => {
             document.getElementById('ui-layer').style.opacity = '1';
             
-            // Hard lock the viewport canvas layer to hidden initially so the catalog is clean
             const canvasEl = globalRendererReference ? globalRendererReference.domElement : null;
             if(canvasEl) canvasEl.style.display = 'none';
 
@@ -319,7 +315,7 @@
 
     window.openModal = (name, img) => {
         activeProduct = { name, img }; 
-        selectedSize = null; // Flush old size allocations
+        selectedSize = null;
         document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected'));
         document.getElementById('modal-title').innerText = name;
         document.getElementById('modal-img-container').innerHTML = `<img src="${img}" style="width:100%; mix-blend-mode:screen; filter:drop-shadow(0 0 12px var(--bio-high));">`;
@@ -343,7 +339,6 @@
         cart.push({ ...activeProduct, size: selectedSize });
         document.getElementById('cart-count').innerText = cart.length;
         
-        // Render updated state directly to manifest interface
         document.getElementById('cart-items').innerHTML = cart.map((item, idx) => `
             <div style="padding:12px; border-bottom:1px solid rgba(0, 242, 255, 0.2); display:flex; justify-content:space-between; align-items:center;">
                 <div>
@@ -361,7 +356,6 @@
     window.removeFromCart = (index) => {
         cart.splice(index, 1);
         document.getElementById('cart-count').innerText = cart.length;
-        // Re-render payload
         document.getElementById('cart-items').innerHTML = cart.map((item, idx) => `
             <div style="padding:12px; border-bottom:1px solid rgba(0, 242, 255, 0.2); display:flex; justify-content:space-between; align-items:center;">
                 <div>
@@ -375,7 +369,26 @@
 
     window.openMap = () => {
         const frame = document.getElementById('map-holoframe');
-        document.getElementById('map-iframe').src = "https://olympus-map-node.vercel.app/";
+        let baseUrl = "https://olympus-map-node.vercel.app/";
+
+        // Request user GPS coordinates directly and safely pass them to the map sub-module iframe
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+                    document.getElementById('map-iframe').src = `${baseUrl}?lat=${lat}&lng=${lng}`;
+                },
+                (error) => {
+                    console.warn("GPS access denied or unavailable, running fallback tracking vectors.");
+                    document.getElementById('map-iframe').src = baseUrl;
+                },
+                { enableHighAccuracy: true, timeout: 8000 }
+            );
+        } else {
+            document.getElementById('map-iframe').src = baseUrl;
+        }
+
         frame.style.display = 'flex';
         setTimeout(() => { frame.style.opacity = '1'; }, 50);
     };
