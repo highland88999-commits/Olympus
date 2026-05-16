@@ -371,13 +371,12 @@
         const frame = document.getElementById('map-holoframe');
         let baseUrl = "https://olympus-map-node.vercel.app/";
 
-        // Request user GPS coordinates directly and safely pass them to the map sub-module iframe
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 (position) => {
                     const lat = position.coords.latitude;
                     const lng = position.coords.longitude;
-                    document.getElementById('map-iframe').src = `${baseUrl}?lat=${lat}&lng=${lng}`;
+                    document.getElementById('map-iframe').src = `${baseUrl}?lat=${lat}&lng=${lng}&origin=${lat},${lng}`;
                 },
                 (error) => {
                     console.warn("GPS access denied or unavailable, running fallback tracking vectors.");
