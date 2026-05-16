@@ -25,7 +25,7 @@
             -webkit-user-select: none; user-select: none; -webkit-touch-callout: none;
         }
         
-        canvas { position: fixed; top: 0; left: 0; z-index: 0; pointer-events: auto; outline: none; }
+        canvas { position: fixed; top: 0; left: 0; z-index: 0; pointer-events: auto; outline: none; display: none; }
         
         /* --- KRAKEN LANDING --- */
         #kraken-lander {
@@ -64,7 +64,7 @@
             transition: opacity 0.5s ease; display: none; opacity: 0;
         }
         .card { 
-            position: relative; background: rgba(0, 242, 255, 0.03); border: 1px solid rgba(0, 242, 255, 0.2);
+            position: relative; background: rgba(0, 0, 0, 0.9); border: 1px solid rgba(0, 242, 255, 0.3);
             aspect-ratio: 0.8 / 1; cursor: pointer; display: flex; align-items: center; justify-content: center;
             box-shadow: inset 0 0 15px var(--bio-low); transition: 0.3s; backdrop-filter: blur(5px);
         }
@@ -89,7 +89,7 @@
         .alert-box { border: 1px solid var(--bio-high); background: rgba(0, 242, 255, 0.1); color: var(--bio-high); padding: 15px 10px; font-weight: bold; letter-spacing: 3px; box-shadow: 0 0 20px rgba(0, 242, 255, 0.4); opacity: 0; transition: opacity 0.5s ease; margin-bottom: 15px; text-shadow: 0 0 10px; font-size: 0.8rem; }
         .alert-box.active { opacity: 1; animation: pulse 1s infinite; }
 
-        /* --- MK KOMBAT TOWER (SIDEBAR OVERLAY) --- */
+        /* --- MK KOMBAT TOWER --- */
         #kombat-tower {
             position: absolute; left: 10px; top: 80px; width: 180px; z-index: 6500;
             display: none; flex-direction: column-reverse; gap: 8px; pointer-events: none;
@@ -120,7 +120,7 @@
 
         #map-holoframe { position: fixed; inset: 0; z-index: 6000; display: none; opacity: 0; background: transparent; align-items: center; justify-content: center; transition: opacity 0.4s ease; pointer-events: auto; }
         .map-glass-container { width: 100%; height: 100%; position: relative; background: transparent; overflow: hidden; transform: scale(0.95); transition: transform 0.4s ease; }
-        .close-map { position: absolute; top: 20px; right: 25px; color: var(--bio-high); font-size: 3rem; cursor: pointer; z-index: 6001; font-weight: bold; text-shadow: 0 0 15px #000; line-height: 1;}
+        .close-map { position: absolute; top: 20px; right: 25px; color: var(--bio-high); font-size: 3rem; cursor: pointer; z-index: 6010; font-weight: bold; text-shadow: 0 0 15px #000; line-height: 1;}
         #map-iframe { width: 100%; height: 100%; border: none; background: transparent; }
     </style>
 </head>
@@ -212,28 +212,9 @@
     // --- GLOBAL STATE ---
     window.eclipseIntensity = 8;
     window.viewportActive = false;
-    let cart = [], selectedSize = null, activeProduct = null;
+    let allProducts = [], cart = [], selectedSize = null, activeProduct = null;
     let currentPage = 1; const itemsPerPage = 8;
-
-    // --- HARDCODED PRODUCTS (IMMEDIATE RECONNECT) ---
-    const allProducts = [
-        {
-            "name": "OLYMPUS HOODIE #1",
-            "images": ["./assets/hoodie1.png"]
-        },
-        {
-            "name": "OLYMPUS HOODIE #2",
-            "images": ["./assets/hoodie2.png"]
-        },
-        {
-            "name": "OLYMPUS HOODIE #3",
-            "images": ["./assets/hoodie3.png"]
-        },
-        {
-            "name": "OLYMPUS HOODIE #4",
-            "images": ["./assets/hoodie4.png"]
-        }
-    ];
+    let globalRendererReference = null;
 
     // --- ARTEMIS VOX ENGINE ---
     let kahnVoice = null;
@@ -247,11 +228,9 @@
         window.speechSynthesis.cancel();
         const msg = new SpeechSynthesisUtterance(text);
         if (kahnVoice) msg.voice = kahnVoice;
-        
         msg.pitch = 0.1; 
         msg.rate = 0.75; 
         msg.volume = 1.0;
-        
         window.speechSynthesis.speak(msg);
     }
 
@@ -280,37 +259,29 @@
         if(tower.children.length > 5) tower.removeChild(tower.firstChild);
     };
 
-    // --- ECLIPSE LOGIC ---
-    let eclipseTimer;
-    function triggerEclipse() {
-        const alertBox = document.getElementById('eclipse-alert');
-        const isCurrentlyActive = alertBox.classList.contains('active');
-        if (!isCurrentlyActive) {
-            alertBox.classList.add('active');
-            window.eclipseIntensity = 0.1; 
-            sHaoKahnSpeak("THE ELDERS HAVE FORETOLD... TOTAL ECLIPSE.");
-        } else {
-            alertBox.classList.remove('active');
-            window.eclipseIntensity = 8; 
+    // --- AUTOMATIC REPO DATA RESOLVER ---
+    async function fetchStore() {
+        // Scans standard local json files and raw git paths from your repo to find your real inventory data
+        const searchTargets = [
+            './products.json',
+            '/api/nexus-core-2.js',
+            'https://raw.githubusercontent.com/highland88999-comits/olympus/main/products.json'
+        ];
+        
+        for (let target of searchTargets) {
+            try {
+                const res = await fetch(target);
+                if (!res.ok) continue;
+                const data = await res.json();
+                if (data && (data.products || Array.isArray(data))) {
+                    allProducts = data.products || data;
+                    renderGrid();
+                    return;
+                }
+            } catch (e) { console.log(`Path ${target} skipped.`); }
         }
+        console.error("Critical: Could not resolve dynamic repo data path.");
     }
-
-    // --- APP LIFECYCLE ---
-    window.ignite = () => {
-        document.getElementById('kraken-lander').style.transform = 'translateY(-100%)';
-        setTimeout(() => {
-            document.getElementById('ui-layer').style.opacity = '1';
-            document.getElementById('store-grid').style.display = 'grid';
-            document.getElementById('store-pagination').style.display = 'flex';
-            setTimeout(() => {
-                document.getElementById('store-grid').style.opacity = '1';
-                document.getElementById('store-pagination').style.opacity = '1';
-            }, 50);
-            
-            renderGrid();
-            eclipseTimer = setInterval(triggerEclipse, 30000); 
-        }, 500);
-    };
 
     function renderGrid() {
         const grid = document.getElementById('store-grid');
@@ -318,9 +289,14 @@
         const startIndex = (currentPage - 1) * itemsPerPage;
         const currentItems = allProducts.slice(startIndex, startIndex + itemsPerPage);
         
+        if (currentItems.length === 0) {
+            grid.innerHTML = `<div style="grid-column: span 2; text-align:center; padding: 40px; color: var(--bio-high);">FETCHING DATA STREAM FROM REPO...</div>`;
+            return;
+        }
+
         grid.innerHTML = currentItems.map(p => `
             <div class="card" onclick="openModal('${p.name.replace(/'/g, "\\'")}', '${p.images[0]}')">
-                <img src="${p.images[0]}" loading="lazy">
+                <img src="${p.images[0]}" onerror="this.src='./assets/icon-192.png';" loading="lazy">
                 <div class="grid-label">${p.name.split('Prompt:')[1] || p.name}</div>
             </div>`).join('');
         document.getElementById('page-indicator').innerText = `[ PAGE ${currentPage} / ${totalPages} ]`;
@@ -334,12 +310,56 @@
         renderGrid();
     }
 
+    // --- VIEWPORT VISIBILITY & BLEED FIX ---
     window.toggleViewport = () => {
         window.viewportActive = !window.viewportActive;
         if(window.toggleOrbitalControls) window.toggleOrbitalControls(window.viewportActive);
-        document.getElementById('store-grid').style.display = window.viewportActive ? 'none' : 'grid';
-        document.getElementById('store-pagination').style.display = window.viewportActive ? 'none' : 'flex';
-        document.getElementById('viewport-btn').innerText = window.viewportActive ? "EXIT VIEWPORT 🪐" : "VIEWPORT 🪐";
+        
+        const grid = document.getElementById('store-grid');
+        const pagination = document.getElementById('store-pagination');
+        const canvasEl = globalRendererReference ? globalRendererReference.domElement : null;
+
+        if (window.viewportActive) {
+            grid.style.display = 'none';
+            pagination.style.display = 'none';
+            if(canvasEl) canvasEl.style.display = 'block'; // Unhide 3D view only inside viewport mode
+            document.getElementById('viewport-btn').innerText = "EXIT VIEWPORT 🪐";
+        } else {
+            grid.style.display = 'grid';
+            pagination.style.display = 'flex';
+            if(canvasEl) canvasEl.style.display = 'none'; // Kill 3D layer completely so it cannot clip through cards
+            document.getElementById('viewport-btn').innerText = "VIEWPORT 🪐";
+        }
+    };
+
+    // --- ECLIPSE ENGINE ---
+    let eclipseTimer;
+    function triggerEclipse() {
+        const alertBox = document.getElementById('eclipse-alert');
+        if (!alertBox.classList.contains('active')) {
+            alertBox.classList.add('active');
+            window.eclipseIntensity = 0.1; 
+            sHaoKahnSpeak("THE ELDERS HAVE FORETOLD... TOTAL ECLIPSE.");
+        } else {
+            alertBox.classList.remove('active');
+            window.eclipseIntensity = 8; 
+        }
+    }
+
+    // --- ENGINE INITIALIZATION ---
+    window.ignite = () => {
+        document.getElementById('kraken-lander').style.transform = 'translateY(-100%)';
+        setTimeout(() => {
+            document.getElementById('ui-layer').style.opacity = '1';
+            document.getElementById('store-grid').style.display = 'grid';
+            document.getElementById('store-pagination').style.display = 'flex';
+            setTimeout(() => {
+                document.getElementById('store-grid').style.opacity = '1';
+                document.getElementById('store-pagination').style.opacity = '1';
+            }, 50);
+            fetchStore();
+            eclipseTimer = setInterval(triggerEclipse, 30000); 
+        }, 500);
     };
 
     window.openModal = (name, img) => {
@@ -385,6 +405,8 @@
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.toneMapping = THREE.ReinhardToneMapping;
     document.body.appendChild(renderer.domElement);
+    
+    globalRendererReference = renderer; // Lock reference to kill element bleed globally
 
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
