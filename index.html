@@ -3,35 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="format-detection" content="telephone=no">
     <title>OLYMPUS | GRAND MULTIVERSE</title>
     
     <link rel="manifest" href="./manifest.json">
     <meta name="theme-color" content="#000000">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="apple-touch-icon" href="./assets/icon-192.png">
 
     <style>
         :root { 
-            --fire: #ff4500; --blood: #ff0033;
-            --bio-low: #001a33; --bio-high: #00f2ff; 
+            --fire: #ff4500; 
+            --blood: #ff0033;
+            --bio-low: #001a33; 
+            --bio-high: #00f2ff; 
             --mk-gold: #ffd700;
         }
         
         body, html { 
             margin: 0; padding: 0; width: 100%; height: 100%; background: #000; 
             font-family: 'Courier New', monospace; color: white; overflow: hidden; text-transform: uppercase;
-            -webkit-user-select: none; user-select: none; -webkit-touch-callout: none;
+            -webkit-user-select: none; user-select: none;
         }
         
         canvas { position: fixed; top: 0; left: 0; z-index: 0; pointer-events: auto; outline: none; display: none; }
         
-        /* --- KRAKEN LANDING --- */
+        /* --- INITIALIZER LANDING --- */
         #kraken-lander {
             position: fixed; inset: 0; background: #000; z-index: 5000; 
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            transition: transform 1s cubic-bezier(0.85, 0, 0.15, 1); pointer-events: auto;
+            transition: transform 1s cubic-bezier(0.85, 0, 0.15, 1);
         }
         .lander-card {
             width: 90%; max-width: 420px; text-align: center; border: 1px solid var(--bio-high);
@@ -39,23 +39,23 @@
         }
         .kraken-btn {
             display: block; background: var(--bio-high); color: #000; padding: 18px;
-            text-decoration: none; font-weight: bold; margin-bottom: 25px; letter-spacing: 2px; box-shadow: 0 0 20px var(--bio-high); transition: 0.3s;
+            text-decoration: none; font-weight: bold; margin-bottom: 25px; letter-spacing: 2px; box-shadow: 0 0 20px var(--bio-high);
         }
         .btn-core {
             background: rgba(0,0,0,0.5); border: 1px solid var(--bio-high); color: var(--bio-high);
             padding: 12px 10px; cursor: pointer; font-size: 0.65rem; letter-spacing: 2px;
-            backdrop-filter: blur(5px); transition: 0.3s; outline: none; text-align: center; width: 100%; box-sizing: border-box;
+            transition: 0.3s; text-align: center; width: 100%; box-sizing: border-box;
         }
         .btn-core:hover { background: var(--bio-high); color: #000; box-shadow: 0 0 15px var(--bio-high); }
 
-        /* --- UI LAYER --- */
+        /* --- CORE INTERFACE --- */
         #ui-layer { position: fixed; inset: 0; z-index: 100; pointer-events: none; display: flex; flex-direction: column; justify-content: space-between; padding: 30px 20px; box-sizing: border-box; opacity: 0; transition: opacity 1s; }
         header { display: flex; justify-content: space-between; pointer-events: auto; align-items: center; }
         h1 { letter-spacing: 3px; color: var(--bio-high); text-shadow: 0 0 15px var(--bio-high); font-size: 0.9rem; margin: 0; }
         
         #ui-layer footer { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; pointer-events: auto; width: 100%; }
 
-        /* STORE GRID */
+        /* LIVE PRODUCTS GRID */
         #store-grid { 
             position: relative; z-index: 5; grid-template-columns: repeat(2, 1fr); gap: 15px; 
             width: 100%; max-width: 1000px; margin: 20px auto 0 auto; 
@@ -64,7 +64,7 @@
             transition: opacity 0.5s ease; display: none; opacity: 0;
         }
         .card { 
-            position: relative; background: rgba(0, 0, 0, 0.9); border: 1px solid rgba(0, 242, 255, 0.3);
+            position: relative; background: rgba(0, 242, 255, 0.03); border: 1px solid rgba(0, 242, 255, 0.2);
             aspect-ratio: 0.8 / 1; cursor: pointer; display: flex; align-items: center; justify-content: center;
             box-shadow: inset 0 0 15px var(--bio-low); transition: 0.3s; backdrop-filter: blur(5px);
         }
@@ -77,58 +77,52 @@
         }
         .btn-page {
             background: transparent; border: 1px solid var(--bio-high); color: var(--bio-high);
-            padding: 8px 15px; cursor: pointer; font-family: 'Courier New', monospace;
-            font-weight: bold; font-size: 0.7rem; transition: 0.3s;
+            padding: 8px 15px; cursor: pointer; font-family: 'Courier New', monospace; font-size: 0.7rem;
         }
-        .btn-page:hover:not(:disabled) { background: var(--bio-high); color: #000; }
-        .btn-page:disabled { opacity: 0.3; cursor: not-allowed; border-color: rgba(0, 242, 255, 0.3); color: rgba(0, 242, 255, 0.3); }
 
-        #cart-trigger { display: flex; align-items: center; gap: 10px; color: var(--bio-high); border: 1px solid var(--bio-high); padding: 8px 10px; font-size: 0.65rem; cursor: pointer; background: rgba(0, 242, 255, 0.05); }
+        #cart-trigger { color: var(--bio-high); border: 1px solid var(--bio-high); padding: 8px 10px; font-size: 0.65rem; cursor: pointer; background: rgba(0, 242, 255, 0.05); }
 
-        #hud-center { position: absolute; top: 20%; left: 50%; transform: translateX(-50%); text-align: center; pointer-events: none; width: 90%; max-width: 400px; z-index: 100; }
-        .alert-box { border: 1px solid var(--bio-high); background: rgba(0, 242, 255, 0.1); color: var(--bio-high); padding: 15px 10px; font-weight: bold; letter-spacing: 3px; box-shadow: 0 0 20px rgba(0, 242, 255, 0.4); opacity: 0; transition: opacity 0.5s ease; margin-bottom: 15px; text-shadow: 0 0 10px; font-size: 0.8rem; }
-        .alert-box.active { opacity: 1; animation: pulse 1s infinite; }
+        #hud-center { position: absolute; top: 20%; left: 50%; transform: translateX(-50%); text-align: center; pointer-events: none; width: 90%; z-index: 100; }
+        .alert-box { border: 1px solid var(--bio-high); background: rgba(0, 242, 255, 0.1); color: var(--bio-high); padding: 15px 10px; font-weight: bold; letter-spacing: 3px; opacity: 0; transition: opacity 0.5s ease; font-size: 0.8rem; }
+        .alert-box.active { opacity: 1; }
 
-        /* --- MK KOMBAT TOWER --- */
+        /* --- KOMBAT HUD --- */
         #kombat-tower {
             position: absolute; left: 10px; top: 80px; width: 180px; z-index: 6500;
             display: none; flex-direction: column-reverse; gap: 8px; pointer-events: none;
         }
         .tower-step {
-            background: rgba(0,0,0,0.8); border: 2px solid #444; color: #888;
-            padding: 8px; font-size: 0.6rem; letter-spacing: 1px;
+            background: rgba(0,0,0,0.8); border: 2px solid #444; color: #888; padding: 8px; font-size: 0.6rem;
             clip-path: polygon(0% 0%, 100% 0%, 90% 100%, 0% 100%);
-            transition: 0.5s;
         }
         .tower-step.active {
             border-color: var(--blood); color: var(--mk-gold);
-            box-shadow: 0 0 15px var(--blood); transform: scale(1.05);
-            background: linear-gradient(90deg, rgba(255,0,51,0.3), transparent);
+            box-shadow: 0 0 15px var(--blood); background: linear-gradient(90deg, rgba(255,0,51,0.3), transparent);
         }
 
-        /* --- MODALS & IFRAME --- */
+        /* --- SLATE CHECKOUT MODALS --- */
         #side-cart { position: fixed; top: 0; right: -100%; width: 85%; max-width: 350px; height: 100%; background: #000; border-left: 1px solid var(--bio-high); z-index: 7000; transition: 0.4s; pointer-events: auto; }
         #side-cart.open { right: 0; }
-        .pay-link { display: block; width: 90%; margin: 10px auto; padding: 15px 0; text-align: center; font-size: 0.8rem; text-decoration: none; font-weight: bold; letter-spacing: 2px; }
+        .pay-link { display: block; width: 90%; margin: 10px auto; padding: 15px 0; text-align: center; font-size: 0.8rem; text-decoration: none; font-weight: bold; }
 
         #modal-overlay { position: fixed; inset: 0; z-index: 6000; display: none; background: rgba(0,0,0,0.95); backdrop-filter: blur(12px); align-items: center; justify-content: center; pointer-events: auto; }
         .modal-content { width: 90%; max-width: 420px; background: #000; border: 2px solid var(--bio-high); position: relative; padding-bottom: 20px; }
-        .close-modal { position: absolute; top: 5px; right: 15px; font-size: 2rem; color: var(--bio-high); cursor: pointer; z-index: 100; }
+        .close-modal { position: absolute; top: 5px; right: 15px; font-size: 2rem; color: var(--bio-high); cursor: pointer; }
         .size-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 15px 20px; }
-        .size-btn { border: 1px solid var(--bio-high); background: #000; color: #fff; padding: 12px 0; cursor: pointer; font-size: 0.7rem; transition: 0.2s; }
+        .size-btn { border: 1px solid var(--bio-high); background: #000; color: #fff; padding: 12px 0; cursor: pointer; font-size: 0.7rem; }
         .size-btn.selected { background: var(--bio-high); color: #000; font-weight: bold; }
 
         #map-holoframe { position: fixed; inset: 0; z-index: 6000; display: none; opacity: 0; background: transparent; align-items: center; justify-content: center; transition: opacity 0.4s ease; pointer-events: auto; }
-        .map-glass-container { width: 100%; height: 100%; position: relative; background: transparent; overflow: hidden; transform: scale(0.95); transition: transform 0.4s ease; }
-        .close-map { position: absolute; top: 20px; right: 25px; color: var(--bio-high); font-size: 3rem; cursor: pointer; z-index: 6010; font-weight: bold; text-shadow: 0 0 15px #000; line-height: 1;}
+        .map-glass-container { width: 100%; height: 100%; position: relative; background: transparent; overflow: hidden; }
+        .close-map { position: absolute; top: 20px; right: 25px; color: var(--bio-high); font-size: 3rem; cursor: pointer; z-index: 6010; font-weight: bold; }
         #map-iframe { width: 100%; height: 100%; border: none; background: transparent; }
     </style>
 </head>
-<body spellcheck="false" translate="no">
+<body>
 
 <div id="kraken-lander">
     <div class="lander-card">
-        <div style="font-size: 0.7rem; letter-spacing: 5px; margin-bottom: 25px; color: var(--bio-high);">SYSTEM READY</div>
+        <div style="font-size: 0.7rem; letter-spacing: 5px; margin-bottom: 25px; color: var(--bio-high);">SYSTEM OVERLINK READY</div>
         <a href="https://invite.kraken.com/JDNW/kkw3ryqs" target="_blank" class="kraken-btn">CLAIM 200 CAD BTC REWARD</a>
         <button class="btn-core" onclick="ignite()">INITIALIZE OLYMPUS</button>
     </div>
@@ -138,7 +132,6 @@
     <header>
         <h1>OLYMPUS | GRAND MULTIVERSE</h1>
         <div id="cart-trigger" onclick="toggleCart(true)">
-            <div class="cart-icon-wrapper">🛒<div id="visual-stack"></div></div>
             <span>MANIFEST (<span id="cart-count">0</span>)</span>
         </div>
     </header>
@@ -167,7 +160,7 @@
 
 <div id="side-cart">
     <div style="padding:20px; border-bottom:1px solid var(--bio-high); display:flex; justify-content:space-between; align-items: center;">
-        <span style="color:var(--bio-high); letter-spacing: 2px;">CART MANIFEST</span>
+        <span style="color:var(--bio-high); letter-spacing: 2px;">MANIFEST VIEW</span>
         <span onclick="toggleCart(false)" style="cursor:pointer; font-size: 1.5rem; color: var(--bio-high);">×</span>
     </div>
     <div id="cart-items" style="padding:20px; font-size:0.75rem; color: #fff; overflow-y: auto; height: calc(100% - 180px);"></div>
@@ -200,7 +193,7 @@
     <div id="kombat-tower"></div>
     <div class="map-glass-container" id="map-glass">
         <span class="close-map" onclick="closeMapHoloframe()">×</span>
-        <iframe id="map-iframe" allowtransparency="true" allow="geolocation; autoplay; microphone" src=""></iframe>
+        <iframe id="map-iframe" allowtransparency="true" src=""></iframe>
     </div>
 </div>
 
@@ -209,42 +202,20 @@
 </script>
 
 <script>
-    // --- GLOBAL STATE ---
     window.eclipseIntensity = 8;
     window.viewportActive = false;
     let allProducts = [], cart = [], selectedSize = null, activeProduct = null;
-    let currentPage = 1; const itemsPerPage = 8;
+    let currentPage = 1; const itemsPerPage = 24; 
     let globalRendererReference = null;
 
-    // --- ARTEMIS VOX ENGINE ---
-    let kahnVoice = null;
-    function loadVoices() {
-        const voices = window.speechSynthesis.getVoices();
-        kahnVoice = voices.find(v => v.name.includes('Male') || v.name.includes('David') || v.name.includes('Guy')) || voices[0];
-    }
-    window.speechSynthesis.onvoiceschanged = loadVoices;
-
-    function sHaoKahnSpeak(text) {
-        window.speechSynthesis.cancel();
-        const msg = new SpeechSynthesisUtterance(text);
-        if (kahnVoice) msg.voice = kahnVoice;
-        msg.pitch = 0.1; 
-        msg.rate = 0.75; 
-        msg.volume = 1.0;
-        window.speechSynthesis.speak(msg);
-    }
-
-    // --- NAVIGATION BRIDGE ---
+    // --- NAVIGATION COUPLING ---
     window.addEventListener('message', (event) => {
         if (event.data.type === 'NAV_START') {
-            sHaoKahnSpeak("CHOOSE YOUR DESTINY. DRIVE!");
             updateKombatTower("ROUND 1: START");
         } else if (event.data.type === 'NAV_TURN') {
-            sHaoKahnSpeak(event.data.text);
             updateKombatTower(event.data.text);
         } else if (event.data.type === 'NAV_ARRIVE') {
-            sHaoKahnSpeak("FLAWLESS VICTORY. DESTINATION REACHED.");
-            updateKombatTower("FATALITY");
+            updateKombatTower("VICTORY REACHED");
         }
     });
 
@@ -259,28 +230,18 @@
         if(tower.children.length > 5) tower.removeChild(tower.firstChild);
     };
 
-    // --- AUTOMATIC REPO DATA RESOLVER ---
+    // --- LIVE ARTEMIS API STREAM ---
     async function fetchStore() {
-        // Scans standard local json files and raw git paths from your repo to find your real inventory data
-        const searchTargets = [
-            './products.json',
-            '/api/nexus-core-2.js',
-            'https://raw.githubusercontent.com/highland88999-comits/olympus/main/products.json'
-        ];
-        
-        for (let target of searchTargets) {
-            try {
-                const res = await fetch(target);
-                if (!res.ok) continue;
-                const data = await res.json();
-                if (data && (data.products || Array.isArray(data))) {
-                    allProducts = data.products || data;
-                    renderGrid();
-                    return;
-                }
-            } catch (e) { console.log(`Path ${target} skipped.`); }
+        try {
+            const res = await fetch('/api/artemis-2.js');
+            const data = await res.json();
+            if (data && data.products) {
+                allProducts = data.products;
+                renderGrid();
+            }
+        } catch (e) {
+            console.error("Link Severed. Retrying primary repository routing mapping...");
         }
-        console.error("Critical: Could not resolve dynamic repo data path.");
     }
 
     function renderGrid() {
@@ -289,11 +250,6 @@
         const startIndex = (currentPage - 1) * itemsPerPage;
         const currentItems = allProducts.slice(startIndex, startIndex + itemsPerPage);
         
-        if (currentItems.length === 0) {
-            grid.innerHTML = `<div style="grid-column: span 2; text-align:center; padding: 40px; color: var(--bio-high);">FETCHING DATA STREAM FROM REPO...</div>`;
-            return;
-        }
-
         grid.innerHTML = currentItems.map(p => `
             <div class="card" onclick="openModal('${p.name.replace(/'/g, "\\'")}', '${p.images[0]}')">
                 <img src="${p.images[0]}" onerror="this.src='./assets/icon-192.png';" loading="lazy">
@@ -310,7 +266,7 @@
         renderGrid();
     }
 
-    // --- VIEWPORT VISIBILITY & BLEED FIX ---
+    // --- CANVAS LAYER MANAGEMENT (ELIMINATES SUN BLEED) ---
     window.toggleViewport = () => {
         window.viewportActive = !window.viewportActive;
         if(window.toggleOrbitalControls) window.toggleOrbitalControls(window.viewportActive);
@@ -322,31 +278,16 @@
         if (window.viewportActive) {
             grid.style.display = 'none';
             pagination.style.display = 'none';
-            if(canvasEl) canvasEl.style.display = 'block'; // Unhide 3D view only inside viewport mode
+            if(canvasEl) canvasEl.style.display = 'block'; 
             document.getElementById('viewport-btn').innerText = "EXIT VIEWPORT 🪐";
         } else {
             grid.style.display = 'grid';
             pagination.style.display = 'flex';
-            if(canvasEl) canvasEl.style.display = 'none'; // Kill 3D layer completely so it cannot clip through cards
+            if(canvasEl) canvasEl.style.display = 'none'; 
             document.getElementById('viewport-btn').innerText = "VIEWPORT 🪐";
         }
     };
 
-    // --- ECLIPSE ENGINE ---
-    let eclipseTimer;
-    function triggerEclipse() {
-        const alertBox = document.getElementById('eclipse-alert');
-        if (!alertBox.classList.contains('active')) {
-            alertBox.classList.add('active');
-            window.eclipseIntensity = 0.1; 
-            sHaoKahnSpeak("THE ELDERS HAVE FORETOLD... TOTAL ECLIPSE.");
-        } else {
-            alertBox.classList.remove('active');
-            window.eclipseIntensity = 8; 
-        }
-    }
-
-    // --- ENGINE INITIALIZATION ---
     window.ignite = () => {
         document.getElementById('kraken-lander').style.transform = 'translateY(-100%)';
         setTimeout(() => {
@@ -358,7 +299,6 @@
                 document.getElementById('store-pagination').style.opacity = '1';
             }, 50);
             fetchStore();
-            eclipseTimer = setInterval(triggerEclipse, 30000); 
         }, 500);
     };
 
@@ -376,10 +316,7 @@
         const frame = document.getElementById('map-holoframe');
         document.getElementById('map-iframe').src = "https://olympus-map-node.vercel.app/";
         frame.style.display = 'flex';
-        setTimeout(() => { 
-            frame.style.opacity = '1'; 
-            sHaoKahnSpeak("WELCOME TO THE ARENA.");
-        }, 50);
+        setTimeout(() => { frame.style.opacity = '1'; }, 50);
     };
 
     window.closeMapHoloframe = () => {
@@ -394,19 +331,15 @@
 <script type="module">
     import * as THREE from 'three';
     import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-    import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
-    import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
-    import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 60000);
     const renderer = new THREE.WebGLRenderer({ antialias: true, logarithmicDepthBuffer: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.toneMapping = THREE.ReinhardToneMapping;
     document.body.appendChild(renderer.domElement);
     
-    globalRendererReference = renderer; // Lock reference to kill element bleed globally
+    globalRendererReference = renderer; 
 
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
@@ -417,35 +350,12 @@
     const loader = new THREE.TextureLoader();
     const assetPath = './assets/';
 
-    const composer = new EffectComposer(renderer);
-    composer.addPass(new RenderPass(scene, camera));
-    const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.6, 0.4, 0.85);
-    composer.addPass(bloomPass);
-
     const sunTex = loader.load(assetPath + '8k_sun.jpg');
     const sun = new THREE.Mesh(new THREE.SphereGeometry(450, 64, 64), new THREE.MeshBasicMaterial({ map: sunTex }));
     scene.add(sun);
 
     const sunLight = new THREE.PointLight(0xffffff, 8, 30000);
     scene.add(sunLight);
-
-    const earthOrbit = new THREE.Group();
-    scene.add(earthOrbit);
-
-    const earthTex = loader.load(assetPath + '8k_earth_nightmap.jpg');
-    const earth = new THREE.Mesh(
-        new THREE.SphereGeometry(150, 64, 64),
-        new THREE.MeshStandardMaterial({ map: earthTex, emissive: 0xffffff, emissiveMap: earthTex, emissiveIntensity: 0.6 })
-    );
-    earth.position.x = 2200;
-    earthOrbit.add(earth);
-
-    const moonOrbit = new THREE.Group();
-    earth.add(moonOrbit);
-    const moonTex = loader.load(assetPath + '8k_moon.jpg');
-    const moon = new THREE.Mesh(new THREE.SphereGeometry(45, 32, 32), new THREE.MeshStandardMaterial({ map: moonTex }));
-    moon.position.x = 450;
-    moonOrbit.add(moon);
 
     let isMoving = false;
     let startPos = new THREE.Vector2();
@@ -459,14 +369,8 @@
     function animate() {
         requestAnimationFrame(animate);
         sun.rotation.y += 0.001;
-        earth.rotation.y += 0.003;
-        moonOrbit.rotation.y += 0.005;
-        earthOrbit.rotation.y += 0.0005;
-        
-        sunLight.intensity = THREE.MathUtils.lerp(sunLight.intensity, window.eclipseIntensity, 0.05);
-
         controls.update();
-        composer.render();
+        renderer.render(scene, camera);
     }
     animate();
 
