@@ -212,10 +212,30 @@
     // --- GLOBAL STATE ---
     window.eclipseIntensity = 8;
     window.viewportActive = false;
-    let allProducts = [], cart = [], selectedSize = null, activeProduct = null;
+    let cart = [], selectedSize = null, activeProduct = null;
     let currentPage = 1; const itemsPerPage = 8;
 
-    // --- ARTEMIS VOX ENGINE (MK STYLE) ---
+    // --- HARDCODED PRODUCTS (IMMEDIATE RECONNECT) ---
+    const allProducts = [
+        {
+            "name": "OLYMPUS HOODIE #1",
+            "images": ["./assets/hoodie1.png"]
+        },
+        {
+            "name": "OLYMPUS HOODIE #2",
+            "images": ["./assets/hoodie2.png"]
+        },
+        {
+            "name": "OLYMPUS HOODIE #3",
+            "images": ["./assets/hoodie3.png"]
+        },
+        {
+            "name": "OLYMPUS HOODIE #4",
+            "images": ["./assets/hoodie4.png"]
+        }
+    ];
+
+    // --- ARTEMIS VOX ENGINE ---
     let kahnVoice = null;
     function loadVoices() {
         const voices = window.speechSynthesis.getVoices();
@@ -228,7 +248,6 @@
         const msg = new SpeechSynthesisUtterance(text);
         if (kahnVoice) msg.voice = kahnVoice;
         
-        // Max depth and weight
         msg.pitch = 0.1; 
         msg.rate = 0.75; 
         msg.volume = 1.0;
@@ -287,31 +306,32 @@
                 document.getElementById('store-grid').style.opacity = '1';
                 document.getElementById('store-pagination').style.opacity = '1';
             }, 50);
-            fetchStore();
+            
+            renderGrid();
             eclipseTimer = setInterval(triggerEclipse, 30000); 
         }, 500);
     };
-
-    async function fetchStore() {
-        try {
-            const res = await fetch('/api/nexus-core-2.js');
-            const data = await res.json();
-            allProducts = data.products || [];
-            renderGrid();
-        } catch (e) { renderGrid(); }
-    }
 
     function renderGrid() {
         const grid = document.getElementById('store-grid');
         const totalPages = Math.ceil(allProducts.length / itemsPerPage) || 1;
         const startIndex = (currentPage - 1) * itemsPerPage;
         const currentItems = allProducts.slice(startIndex, startIndex + itemsPerPage);
+        
         grid.innerHTML = currentItems.map(p => `
             <div class="card" onclick="openModal('${p.name.replace(/'/g, "\\'")}', '${p.images[0]}')">
                 <img src="${p.images[0]}" loading="lazy">
                 <div class="grid-label">${p.name.split('Prompt:')[1] || p.name}</div>
             </div>`).join('');
         document.getElementById('page-indicator').innerText = `[ PAGE ${currentPage} / ${totalPages} ]`;
+    }
+
+    function changePage(direction) {
+        const totalPages = Math.ceil(allProducts.length / itemsPerPage) || 1;
+        currentPage += direction;
+        if (currentPage < 1) currentPage = 1;
+        if (currentPage > totalPages) currentPage = totalPages;
+        renderGrid();
     }
 
     window.toggleViewport = () => {
