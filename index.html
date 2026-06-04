@@ -212,6 +212,14 @@
     let currentPage = 1; const itemsPerPage = 24; 
     let globalRendererReference = null;
 
+    // --- AFFILIATE TRACKER ---
+    const urlParams = new URLSearchParams(window.location.search);
+    const incomingRef = urlParams.get('ref');
+    if (incomingRef) {
+        localStorage.setItem('valkyrie_ref', incomingRef);
+        console.log("Affiliate Node locked:", incomingRef);
+    }
+
     // --- AUTOMATED INBOUND EVENT LISTENER FROM MAP MODULE ---
     window.addEventListener('message', (event) => {
         if (event.data.type === 'NAV_START' || event.data.instruction) {
@@ -329,7 +337,19 @@
     };
 
     window.closeModal = () => document.getElementById('modal-overlay').style.display = 'none';
-    window.toggleCart = (show) => document.getElementById('side-cart').classList.toggle('open', show);
+
+    window.toggleCart = (show) => {
+        document.getElementById('side-cart').classList.toggle('open', show);
+        
+        // Dynamically attach the referral ID to the checkout links
+        const savedRef = localStorage.getItem('valkyrie_ref');
+        if (savedRef && show) {
+            const stripeBtn = document.querySelector('a[href*="buy.stripe.com"]');
+            if (stripeBtn && !stripeBtn.href.includes('client_reference_id')) {
+                stripeBtn.href = `${stripeBtn.href}?client_reference_id=${savedRef}`;
+            }
+        }
+    };
 
     window.addToCart = () => {
         if (!selectedSize) {
