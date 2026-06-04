@@ -103,7 +103,7 @@
         /* --- CHECKOUT SLATES --- */
         #side-cart { position: fixed; top: 0; right: -100%; width: 85%; max-width: 350px; height: 100%; background: #000; border-left: 1px solid var(--bio-high); z-index: 7000; transition: 0.4s; pointer-events: auto; }
         #side-cart.open { right: 0; }
-        .pay-link { display: block; width: 90%; margin: 10px auto; padding: 15px 0; text-align: center; font-size: 0.8rem; text-decoration: none; font-weight: bold; }
+        .pay-link { display: block; width: 90%; margin: 10px auto; padding: 15px 0; text-align: center; font-size: 0.8rem; text-decoration: none; font-weight: bold; border: none; cursor: pointer; font-family: inherit; }
 
         #modal-overlay { position: fixed; inset: 0; z-index: 6000; display: none; background: rgba(0,0,0,0.95); backdrop-filter: blur(12px); align-items: center; justify-content: center; pointer-events: auto; }
         .modal-content { width: 90%; max-width: 420px; background: #000; border: 2px solid var(--bio-high); position: relative; padding-bottom: 20px; }
@@ -165,7 +165,7 @@
     </div>
     <div id="cart-items" style="padding:20px; font-size:0.75rem; color: #fff; overflow-y: auto; height: calc(100% - 180px);"></div>
     <div style="position:absolute; bottom:20px; width:100%;">
-        <a href="https://buy.stripe.com/4gMaEWdE3dha4GUgBAcIE01" class="pay-link" style="background:#fff; color:#000;" target="_blank">STRIPE SECURE</a>
+        <button class="pay-link" id="stripe-checkout-btn" style="background:#fff; color:#000;" onclick="handleStripeCheckout()">STRIPE SECURE</button>
         <a href="https://nowpayments.io/payment/?iid=6087329696" class="pay-link" style="background:var(--fire); color:#fff;" target="_blank">CRYPTO CHECKOUT</a>
     </div>
 </div>
@@ -340,14 +340,44 @@
 
     window.toggleCart = (show) => {
         document.getElementById('side-cart').classList.toggle('open', show);
-        
-        // Dynamically attach the referral ID to the checkout links
-        const savedRef = localStorage.getItem('valkyrie_ref');
-        if (savedRef && show) {
-            const stripeBtn = document.querySelector('a[href*="buy.stripe.com"]');
-            if (stripeBtn && !stripeBtn.href.includes('client_reference_id')) {
-                stripeBtn.href = `${stripeBtn.href}?client_reference_id=${savedRef}`;
+    };
+
+    // --- DYNAMIC CHECKOUT HANDLER FOR STRIPE ---
+    window.handleStripeCheckout = async () => {
+        if (cart.length === 0) {
+            alert("ALLOCATION FAILURE: MANIFEST EMPTY");
+            return;
+        }
+
+        const stripeBtn = document.getElementById('stripe-checkout-btn');
+        const originalText = stripeBtn.innerText;
+        stripeBtn.innerText = "INITIALIZING...";
+
+        try {
+            const orderData = {
+                products: cart,
+                referral_id: localStorage.getItem('valkyrie_ref') || null
+            };
+
+            const response = await fetch('/api/create-checkout-session', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(orderData)
+            });
+
+            if (!response.ok) throw new Error("Checkout failed to initialize.");
+
+            const data = await response.json();
+            if (data.url) {
+                window.location.href = data.url; // Fire the redirect to Stripe
+            } else {
+                alert("SYSTEM DISRUPTION: FAILED TO GENERATE LINK");
+                stripeBtn.innerText = originalText;
             }
+        } catch (error) {
+            console.error(error);
+            alert("SYSTEM DISRUPTION: CHECKOUT FAILED");
+            stripeBtn.innerText = originalText;
         }
     };
 
