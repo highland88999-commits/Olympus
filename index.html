@@ -10,7 +10,6 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-    <!-- OMEGA MIND TELEMETRY UPLINK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
       (function() {
@@ -120,38 +119,55 @@
         .btn-core:hover { background: var(--bio-high); color: #000; box-shadow: 0 0 15px var(--bio-high); }
 
         /* --- CORE INTERFACE --- */
-        /* Recalibrated padding-bottom to 60px to clear cyber-footer */
         #ui-layer { position: fixed; inset: 0; z-index: 100; pointer-events: none; display: flex; flex-direction: column; justify-content: space-between; padding: 30px 20px 60px 20px; box-sizing: border-box; opacity: 0; transition: opacity 1s; }
         header { display: flex; justify-content: space-between; pointer-events: auto; align-items: center; }
         h1 { letter-spacing: 3px; color: var(--bio-high); text-shadow: 0 0 15px var(--bio-high); font-size: 0.9rem; margin: 0; }
         
-        #ui-layer footer { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; pointer-events: auto; width: 100%; }
+        #ui-layer footer { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; pointer-events: auto; width: 100%; margin-top: 15px; }
 
-        /* LIVE PRODUCTS GRID */
-        /* Adjusted calc height to account for the footer */
+        /* LIVE PRODUCTS CAROUSEL */
         #store-grid { 
-            position: relative; z-index: 5; grid-template-columns: repeat(2, 1fr); gap: 15px; 
-            width: 100%; max-width: 1000px; margin: 20px auto 0 auto; 
-            height: calc(100vh - 300px); 
-            overflow-y: auto; scrollbar-width: none; pointer-events: auto;
-            transition: opacity 0.5s ease; display: none; opacity: 0;
+            position: relative; 
+            z-index: 5; 
+            display: none; 
+            flex-direction: row;
+            gap: 15px; 
+            width: 100%; 
+            max-width: 1000px; 
+            margin: 20px auto 0 auto; 
+            height: calc(100vh - 220px); 
+            overflow-x: auto; 
+            overflow-y: hidden;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none; /* Firefox */
+            pointer-events: auto;
+            transition: opacity 0.5s ease; 
+            opacity: 0;
         }
+        
+        #store-grid::-webkit-scrollbar { 
+            display: none; /* Safari and Chrome */
+        }
+
         .card { 
-            position: relative; background: rgba(0, 242, 255, 0.03); border: 1px solid rgba(0, 242, 255, 0.2);
-            aspect-ratio: 0.8 / 1; cursor: pointer; display: flex; align-items: center; justify-content: center;
-            box-shadow: inset 0 0 15px var(--bio-low); transition: 0.3s; backdrop-filter: blur(5px);
+            position: relative; 
+            flex: 0 0 100%; /* Force one item per view */
+            scroll-snap-align: center;
+            background: rgba(0, 242, 255, 0.03); 
+            border: 1px solid rgba(0, 242, 255, 0.2);
+            height: 100%;
+            cursor: pointer; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            box-shadow: inset 0 0 15px var(--bio-low); 
+            transition: 0.3s; 
+            backdrop-filter: blur(5px);
         }
         .card img { width: 85%; height: 85%; object-fit: contain; mix-blend-mode: screen; filter: drop-shadow(0 0 8px var(--bio-high)); }
-        .grid-label { position: absolute; bottom: 0; width: 100%; background: rgba(0,26,51,0.9); font-size: 0.55rem; text-align: center; padding: 6px 0; color: var(--bio-high); border-top: 1px solid var(--bio-high); }
-
-        #store-pagination {
-            display: none; justify-content: center; align-items: center; gap: 15px;
-            pointer-events: auto; margin-bottom: 15px; opacity: 0; transition: opacity 0.5s ease;
-        }
-        .btn-page {
-            background: transparent; border: 1px solid var(--bio-high); color: var(--bio-high);
-            padding: 8px 15px; cursor: pointer; font-family: 'Courier New', monospace; font-size: 0.7rem;
-        }
+        .grid-label { position: absolute; bottom: 0; width: 100%; background: rgba(0,26,51,0.9); font-size: 0.75rem; text-align: center; padding: 12px 0; color: var(--bio-high); border-top: 1px solid var(--bio-high); font-weight: bold; }
 
         #cart-trigger { color: var(--bio-high); border: 1px solid var(--bio-high); padding: 8px 10px; font-size: 0.65rem; cursor: pointer; background: rgba(0, 242, 255, 0.05); }
 
@@ -192,10 +208,7 @@
 
         /* Multiverse Tracker CSS Integration */
         .cyber-footer {
-            position: fixed; bottom: 0; left: 0; width: 100%; text-align: center; padding: 12px 0;
-            background: rgba(5, 5, 5, 0.85); backdrop-filter: blur(4px);
-            border-top: 1px solid rgba(0, 255, 255, 0.15); z-index: 9999;
-            font-family: 'Courier New', Courier, monospace; pointer-events: none;
+            display: none !important; /* Made entirely invisible */
         }
         .visit-count {
             color: #00ffff; font-size: 0.75rem; font-weight: bold;
@@ -231,12 +244,6 @@
     </div>
 
     <div>
-        <div id="store-pagination">
-            <button id="btn-prev" class="btn-page" onclick="changePage(-1)">&#9664; PREV</button>
-            <span id="page-indicator">[ PAGE 1 / 1 ]</span>
-            <button id="btn-next" class="btn-page" onclick="changePage(1)">NEXT &#9654;</button>
-        </div>
-        
         <footer>
             <button class="btn-core" onclick="window.location.href='mailto:stakeme10000@gmail.com?subject=Olympus%20Custom%20Design'">CUSTOM DESIGN</button>
             <button class="btn-core" onclick="window.open('https://hermes-landing-nu.vercel.app/', '_blank')">ONLINE MALL</button>
@@ -303,7 +310,6 @@
     window.eclipseIntensity = 8;
     window.viewportActive = false;
     let allProducts = [], cart = [], selectedSize = null, activeProduct = null;
-    let currentPage = 1; const itemsPerPage = 24; 
     let globalRendererReference = null;
 
     // --- AFFILIATE TRACKER ---
@@ -351,11 +357,9 @@
 
     function renderGrid() {
         const grid = document.getElementById('store-grid');
-        const totalPages = Math.ceil(allProducts.length / itemsPerPage) || 1;
-        const startIndex = (currentPage - 1) * itemsPerPage;
-        const currentItems = allProducts.slice(startIndex, startIndex + itemsPerPage);
         
-        grid.innerHTML = currentItems.map(p => {
+        // Renders entire manifest in one seamless horizontal carousel
+        grid.innerHTML = allProducts.map(p => {
             const imgSrc = (p.images && p.images[0]) ? p.images[0] : (p.thumbnail_url || './assets/icon-192.png');
             const parsedLabel = p.name.includes('Prompt:') ? p.name.split('Prompt:')[1] : p.name;
             
@@ -365,15 +369,6 @@
                     <div class="grid-label">${parsedLabel}</div>
                 </div>`;
         }).join('');
-        document.getElementById('page-indicator').innerText = `[ PAGE ${currentPage} / ${totalPages} ]`;
-    }
-
-    function changePage(direction) {
-        const totalPages = Math.ceil(allProducts.length / itemsPerPage) || 1;
-        currentPage += direction;
-        if (currentPage < 1) currentPage = 1;
-        if (currentPage > totalPages) currentPage = totalPages;
-        renderGrid();
     }
 
     window.toggleViewport = () => {
@@ -381,17 +376,14 @@
         if(window.toggleOrbitalControls) window.toggleOrbitalControls(window.viewportActive);
         
         const grid = document.getElementById('store-grid');
-        const pagination = document.getElementById('store-pagination');
         const canvasEl = globalRendererReference ? globalRendererReference.domElement : null;
 
         if (window.viewportActive) {
             grid.style.display = 'none';
-            pagination.style.display = 'none';
             if(canvasEl) canvasEl.style.display = 'block'; 
             document.getElementById('viewport-btn').innerText = "EXIT VIEWPORT 🪐";
         } else {
-            grid.style.display = 'grid';
-            pagination.style.display = 'flex';
+            grid.style.display = 'flex';
             if(canvasEl) canvasEl.style.display = 'none'; 
             document.getElementById('viewport-btn').innerText = "VIEWPORT 🪐";
         }
@@ -405,11 +397,9 @@
             const canvasEl = globalRendererReference ? globalRendererReference.domElement : null;
             if(canvasEl) canvasEl.style.display = 'none';
 
-            document.getElementById('store-grid').style.display = 'grid';
-            document.getElementById('store-pagination').style.display = 'flex';
+            document.getElementById('store-grid').style.display = 'flex';
             setTimeout(() => {
                 document.getElementById('store-grid').style.opacity = '1';
-                document.getElementById('store-pagination').style.opacity = '1';
             }, 50);
             fetchStore();
         }, 500);
@@ -463,7 +453,7 @@
 
             const data = await response.json();
             if (data.url) {
-                window.location.href = data.url; // Fire the redirect to Stripe
+                window.location.href = data.url; 
             } else {
                 alert("SYSTEM DISRUPTION: FAILED TO GENERATE LINK");
                 stripeBtn.innerText = originalText;
