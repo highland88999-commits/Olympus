@@ -1,8 +1,72 @@
 {
   "status": "ONLINE",
-  "lastSync": "2026-09-23T01:11:30.573Z",
-  "totalItems": 360,
+  "lastSync": "2026-09-23T07:14:29.776Z",
+  "totalItems": 368,
   "products": [
+    {
+      "id": 474601990,
+      "name": "Glitch",
+      "images": [
+        "https://files.cdn.printful.com/files/0c0/0c0ae57c5b6a7822f2ed3229c23b338a_preview.png"
+      ],
+      "price": 95
+    },
+    {
+      "id": 474599857,
+      "name": "Sandstone",
+      "images": [
+        "https://files.cdn.printful.com/files/238/238bfeb83fea443999548d29ecfa185f_preview.png"
+      ],
+      "price": 95
+    },
+    {
+      "id": 474599166,
+      "name": "Bookworm",
+      "images": [
+        "https://files.cdn.printful.com/files/96c/96cb177b9d0cf6a83545663a0bb67e08_preview.png"
+      ],
+      "price": 95
+    },
+    {
+      "id": 474598563,
+      "name": "Stone Cold Steve Austin",
+      "images": [
+        "https://files.cdn.printful.com/files/e9d/e9d62a1831af63af60b9776d68ab2257_preview.png"
+      ],
+      "price": 95
+    },
+    {
+      "id": 474598147,
+      "name": "Supes ",
+      "images": [
+        "https://files.cdn.printful.com/files/fbe/fbe4bfbaa022b204306997dd3c5ac010_preview.png"
+      ],
+      "price": 95
+    },
+    {
+      "id": 474597401,
+      "name": "????",
+      "images": [
+        "https://files.cdn.printful.com/files/dc9/dc9e55af2624a0b4af401c715cc868cd_preview.png"
+      ],
+      "price": 95
+    },
+    {
+      "id": 474596902,
+      "name": "???? ",
+      "images": [
+        "https://files.cdn.printful.com/files/f71/f71891fed52dff5a90330394a2b928ca_preview.png"
+      ],
+      "price": 95
+    },
+    {
+      "id": 474596422,
+      "name": "⚡️",
+      "images": [
+        "https://files.cdn.printful.com/files/67e/67e9947c7425c5dd2b73718ce44dc89a_preview.png"
+      ],
+      "price": 95
+    },
     {
       "id": 428063267,
       "name": "Grafitti Wear ",
